@@ -1,0 +1,11 @@
+[Unit]
+Description=Re-enable the DesignJet CUPS queue after a plotter timeout
+Documentation=https://github.com/1983rjg-beep/Ryan
+After=cups.service
+Requires=cups.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/designjet-healthcheck
+User=root
+Nice=10

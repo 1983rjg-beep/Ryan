@@ -1,0 +1,7 @@
+# Local configuration -- your LAN details, not the repo's business
+config.env
+
+# Generated artefacts
+cups/ppd/*.ppd
+*.pyc
+__pycache__/
