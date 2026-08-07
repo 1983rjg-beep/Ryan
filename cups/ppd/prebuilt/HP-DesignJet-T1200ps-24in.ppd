@@ -1,0 +1,174 @@
+*PPD-Adobe: "4.3"
+*FormatVersion: "4.3"
+*FileVersion: "1.0"
+*LanguageEncoding: ISOLatin1
+*LanguageVersion: English
+*PCFileName: "HPT1224.PPD"
+*Manufacturer: "HP"
+*Product: "(HP Designjet T1200ps)"
+*Product: "(HP Designjet T1200 PS)"
+*ModelName: "HP DesignJet T1200ps 24in"
+*ShortNickName: "HP DesignJet T1200ps 24in"
+*NickName: "HP DesignJet T1200ps 24in (PostScript)"
+*PSVersion: "(3011.104) 0"
+*LanguageLevel: "3"
+*ColorDevice: True
+*DefaultColorSpace: CMYK
+*FileSystem: False
+*Throughput: "1"
+*LandscapeOrientation: Plus90
+*TTRasterizer: Type42
+*cupsVersion: 2.0
+*cupsModelNumber: 0
+*cupsManualCopies: False
+*cupsPdftopsRenderer: "hybrid"
+
+*JCLBegin: "<1B>%-12345X@PJL JOB<0A>"
+*JCLToPSInterpreter: "@PJL ENTER LANGUAGE = POSTSCRIPT<0A>"
+*JCLEnd: "<1B>%-12345X@PJL EOJ<0A><1B>%-12345X"
+
+*OpenUI *PageSize/Media Size: PickOne
+*OrderDependency: 10 AnySetup *PageSize
+*DefaultPageSize: A1
+*PageSize A4/A4 (210 x 297 mm): "<</PageSize[595.28 841.89]/ImagingBBox null>>setpagedevice"
+*PageSize A3/A3 (297 x 420 mm): "<</PageSize[841.89 1190.55]/ImagingBBox null>>setpagedevice"
+*PageSize A2/A2 (420 x 594 mm): "<</PageSize[1190.55 1683.78]/ImagingBBox null>>setpagedevice"
+*PageSize A1/A1 (594 x 841 mm): "<</PageSize[1683.78 2383.94]/ImagingBBox null>>setpagedevice"
+*PageSize ISOB2/B2 (500 x 707 mm): "<</PageSize[1417.32 2004.09]/ImagingBBox null>>setpagedevice"
+*PageSize Letter/US Letter (8.5 x 11 in): "<</PageSize[612 792]/ImagingBBox null>>setpagedevice"
+*PageSize Legal/US Legal (8.5 x 14 in): "<</PageSize[612 1008]/ImagingBBox null>>setpagedevice"
+*PageSize Tabloid/ANSI B / Tabloid (11 x 17 in): "<</PageSize[792 1224]/ImagingBBox null>>setpagedevice"
+*PageSize AnsiC/ANSI C (17 x 22 in): "<</PageSize[1224 1584]/ImagingBBox null>>setpagedevice"
+*PageSize AnsiD/ANSI D (22 x 34 in): "<</PageSize[1584 2448]/ImagingBBox null>>setpagedevice"
+*PageSize ARCHA/ARCH A (9 x 12 in): "<</PageSize[648 864]/ImagingBBox null>>setpagedevice"
+*PageSize ARCHB/ARCH B (12 x 18 in): "<</PageSize[864 1296]/ImagingBBox null>>setpagedevice"
+*PageSize ARCHC/ARCH C (18 x 24 in): "<</PageSize[1296 1728]/ImagingBBox null>>setpagedevice"
+*PageSize ARCHD/ARCH D (24 x 36 in): "<</PageSize[1728 2592]/ImagingBBox null>>setpagedevice"
+*PageSize Roll24/Roll 24 in (610 mm) wide: "<</PageSize[1728 2592]/ImagingBBox null>>setpagedevice"
+*CloseUI: *PageSize
+
+*OpenUI *PageRegion/Media Size: PickOne
+*OrderDependency: 10 AnySetup *PageRegion
+*DefaultPageRegion: A1
+*PageRegion A4/A4 (210 x 297 mm): "<</PageSize[595.28 841.89]/ImagingBBox null>>setpagedevice"
+*PageRegion A3/A3 (297 x 420 mm): "<</PageSize[841.89 1190.55]/ImagingBBox null>>setpagedevice"
+*PageRegion A2/A2 (420 x 594 mm): "<</PageSize[1190.55 1683.78]/ImagingBBox null>>setpagedevice"
+*PageRegion A1/A1 (594 x 841 mm): "<</PageSize[1683.78 2383.94]/ImagingBBox null>>setpagedevice"
+*PageRegion ISOB2/B2 (500 x 707 mm): "<</PageSize[1417.32 2004.09]/ImagingBBox null>>setpagedevice"
+*PageRegion Letter/US Letter (8.5 x 11 in): "<</PageSize[612 792]/ImagingBBox null>>setpagedevice"
+*PageRegion Legal/US Legal (8.5 x 14 in): "<</PageSize[612 1008]/ImagingBBox null>>setpagedevice"
+*PageRegion Tabloid/ANSI B / Tabloid (11 x 17 in): "<</PageSize[792 1224]/ImagingBBox null>>setpagedevice"
+*PageRegion AnsiC/ANSI C (17 x 22 in): "<</PageSize[1224 1584]/ImagingBBox null>>setpagedevice"
+*PageRegion AnsiD/ANSI D (22 x 34 in): "<</PageSize[1584 2448]/ImagingBBox null>>setpagedevice"
+*PageRegion ARCHA/ARCH A (9 x 12 in): "<</PageSize[648 864]/ImagingBBox null>>setpagedevice"
+*PageRegion ARCHB/ARCH B (12 x 18 in): "<</PageSize[864 1296]/ImagingBBox null>>setpagedevice"
+*PageRegion ARCHC/ARCH C (18 x 24 in): "<</PageSize[1296 1728]/ImagingBBox null>>setpagedevice"
+*PageRegion ARCHD/ARCH D (24 x 36 in): "<</PageSize[1728 2592]/ImagingBBox null>>setpagedevice"
+*PageRegion Roll24/Roll 24 in (610 mm) wide: "<</PageSize[1728 2592]/ImagingBBox null>>setpagedevice"
+*CloseUI: *PageRegion
+
+*DefaultImageableArea: A1
+*ImageableArea A4: "14.17 14.17 581.1 827.72"
+*ImageableArea A3: "14.17 14.17 827.72 1176.38"
+*ImageableArea A2: "14.17 14.17 1176.38 1669.61"
+*ImageableArea A1: "14.17 14.17 1669.61 2369.76"
+*ImageableArea ISOB2: "14.17 14.17 1403.15 1989.92"
+*ImageableArea Letter: "14.17 14.17 597.83 777.83"
+*ImageableArea Legal: "14.17 14.17 597.83 993.83"
+*ImageableArea Tabloid: "14.17 14.17 777.83 1209.83"
+*ImageableArea AnsiC: "14.17 14.17 1209.83 1569.83"
+*ImageableArea AnsiD: "14.17 14.17 1569.83 2433.83"
+*ImageableArea ARCHA: "14.17 14.17 633.83 849.83"
+*ImageableArea ARCHB: "14.17 14.17 849.83 1281.83"
+*ImageableArea ARCHC: "14.17 14.17 1281.83 1713.83"
+*ImageableArea ARCHD: "14.17 14.17 1713.83 2577.83"
+*ImageableArea Roll24: "14.17 14.17 1713.83 2577.83"
+
+*DefaultPaperDimension: A1
+*PaperDimension A4: "595.28 841.89"
+*PaperDimension A3: "841.89 1190.55"
+*PaperDimension A2: "1190.55 1683.78"
+*PaperDimension A1: "1683.78 2383.94"
+*PaperDimension ISOB2: "1417.32 2004.09"
+*PaperDimension Letter: "612 792"
+*PaperDimension Legal: "612 1008"
+*PaperDimension Tabloid: "792 1224"
+*PaperDimension AnsiC: "1224 1584"
+*PaperDimension AnsiD: "1584 2448"
+*PaperDimension ARCHA: "648 864"
+*PaperDimension ARCHB: "864 1296"
+*PaperDimension ARCHC: "1296 1728"
+*PaperDimension ARCHD: "1728 2592"
+*PaperDimension Roll24: "1728 2592"
+
+*MaxMediaWidth: "1728"
+*MaxMediaHeight: "45000"
+*HWMargins: 14.17 14.17 14.17 14.17
+*ParamCustomPageSize Width: 1 points 36 1728
+*ParamCustomPageSize Height: 2 points 36 45000
+*ParamCustomPageSize WidthOffset: 3 points 0 0
+*ParamCustomPageSize HeightOffset: 4 points 0 0
+*ParamCustomPageSize Orientation: 5 int 0 0
+*CustomPageSize True: "pop pop pop <</PageSize[5 -2 roll]/ImagingBBox null>>setpagedevice"
+*RequiresPageRegion All: True
+
+*OpenUI *InputSlot/Paper Source: PickOne
+*OrderDependency: 20 AnySetup *InputSlot
+*DefaultInputSlot: Roll
+*InputSlot Roll/Roll: "<</MediaPosition 1>>setpagedevice"
+*InputSlot Sheet/Single Sheet: "<</MediaPosition 0>>setpagedevice"
+*InputSlot Auto/Use Printer Setting: "<</MediaPosition null>>setpagedevice"
+*CloseUI: *InputSlot
+
+*OpenUI *Resolution/Print Quality: PickOne
+*OrderDependency: 30 AnySetup *Resolution
+*DefaultResolution: 600dpi
+*Resolution 300dpi/Fast (300 dpi): "<</HWResolution[300 300]>>setpagedevice"
+*Resolution 600dpi/Normal (600 dpi): "<</HWResolution[600 600]>>setpagedevice"
+*Resolution 1200dpi/Best (1200 dpi): "<</HWResolution[1200 1200]>>setpagedevice"
+*CloseUI: *Resolution
+
+*OpenUI *ColorModel/Colour Mode: PickOne
+*OrderDependency: 40 AnySetup *ColorModel
+*DefaultColorModel: CMYK
+*ColorModel CMYK/Colour: "<</ProcessColorModel /DeviceCMYK>>setpagedevice"
+*ColorModel Gray/Greyscale: "<</ProcessColorModel /DeviceGray>>setpagedevice"
+*CloseUI: *ColorModel
+
+*DefaultFont: Courier
+*Font AvantGarde-Book: Standard "(001.005)" Standard ROM
+*Font AvantGarde-BookOblique: Standard "(001.005)" Standard ROM
+*Font AvantGarde-Demi: Standard "(001.005)" Standard ROM
+*Font AvantGarde-DemiOblique: Standard "(001.005)" Standard ROM
+*Font Bookman-Demi: Standard "(001.005)" Standard ROM
+*Font Bookman-DemiItalic: Standard "(001.005)" Standard ROM
+*Font Bookman-Light: Standard "(001.005)" Standard ROM
+*Font Bookman-LightItalic: Standard "(001.005)" Standard ROM
+*Font Courier: Standard "(001.005)" Standard ROM
+*Font Courier-Bold: Standard "(001.005)" Standard ROM
+*Font Courier-BoldOblique: Standard "(001.005)" Standard ROM
+*Font Courier-Oblique: Standard "(001.005)" Standard ROM
+*Font Helvetica: Standard "(001.005)" Standard ROM
+*Font Helvetica-Bold: Standard "(001.005)" Standard ROM
+*Font Helvetica-BoldOblique: Standard "(001.005)" Standard ROM
+*Font Helvetica-Narrow: Standard "(001.005)" Standard ROM
+*Font Helvetica-Narrow-Bold: Standard "(001.005)" Standard ROM
+*Font Helvetica-Narrow-BoldOblique: Standard "(001.005)" Standard ROM
+*Font Helvetica-Narrow-Oblique: Standard "(001.005)" Standard ROM
+*Font Helvetica-Oblique: Standard "(001.005)" Standard ROM
+*Font NewCenturySchlbk-Bold: Standard "(001.005)" Standard ROM
+*Font NewCenturySchlbk-BoldItalic: Standard "(001.005)" Standard ROM
+*Font NewCenturySchlbk-Italic: Standard "(001.005)" Standard ROM
+*Font NewCenturySchlbk-Roman: Standard "(001.005)" Standard ROM
+*Font Palatino-Bold: Standard "(001.005)" Standard ROM
+*Font Palatino-BoldItalic: Standard "(001.005)" Standard ROM
+*Font Palatino-Italic: Standard "(001.005)" Standard ROM
+*Font Palatino-Roman: Standard "(001.005)" Standard ROM
+*Font Symbol: Standard "(001.005)" Standard ROM
+*Font Times-Bold: Standard "(001.005)" Standard ROM
+*Font Times-BoldItalic: Standard "(001.005)" Standard ROM
+*Font Times-Italic: Standard "(001.005)" Standard ROM
+*Font Times-Roman: Standard "(001.005)" Standard ROM
+*Font ZapfChancery-MediumItalic: Standard "(001.005)" Standard ROM
+*Font ZapfDingbats: Standard "(001.005)" Standard ROM
+

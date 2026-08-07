@@ -30,6 +30,26 @@ happens on the Pi and the plotter, not on your desk.
 
 The Intel mini is no longer in the loop and can be switched off.
 
+## Before you build anything: you may not need this
+
+The same observation that makes the server work — the plotter rasterises its own
+jobs — means the Mac can often talk to it **directly**, with no server at all:
+
+```bash
+./scripts/setup-direct-on-mac.sh <plotter-ip> 24    # run this ON the Mac
+./scripts/test-print.sh A3 DesignJet
+```
+
+That costs nothing and takes five minutes. If it works, you are finished.
+Failing that, the Intel mini can share its queue as-is, which removes the file
+copy without new hardware.
+
+Read [docs/do-you-need-a-server.md](docs/do-you-need-a-server.md) first — it
+lays the options out cheapest-first and is honest about what the server does and
+does not buy you. Build the rest of this only if you want the Mac freed up
+instantly on large plots, a queue that survives the Mac sleeping, or other
+devices printing without setup.
+
 ## What you need
 
 - A Raspberry Pi (4 or 5, 2 GB+) or any always-on Linux box, on Ethernet
@@ -84,8 +104,11 @@ in the chain is scaling the job — see
 | `scripts/make-ppd.py` | Generates the CUPS PPD for a 24 in or 44 in T1200ps. |
 | `scripts/add-queue.sh` | Creates/rebuilds the queue. Re-run after editing config. |
 | `scripts/make-airprint-service.sh` | Writes the Avahi record that makes the Mac see it driverlessly. |
-| `scripts/test-print.sh` | Calibration plot. |
+| `scripts/setup-direct-on-mac.sh` | Server-free path: run on the Mac to print straight to the plotter. |
+| `scripts/test-print.sh` | Calibration plot. Runs on the server or the Mac. |
 | `scripts/healthcheck.sh` | Watchdog — re-enables the queue after a plotter timeout. |
+| `cups/ppd/prebuilt/` | Pre-generated PPDs, so the Mac path needs no Python. |
+| `docs/do-you-need-a-server.md` | Cheapest-first options. Read before building. |
 | `docs/macos-client.md` | Mac-side setup, roll printing, custom sizes. |
 | `docs/troubleshooting.md` | Symptom-first fault finding. |
 

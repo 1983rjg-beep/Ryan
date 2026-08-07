@@ -9,16 +9,22 @@
 #
 # Uses A3 by default to avoid burning a metre of roll on a smoke test.
 #
+# Runs on the print server or directly on the Mac:
+#     ./scripts/test-print.sh [media] [queue-name]
+#
 set -euo pipefail
 
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+# config.env only exists on the print server; the Mac passes the queue in.
 # shellcheck source=/dev/null
-source "$HERE/config.env"
+[[ -f "$HERE/config.env" ]] && source "$HERE/config.env"
 
-QUEUE_NAME="${QUEUE_NAME:-DesignJet-T1200}"
 MEDIA="${1:-A3}"
+QUEUE_NAME="${2:-${QUEUE_NAME:-DesignJet-T1200}}"
 
-PS=$(mktemp --suffix=.ps); trap 'rm -f "$PS"' EXIT
+# Portable across GNU and BSD/macOS mktemp -- no --suffix, it is GNU-only.
+PS="$(mktemp "${TMPDIR:-/tmp}/designjet-test.XXXXXX")"
+trap 'rm -f "$PS"' EXIT
 
 cat > "$PS" <<'PSEOF'
 %!PS-Adobe-3.0
