@@ -1,0 +1,7 @@
+# Ticket codes and prize spreadsheets are private. Never commit or upload them.
+*.csv
+*.tsv
+*.xlsx
+*.xls
+*.numbers
+*.ods

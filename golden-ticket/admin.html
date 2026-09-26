@@ -1,0 +1,640 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Golden Ticket Prize Builder</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='1' y='8' width='30' height='16' rx='3' fill='%23eab84e'/%3E%3Cpath d='M22 9v14' stroke='%235a330c' stroke-width='1.5' stroke-dasharray='2 2'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Mono:wght@400;600&family=Atkinson+Hyperlegible+Next:wght@400;600;700&family=Shrikhand&display=swap">
+<style>
+  :root {
+    color-scheme: light;
+    --ink: #2b1a12;
+    --ink-2: #6a5444;
+    --line: #e6dac7;
+    --paper: #fffdf8;
+    --panel: #f5eddf;
+    --cocoa: #22130d;
+    --gold: #eab84e;
+    --cream: #f8ecd4;
+    --ok: #17705e;
+    --bad: #a3261a;
+    --warn: #875400;
+    --foil: linear-gradient(115deg, #b9852b 0%, #eec46a 22%, #fff0c0 36%, #ebbd55 52%, #c8943a 72%, #f3d57f 100%);
+    --font-display: "Shrikhand", "Cooper Black", Georgia, serif;
+    --font-body: "Atkinson Hyperlegible Next", "Atkinson Hyperlegible", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --font-mono: "Atkinson Hyperlegible Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  }
+  [hidden] { display: none !important; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--paper); color: var(--ink); font: 400 16px/1.55 var(--font-body); -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 880px; margin: 0 auto; padding-inline: 20px; }
+  :focus-visible { outline: 3px solid #b8862b; outline-offset: 2px; }
+  a { color: inherit; }
+
+  .top { background: var(--cocoa); color: var(--cream); padding-block: 30px 28px; }
+  .kicker { margin: 0; font-size: 12.5px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); }
+  h1 { margin: 6px 0 10px; font: 400 clamp(2rem, 5.5vw, 2.9rem)/1.05 var(--font-display); color: var(--gold); }
+  .top p { margin: 0; max-width: 62ch; color: #dcc9aa; }
+  .top strong { color: var(--cream); }
+
+  .step { padding-block: 34px; border-bottom: 1px solid var(--line); }
+  .step:last-of-type { border-bottom: 0; }
+  .step h2 { display: flex; align-items: center; gap: 12px; margin: 0 0 8px; font: 700 1.45rem/1.2 var(--font-body); }
+  .num { flex: none; display: inline-grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: var(--cocoa); color: var(--gold); font: 400 17px/1 var(--font-display); }
+  .step > p, .intro-text { margin: 0 0 12px; max-width: 68ch; color: var(--ink-2); }
+  h3 { margin: 26px 0 6px; font-size: 1.1rem; }
+
+  .grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 16px 22px; margin-top: 18px; }
+  .field { display: block; }
+  .field > span { display: block; margin-bottom: 5px; font-size: 14.5px; font-weight: 700; }
+  .field small { display: block; margin-top: 5px; font-size: 13.5px; color: var(--ink-2); }
+  .req { color: var(--bad); }
+  input[type="text"], input[type="email"], input[type="number"], input[type="url"], select, textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1.5px solid #d6c7ae;
+    border-radius: 10px;
+    background: #fff;
+    color: var(--ink);
+    font: 400 16px/1.4 var(--font-body);
+  }
+  textarea { min-height: 88px; resize: vertical; }
+  input:focus, select:focus, textarea:focus { outline: none; border-color: var(--cocoa); box-shadow: 0 0 0 3px rgba(184, 134, 43, 0.3); }
+  .inline { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 12px 16px; margin-top: 16px; }
+  .inline .field { width: 170px; }
+
+  .choice { display: grid; gap: 8px; margin-top: 16px; }
+  .choice label { display: flex; align-items: center; gap: 10px; font-weight: 600; cursor: pointer; }
+  .choice input { width: 18px; height: 18px; accent-color: var(--cocoa); }
+  .check { display: flex; align-items: flex-start; gap: 10px; margin-top: 12px; cursor: pointer; }
+  .check input { width: 18px; height: 18px; margin-top: 3px; accent-color: var(--cocoa); }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 44px;
+    padding: 10px 18px;
+    border: 0;
+    border-radius: 11px;
+    font: 700 15.5px/1.2 var(--font-body);
+    cursor: pointer;
+  }
+  .btn-gold { background: var(--foil); color: #3a2210; box-shadow: 0 3px 0 #8a5d18; }
+  .btn-gold:active { transform: translateY(2px); box-shadow: 0 1px 0 #8a5d18; }
+  .btn-dark { background: var(--cocoa); color: var(--cream); }
+  .btn-plain { background: #fff; color: var(--ink); border: 1.5px solid #d6c7ae; }
+  .btn[disabled] { opacity: 0.45; cursor: not-allowed; box-shadow: none; transform: none; }
+  .btn-row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 12px; margin-top: 14px; }
+
+  .callout { margin-top: 14px; padding: 12px 14px; border-radius: 10px; font-size: 15px; max-width: 70ch; }
+  .callout p { margin: 0; }
+  .callout p + p { margin-top: 6px; }
+  .callout-warn { background: #fff3d1; border: 1px solid #efd17f; }
+  .callout-ok { background: #e3f4ee; border: 1px solid #a9dccb; color: #0f4d40; }
+  .callout-bad { background: #fde8e4; border: 1px solid #f2b3a8; color: #7c1d12; }
+  .callout ul { margin: 6px 0 0; padding-left: 20px; }
+
+  .codes-preview { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+  .codes-preview span { padding: 4px 9px; border-radius: 7px; background: var(--panel); font: 600 14px/1.3 var(--font-mono); letter-spacing: 0.04em; }
+
+  .howto { margin: 12px 0 0; padding-left: 22px; max-width: 68ch; }
+  .howto li + li { margin-top: 4px; }
+  .table-wrap { margin-top: 14px; overflow: auto; max-height: 420px; border: 1px solid var(--line); border-radius: 10px; background: #fff; }
+  table { width: 100%; border-collapse: collapse; font-size: 14.5px; }
+  th, td { padding: 7px 10px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--line); }
+  th { position: sticky; top: 0; z-index: 1; background: var(--panel); font-size: 12.5px; letter-spacing: 0.06em; text-transform: uppercase; }
+  td.code { font-family: var(--font-mono); white-space: nowrap; }
+  td.muted { color: var(--ink-2); }
+  .cols td:first-child { font-weight: 700; white-space: nowrap; }
+  .loader { display: grid; gap: 10px; margin-top: 18px; }
+  .file-btn { position: relative; overflow: hidden; }
+  .file-btn input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+  .problems { margin: 10px 0 0; padding-left: 20px; font-size: 15px; }
+  .problems li.error { color: var(--bad); }
+  .problems li.warning { color: var(--warn); }
+  .problems li + li { margin-top: 3px; }
+
+  .progress { height: 10px; margin-top: 16px; border-radius: 999px; background: #efe4d1; overflow: hidden; max-width: 460px; }
+  .progress div { width: 0; height: 100%; background: var(--foil); transition: width 0.15s linear; }
+  .status { margin: 10px 0 0; font-weight: 600; }
+  .try { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 10px 12px; margin-top: 10px; }
+  .try .field { width: 150px; }
+  .try-result { margin: 10px 0 0; font-weight: 600; }
+  .foot { padding-block: 26px 40px; color: var(--ink-2); font-size: 14px; }
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <p class="kicker">For the parent council</p>
+    <h1>Golden Ticket prize builder</h1>
+    <p>Set up the prize page in five steps. <strong>Everything happens on this computer:</strong> nothing you type here is sent anywhere.</p>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="step" aria-labelledby="h-sale">
+    <h2 id="h-sale"><span class="num">1</span>About your sale</h2>
+    <p>These details appear on the prize page and on the printed tickets.</p>
+    <div class="grid2">
+      <label class="field"><span>School name <b class="req">*</b></span><input type="text" id="s-schoolName" placeholder="Thistlebank Primary"></label>
+      <label class="field"><span>Organised by <b class="req">*</b></span><input type="text" id="s-organiser" placeholder="Thistlebank Parent Council"></label>
+      <label class="field"><span>Name of the sale</span><input type="text" id="s-eventName" placeholder="Golden Ticket Chocolate Sale"></label>
+      <label class="field"><span>How many chocolate bars?</span><input type="number" id="s-totalBars" min="0" step="1" placeholder="300"><small>Optional. Shown at the foot of the page.</small></label>
+      <label class="field"><span>Contact email <b class="req">*</b></span><input type="email" id="s-contactEmail" placeholder="parentcouncil@yourschool.org"><small>Winners email this to arrange delivery or ask for help.</small></label>
+      <label class="field"><span>Contact phone</span><input type="text" id="s-contactPhone" placeholder="Optional"></label>
+      <label class="field"><span>Claim prizes by</span><input type="text" id="s-claimBy" placeholder="Friday 12 December"><small>Optional. Written exactly as you type it.</small></label>
+      <label class="field"><span>Web address of the prize page</span><input type="url" id="s-pageUrl" placeholder="https://"><small>Where index.html will live. Needed for the QR codes on printed tickets.</small></label>
+    </div>
+  </section>
+
+  <section class="step" aria-labelledby="h-codes">
+    <h2 id="h-codes"><span class="num">2</span>Ticket codes</h2>
+    <p>Every golden ticket needs a number and a secret reference code. Winners type both into the prize page.</p>
+    <div class="choice" role="radiogroup" aria-label="Ticket codes">
+      <label><input type="radio" name="codes-mode" value="new" checked> Make new codes for me</label>
+      <label><input type="radio" name="codes-mode" value="have"> I already have printed tickets with numbers and codes</label>
+    </div>
+
+    <div id="codes-new">
+      <div class="inline">
+        <label class="field"><span>Golden tickets</span><input type="number" id="codes-count" min="1" max="2000" step="1" value="75"></label>
+        <label class="field"><span>First ticket number</span><input type="number" id="codes-first" min="0" step="1" value="1"></label>
+        <button type="button" class="btn btn-dark" id="make-codes">Make codes</button>
+      </div>
+      <div class="callout callout-warn" id="remake-warning" hidden>
+        <p><strong>You’ve already saved a set of codes.</strong> New codes won’t match any tickets printed from the old ones.</p>
+      </div>
+      <div id="codes-made" hidden>
+        <p class="status" id="codes-summary"></p>
+        <div class="codes-preview" id="codes-preview"></div>
+        <div class="callout callout-warn">
+          <p><strong>Download the spreadsheet now and keep two copies somewhere private</strong> (not on the website). It is the only record of which code belongs to which ticket. Lose it, and the printed tickets can’t be matched to prizes.</p>
+        </div>
+        <div class="btn-row"><button type="button" class="btn btn-gold" id="download-codes">Download the spreadsheet</button></div>
+      </div>
+    </div>
+
+    <div id="codes-have" hidden>
+      <p class="intro-text">Make a spreadsheet with one row per ticket: its number and its reference code, exactly as printed. This blank one has the right columns.</p>
+      <div class="btn-row"><button type="button" class="btn btn-plain" id="download-blank">Download a blank spreadsheet</button></div>
+    </div>
+
+    <h3>Print the golden tickets</h3>
+    <p class="intro-text">Ten tickets to an A4 page, each 9 × 5 cm, with the number, reference code and a QR code that opens the prize page with the details filled in.</p>
+    <label class="check"><input type="checkbox" id="print-gold" checked> <span>Print a gold background. Untick this if you’re printing on gold card.</span></label>
+    <div class="btn-row">
+      <button type="button" class="btn btn-dark" id="print-btn" disabled>Print golden tickets</button>
+      <span class="intro-text" id="print-hint">Make and download codes first (or load a saved spreadsheet in step 3).</span>
+    </div>
+  </section>
+
+  <section class="step" aria-labelledby="h-prizes">
+    <h2 id="h-prizes"><span class="num">3</span>Add the prizes</h2>
+    <ol class="howto">
+      <li>Open the spreadsheet in Excel, Numbers or Google Sheets.</li>
+      <li>Type a prize in the <strong>Prize</strong> column for every ticket. The other columns are optional.</li>
+      <li>Save it as CSV. In Excel: <em>File › Save As › CSV UTF-8</em>. In Google Sheets: <em>File › Download › CSV</em>.</li>
+      <li>Load it here.</li>
+    </ol>
+    <div class="table-wrap" style="max-height:none">
+      <table class="cols">
+        <thead><tr><th>Column</th><th>What to put in it</th></tr></thead>
+        <tbody>
+          <tr><td>Ticket number</td><td>Already filled in. Don’t change it.</td></tr>
+          <tr><td>Reference</td><td>Already filled in. Don’t change it.</td></tr>
+          <tr><td>Prize</td><td>The prize, short and clear: “Family cinema trip”.</td></tr>
+          <tr><td>Details</td><td>Anything else winners should know: what’s included, expiry dates.</td></tr>
+          <tr><td>Collection</td><td><em>school</em>, <em>delivery</em> or <em>either</em>. Leave blank to use the default from step 4.</td></tr>
+          <tr><td>Emoji</td><td>One emoji to show with the prize, like 🎬 or 🧸.</td></tr>
+          <tr><td>Donated by</td><td>Thanks a sponsor on screen: “Kindly donated by …”.</td></tr>
+          <tr><td>Star prize</td><td><em>yes</em> for your top prizes. They get extra fireworks.</td></tr>
+          <tr><td>Given out</td><td>For you. Tick off each prize as you swap it for the physical ticket. The page ignores it.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="loader">
+      <div class="btn-row" style="margin-top:0">
+        <span class="btn btn-gold file-btn">Choose your spreadsheet (.csv)<input type="file" id="sheet-file" accept=".csv,.tsv,.txt,text/csv,text/plain"></span>
+        <span class="intro-text" id="sheet-name" style="margin:0"></span>
+      </div>
+      <label class="field"><span>Or paste the rows straight from your spreadsheet, including the header row</span><textarea id="sheet-paste" rows="4" spellcheck="false"></textarea></label>
+    </div>
+    <div id="sheet-report" hidden>
+      <div class="callout" id="sheet-summary"></div>
+      <ul class="problems" id="sheet-problems"></ul>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>No.</th><th>Reference</th><th>Prize</th><th>Collection</th><th>Extras</th></tr></thead>
+          <tbody id="sheet-rows"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="step" aria-labelledby="h-collect">
+    <h2 id="h-collect"><span class="num">4</span>How winners get their prizes</h2>
+    <p>Winners see these instructions after the reveal. Set collection prize by prize in the spreadsheet; this default covers any you left blank.</p>
+    <div class="grid2">
+      <label class="field"><span>Default for prizes with no collection set</span>
+        <select id="s-defaultCollection">
+          <option value="school">Collect from school</option>
+          <option value="delivery">We deliver</option>
+          <option value="either">Winner chooses</option>
+        </select>
+        <small>Delivering 75 prizes takes a lot of volunteer time. Most schools default to collection and deliver only bulky prizes.</small>
+      </label>
+    </div>
+    <div class="grid2">
+      <label class="field"><span>Collecting from school</span><textarea id="s-schoolCollection"></textarea><small>The page adds: “Bring your golden ticket. We swap it for your prize.”</small></label>
+      <label class="field"><span>Delivery</span><textarea id="s-delivery"></textarea><small>The page adds your contact email and a button that writes the email for them.</small></label>
+    </div>
+  </section>
+
+  <section class="step" aria-labelledby="h-build">
+    <h2 id="h-build"><span class="num">5</span>Build the prize file</h2>
+    <p>This scrambles every prize so it opens only with its own ticket number and code, then checks each ticket opens. It takes a few seconds.</p>
+    <div class="btn-row"><button type="button" class="btn btn-gold" id="build-btn">Build prizes.js</button></div>
+    <div class="callout callout-bad" id="build-issues" hidden></div>
+    <div class="progress" id="build-progress" hidden><div id="build-bar"></div></div>
+    <p class="status" id="build-status" role="status"></p>
+    <div id="build-done" hidden>
+      <div class="btn-row"><button type="button" class="btn btn-dark" id="download-prizes">Download prizes.js</button></div>
+      <h3>Then</h3>
+      <ol class="howto">
+        <li>Upload <strong>prizes.js</strong> to your website, next to <strong>index.html</strong> and <strong>core.js</strong>, replacing the old one.</li>
+        <li>Open the prize page and try two or three real tickets before they go into the bars.</li>
+        <li>Keep the spreadsheet private. Never upload it.</li>
+      </ol>
+      <h3>Try a ticket against this file</h3>
+      <div class="try">
+        <label class="field"><span>Ticket number</span><input type="text" id="try-number"></label>
+        <label class="field"><span>Reference</span><input type="text" id="try-ref"></label>
+        <button type="button" class="btn btn-plain" id="try-btn">Check</button>
+      </div>
+      <p class="try-result" id="try-result" role="status"></p>
+    </div>
+  </section>
+</main>
+<footer class="foot wrap">Golden Ticket prize builder. You don’t need to upload this page to the website.</footer>
+
+<script src="core.js"></script>
+<script src="vendor/qrcode.js"></script>
+<script src="prizes.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  var GT = window.GoldenTicket;
+  var $ = function (id) { return document.getElementById(id); };
+  var KEYS = ['schoolName', 'organiser', 'eventName', 'totalBars', 'contactEmail', 'contactPhone', 'claimBy', 'pageUrl', 'defaultCollection', 'schoolCollection', 'delivery'];
+  var DEFAULTS = {
+    eventName: 'Golden Ticket Chocolate Sale',
+    defaultCollection: 'school',
+    schoolCollection: 'Pop into the school office any weekday between 3:00 and 3:30pm.',
+    delivery: 'We deliver locally. Email us your address and a good time, and a parent council volunteer will drop your prize round.'
+  };
+  var COLLECTION_LABELS = { school: 'School', delivery: 'Delivery', either: 'Winner chooses' };
+  var state = { generated: null, generatedSaved: false, sheet: null, printSource: null, built: null, remakeArmed: false };
+
+  function esc(value) {
+    return String(value == null ? '' : value).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+
+  function download(filename, text, type) {
+    var url = URL.createObjectURL(new Blob([text], { type: type }));
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(function () { URL.revokeObjectURL(url); }, 4000);
+  }
+
+  function today() { return new Date().toISOString().slice(0, 10); }
+
+  // ---- Step 1 and 4: settings (remembered on this computer for next time) ----------------
+  function readSettings() {
+    var s = {};
+    KEYS.forEach(function (k) {
+      var v = $('s-' + k).value.trim();
+      if (k === 'totalBars') v = v ? Math.max(0, parseInt(v, 10) || 0) : '';
+      s[k] = v;
+    });
+    return s;
+  }
+
+  function loadSettings() {
+    var saved = null;
+    try { saved = JSON.parse(window.localStorage.getItem('gt-admin.settings') || 'null'); } catch (e) { saved = null; }
+    var live = window.GOLDEN_TICKET_DATA && !window.GOLDEN_TICKET_DATA.demo ? window.GOLDEN_TICKET_DATA.settings : null;
+    var source = saved || live || {};
+    KEYS.forEach(function (k) {
+      var v = source[k];
+      $('s-' + k).value = v != null && v !== '' ? v : (DEFAULTS[k] || '');
+    });
+  }
+
+  KEYS.forEach(function (k) {
+    $('s-' + k).addEventListener('input', function () {
+      try { window.localStorage.setItem('gt-admin.settings', JSON.stringify(readSettings())); } catch (e) { /* ignore */ }
+      resetBuild();
+      updatePrint();
+    });
+  });
+
+  // ---- Step 2: codes and printing ---------------------------------------------------------
+  Array.prototype.forEach.call(document.querySelectorAll('input[name="codes-mode"]'), function (radio) {
+    radio.addEventListener('change', function () {
+      var mode = document.querySelector('input[name="codes-mode"]:checked').value;
+      $('codes-new').hidden = mode !== 'new';
+      $('codes-have').hidden = mode !== 'have';
+    });
+  });
+
+  $('make-codes').addEventListener('click', function () {
+    var count = parseInt($('codes-count').value, 10);
+    var first = parseInt($('codes-first').value, 10);
+    if (!(count >= 1 && count <= 2000)) { $('codes-count').focus(); return; }
+    if (!(first >= 0)) first = 1;
+    if (state.generatedSaved && !state.remakeArmed) {
+      state.remakeArmed = true;
+      $('remake-warning').hidden = false;
+      $('make-codes').textContent = 'Make new codes anyway';
+      return;
+    }
+    state.remakeArmed = false;
+    $('remake-warning').hidden = true;
+    $('make-codes').textContent = 'Make codes';
+    state.generated = GT.makeTickets(count, first);
+    state.generatedSaved = false;
+    if (state.printSource === 'generated') state.printSource = null;
+    var last = state.generated[state.generated.length - 1];
+    $('codes-summary').textContent = count + ' codes made, for tickets No. ' + first + ' to No. ' + last.number + '.';
+    $('codes-preview').innerHTML = state.generated.slice(0, 6).map(function (t) {
+      return '<span>No. ' + esc(t.number) + ' · ' + esc(GT.displayRef(t.reference)) + '</span>';
+    }).join('') + (count > 6 ? '<span>…</span>' : '');
+    $('codes-made').hidden = false;
+    updatePrint();
+  });
+
+  $('download-codes').addEventListener('click', function () {
+    if (!state.generated) return;
+    download('golden-ticket-codes-' + today() + '.csv', GT.templateCsv(state.generated), 'text/csv;charset=utf-8');
+    state.generatedSaved = true;
+    state.printSource = 'generated';
+    updatePrint();
+  });
+
+  $('download-blank').addEventListener('click', function () {
+    download('golden-ticket-prizes.csv', GT.templateCsv([]), 'text/csv;charset=utf-8');
+  });
+
+  function printableTickets() {
+    if (state.printSource === 'sheet' && state.sheet && state.sheet.codes.length) return state.sheet.codes;
+    if (state.printSource === 'generated' && state.generated) return state.generated;
+    return null;
+  }
+
+  function updatePrint() {
+    var tickets = printableTickets();
+    $('print-btn').disabled = !tickets;
+    $('print-btn').textContent = tickets ? 'Print ' + tickets.length + ' golden tickets' : 'Print golden tickets';
+    var url = $('s-pageUrl').value.trim();
+    if (!tickets) {
+      $('print-hint').textContent = state.generated && !state.generatedSaved
+        ? 'Download the spreadsheet first, so the printed codes are saved.'
+        : 'Make and download codes first (or load a saved spreadsheet in step 3).';
+    } else {
+      $('print-hint').textContent = (state.printSource === 'sheet' ? 'Using the spreadsheet loaded in step 3. ' : '') +
+        (/^https:\/\//i.test(url) ? 'QR codes will open ' + url : 'Add the prize page address in step 1 to print QR codes.');
+    }
+  }
+
+  function qrSvg(text) {
+    var qr = window.qrcode(0, 'M');
+    qr.addData(text);
+    qr.make();
+    var n = qr.getModuleCount();
+    var d = '';
+    for (var r = 0; r < n; r++) {
+      for (var c = 0; c < n; c++) if (qr.isDark(r, c)) d += 'M' + c + ' ' + r + 'h1v1h-1z';
+    }
+    var q = 3;
+    return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="' + -q + ' ' + -q + ' ' + (n + 2 * q) + ' ' + (n + 2 * q) + '" shape-rendering="crispEdges">' +
+      '<rect x="' + -q + '" y="' + -q + '" width="' + (n + 2 * q) + '" height="' + (n + 2 * q) + '" fill="#fff"/><path d="' + d + '" fill="#000"/></svg>';
+  }
+
+  var PRINT_CSS = [
+    '@page { size: A4 portrait; margin: 10mm; }',
+    '* { box-sizing: border-box; }',
+    'body { margin: 0; background: #e9e4dc; color: #3b2208; font-family: "Atkinson Hyperlegible Next", Arial, sans-serif; }',
+    '.bar { position: sticky; top: 0; z-index: 2; display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; padding: 12px 18px; background: #22130d; color: #f8ecd4; font-size: 15px; }',
+    '.bar p { margin: 0; flex: 1 1 380px; }',
+    '.bar button { padding: 10px 18px; border: 0; border-radius: 10px; background: #eab84e; color: #3a2210; font: 700 15px sans-serif; cursor: pointer; }',
+    '.page { width: 210mm; min-height: 297mm; margin: 14px auto; padding: 10mm; background: #fff; box-shadow: 0 2px 10px rgba(0,0,0,.15); }',
+    '.grid { display: grid; grid-template-columns: 90mm 90mm; grid-auto-rows: 50mm; column-gap: 10mm; row-gap: 6mm; }',
+    '.t { display: flex; overflow: hidden; border: 0.3mm dashed #8f7d63; -webkit-print-color-adjust: exact; print-color-adjust: exact; }',
+    '.gold .t { background: linear-gradient(115deg, #d4a23c, #f6dc8e 30%, #e5b44f 55%, #f3d882 80%, #cc9a36); }',
+    '.t-main { flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: space-between; padding: 3.2mm 2.5mm 3mm 4mm; }',
+    '.t p { margin: 0; }',
+    '.t-school { font-size: 6.5pt; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }',
+    '.t-title { font: 400 19pt/1 "Shrikhand", "Cooper Black", Georgia, serif; color: #5a330c; }',
+    '.t-msg { font-size: 7.5pt; line-height: 1.25; }',
+    '.t-ref { display: flex; align-items: baseline; gap: 2mm; white-space: nowrap; }',
+    '.t-label { font-size: 5.8pt; font-weight: 700; letter-spacing: .13em; text-transform: uppercase; }',
+    '.t-code { font: 600 13pt/1 "Atkinson Hyperlegible Mono", "Courier New", monospace; letter-spacing: .06em; }',
+    '.t-url { font-size: 6.5pt; line-height: 1.25; overflow-wrap: anywhere; }',
+    '.t-keep { font-size: 6pt; font-weight: 700; }',
+    '.t-stub { flex: none; width: 24mm; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1.2mm; padding: 2mm 1.5mm; border-left: 0.4mm dotted #6d4c1f; text-align: center; }',
+    '.t-no { font: 600 17pt/1 "Atkinson Hyperlegible Mono", "Courier New", monospace; }',
+    '.t-qr { width: 18mm; height: 18mm; }',
+    '.t-qr svg { width: 100%; height: 100%; display: block; }',
+    '@media print { body { background: none; } .bar { display: none; } .page { width: auto; min-height: 0; margin: 0; padding: 0; box-shadow: none; break-after: page; } .page:last-child { break-after: auto; } }'
+  ].join('\n');
+
+  function ticketSheet(tickets, s, gold) {
+    var base = (s.pageUrl || '').split('#')[0].trim();
+    var withQr = /^https?:\/\//i.test(base) && typeof window.qrcode === 'function';
+    var shortUrl = base.replace(/^https?:\/\//i, '').replace(/\/$/, '');
+    var pages = [];
+    for (var i = 0; i < tickets.length; i += 10) pages.push(tickets.slice(i, i + 10));
+    var html = pages.map(function (page) {
+      return '<section class="page"><div class="grid">' + page.map(function (t) {
+        var qr = withQr ? '<div class="t-qr">' + qrSvg(base + '#t=' + encodeURIComponent(t.number) + '&r=' + encodeURIComponent(GT.canonRef(t.reference))) + '</div>' : '';
+        return '<article class="t"><div class="t-main">' +
+          '<p class="t-school">' + esc(s.schoolName || '') + '</p>' +
+          '<p class="t-title">Golden Ticket</p>' +
+          '<p class="t-msg">Congratulations! You’ve found a golden ticket.</p>' +
+          '<p class="t-ref"><span class="t-label">Reference</span><span class="t-code">' + esc(GT.displayRef(t.reference)) + '</span></p>' +
+          '<p class="t-url">' + (shortUrl ? 'See your prize at <b>' + esc(shortUrl) + '</b>' : 'See your prize on the school website') + '</p>' +
+          '<p class="t-keep">Keep this ticket. You’ll swap it for your prize.</p>' +
+          '</div><div class="t-stub"><span class="t-label">No.</span><span class="t-no">' + esc(t.number) + '</span>' + qr + '</div></article>';
+      }).join('') + '</div></section>';
+    }).join('');
+    return '<!doctype html><html lang="en-GB"><head><meta charset="utf-8"><title>Golden tickets to print</title>' +
+      '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Mono:wght@600&family=Atkinson+Hyperlegible+Next:wght@400;700&family=Shrikhand&display=swap">' +
+      '<style>' + PRINT_CSS + '</style></head><body class="' + (gold ? 'gold' : 'plain') + '">' +
+      '<div class="bar"><p>' + tickets.length + ' golden tickets on ' + pages.length + ' A4 page' + (pages.length === 1 ? '' : 's') +
+      '. Print at 100% scale (“Actual size”), turn on “Background graphics” for the gold, then cut along the dashed lines.</p>' +
+      '<button type="button" onclick="window.print()">Print</button></div>' + html + '</body></html>';
+  }
+
+  $('print-btn').addEventListener('click', function () {
+    var tickets = printableTickets();
+    if (!tickets) return;
+    var win = window.open('', '_blank');
+    if (!win) {
+      $('print-hint').textContent = 'Your browser blocked the new tab. Allow pop-ups for this page, then try again.';
+      return;
+    }
+    win.document.open();
+    win.document.write(ticketSheet(tickets, readSettings(), $('print-gold').checked));
+    win.document.close();
+  });
+
+  // ---- Step 3: the prize spreadsheet ------------------------------------------------------
+  function loadSheet(text, label) {
+    state.sheet = GT.readPrizeSheet(text);
+    if (state.sheet.codes.length) state.printSource = 'sheet';
+    $('sheet-name').textContent = label ? 'Loaded: ' + label : '';
+    renderSheet();
+    resetBuild();
+    updatePrint();
+  }
+
+  function renderSheet() {
+    var sheet = state.sheet;
+    var errors = sheet.problems.filter(function (p) { return p.level === 'error'; });
+    var warnings = sheet.problems.filter(function (p) { return p.level === 'warning'; });
+    var summary = $('sheet-summary');
+    if (errors.length) {
+      summary.className = 'callout callout-bad';
+      summary.innerHTML = '<p><strong>' + sheet.tickets.length + ' tickets are ready, but ' + errors.length + ' row' + (errors.length === 1 ? ' needs' : 's need') +
+        ' fixing.</strong> Fix them in your spreadsheet, save it as CSV again and reload it.</p>';
+    } else {
+      summary.className = 'callout callout-ok';
+      summary.innerHTML = '<p><strong>' + sheet.tickets.length + ' tickets ready to build.</strong>' +
+        (warnings.length ? ' Check the ' + warnings.length + ' note' + (warnings.length === 1 ? '' : 's') + ' below.' : '') + '</p>';
+    }
+    $('sheet-problems').innerHTML = sheet.problems.slice(0, 60).map(function (p) {
+      return '<li class="' + p.level + '">' + (p.row ? 'Row ' + p.row + ': ' : '') + esc(p.message) + '</li>';
+    }).join('') + (sheet.problems.length > 60 ? '<li>…and ' + (sheet.problems.length - 60) + ' more.</li>' : '');
+    var fallback = $('s-defaultCollection').value;
+    $('sheet-rows').innerHTML = sheet.tickets.map(function (t) {
+      var extras = [t.emoji, t.star ? '★ Star prize' : '', t.donor ? 'Donated by ' + t.donor : ''].filter(Boolean).join(' · ');
+      return '<tr><td class="code">' + esc(t.number) + '</td><td class="code">' + esc(GT.displayRef(t.reference)) + '</td><td>' + esc(t.prize) + '</td>' +
+        '<td' + (t.collection ? '' : ' class="muted"') + '>' + esc(COLLECTION_LABELS[t.collection || fallback]) + (t.collection ? '' : ' (default)') + '</td>' +
+        '<td>' + esc(extras) + '</td></tr>';
+    }).join('');
+    $('sheet-report').hidden = false;
+  }
+
+  $('sheet-file').addEventListener('change', function () {
+    var file = this.files && this.files[0];
+    if (!file) return;
+    if (/\.(xlsx|xls|numbers|ods)$/i.test(file.name)) {
+      state.sheet = { tickets: [], codes: [], problems: [{ level: 'error', row: 0, message: 'That is a spreadsheet file, not a CSV. Save it as CSV first (Excel: File › Save As › CSV UTF-8), then load the .csv file.' }] };
+      $('sheet-name').textContent = 'Loaded: ' + file.name;
+      renderSheet();
+      resetBuild();
+      this.value = '';
+      return;
+    }
+    var reader = new FileReader();
+    reader.onload = function () { loadSheet(String(reader.result), file.name); };
+    reader.readAsText(file);
+    this.value = '';
+  });
+
+  var pasteTimer = 0;
+  $('sheet-paste').addEventListener('input', function () {
+    var text = this.value;
+    clearTimeout(pasteTimer);
+    pasteTimer = setTimeout(function () { if (text.trim()) loadSheet(text, 'pasted rows'); }, 300);
+  });
+  $('s-defaultCollection').addEventListener('change', function () { if (state.sheet) renderSheet(); });
+
+  // ---- Step 5: build ----------------------------------------------------------------------
+  function resetBuild() {
+    state.built = null;
+    $('build-done').hidden = true;
+    $('build-progress').hidden = true;
+    $('build-status').textContent = '';
+    $('try-result').textContent = '';
+  }
+
+  function setProgress(fraction) { $('build-bar').style.width = Math.round(fraction * 100) + '%'; }
+
+  $('build-btn').addEventListener('click', function () {
+    var s = readSettings();
+    var issues = [];
+    if (!s.schoolName) issues.push('Add the school name in step 1.');
+    if (!s.organiser) issues.push('Add who is organising the sale in step 1.');
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(s.contactEmail)) issues.push('Add a contact email in step 1. Winners use it to arrange delivery.');
+    if (s.pageUrl && !/^https:\/\//i.test(s.pageUrl)) issues.push('The prize page address in step 1 should start with https://');
+    if (!state.sheet || !state.sheet.tickets.length) issues.push('Load your prize spreadsheet in step 3.');
+    else if (state.sheet.problems.some(function (p) { return p.level === 'error'; })) issues.push('Fix the rows marked in red in step 3.');
+    if (!GT.isSupported()) issues.push('This browser can’t build the file. Try an up-to-date Chrome, Edge, Firefox or Safari.');
+    $('build-issues').hidden = !issues.length;
+    $('build-issues').innerHTML = issues.length ? '<p><strong>Before building:</strong></p><ul>' + issues.map(function (i) { return '<li>' + esc(i) + '</li>'; }).join('') + '</ul>' : '';
+    if (issues.length) return;
+
+    var tickets = state.sheet.tickets.slice();
+    var button = this;
+    button.disabled = true;
+    resetBuild();
+    $('build-progress').hidden = false;
+    $('build-status').textContent = 'Scrambling the prizes…';
+    GT.buildPrizeFile({
+      settings: s,
+      tickets: tickets,
+      onProgress: function (done, total) { setProgress(0.5 * done / total); }
+    }).then(function (data) {
+      $('build-status').textContent = 'Checking every ticket opens…';
+      return GT.checkPrizeFile(data, tickets, function (done, total) { setProgress(0.5 + 0.5 * done / total); }).then(function (failed) {
+        if (failed.length) throw new Error('These tickets did not open: ' + failed.join(', '));
+        state.built = data;
+        $('build-status').textContent = 'Done. All ' + tickets.length + ' tickets open with their own codes, and nothing readable is left in the file.';
+        $('build-done').hidden = false;
+      });
+    }).catch(function (err) {
+      $('build-status').textContent = 'The build failed: ' + (err && err.message ? err.message : err) + '. Nothing was saved.';
+    }).then(function () {
+      button.disabled = false;
+    });
+  });
+
+  $('download-prizes').addEventListener('click', function () {
+    if (state.built) download('prizes.js', GT.prizeFileSource(state.built), 'text/javascript;charset=utf-8');
+  });
+
+  $('try-btn').addEventListener('click', function () {
+    if (!state.built) return;
+    GT.openTicket(state.built, $('try-number').value, $('try-ref').value).then(function (r) {
+      var out = $('try-result');
+      if (r.status === 'ok') {
+        out.style.color = 'var(--ok)';
+        out.textContent = 'Ticket ' + r.prize.number + ' opens: ' + r.prize.prize + ' (' + COLLECTION_LABELS[r.prize.collection] + ').';
+      } else {
+        out.style.color = 'var(--bad)';
+        out.textContent = r.status === 'no-ticket' ? 'There’s no ticket with that number in this file.' : 'That reference doesn’t open this ticket.';
+      }
+    });
+  });
+
+  loadSettings();
+  updatePrint();
+})();
+</script>
+</body>
+</html>

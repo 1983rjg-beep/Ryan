@@ -1,0 +1,1915 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!-- page:start -->
+<title>Golden Ticket Reveal</title>
+<meta name="description" content="Found a golden ticket in your chocolate bar? Type in your ticket details to see what you've won.">
+<meta name="theme-color" content="#22130d">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='1' y='8' width='30' height='16' rx='3' fill='%23eab84e'/%3E%3Cpath d='M22 9v14' stroke='%235a330c' stroke-width='1.5' stroke-dasharray='2 2'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Mono:wght@400;600&family=Atkinson+Hyperlegible+Next:wght@400;600;700&family=Shrikhand&display=swap">
+<style>
+  /* One committed look: dark chocolate, gold foil, a mint wrapper. */
+  :root {
+    color-scheme: dark;
+    --cocoa: #22130d;
+    --cocoa-2: #2e1a12;
+    --cocoa-3: #3a2319;
+    --line: rgba(248, 236, 212, 0.14);
+    --cream: #f8ecd4;
+    --cream-2: #d4bf9f;
+    --gold: #eab84e;
+    --gold-hi: #ffe7a3;
+    --paper-ink: #3a2212;
+    --paper-ink-2: #6e4b28;
+    --mint: #62cdb6;
+    --error-paper: #9b2717;
+    --foil: linear-gradient(115deg, #a8741f 0%, #e7bb57 16%, #fff0c0 29%, #e9b949 43%, #b98224 60%, #f2d27c 79%, #c18d2e 100%);
+    --font-display: "Shrikhand", "Cooper Black", Georgia, serif;
+    --font-body: "Atkinson Hyperlegible Next", "Atkinson Hyperlegible", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --font-mono: "Atkinson Hyperlegible Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  }
+  [hidden] { display: none !important; }
+  html { background: var(--cocoa); }
+  body {
+    position: relative;
+    margin: 0;
+    min-height: 100vh;
+    padding-inline: 16px;
+    background: var(--cocoa);
+    color: var(--cream);
+    font: 400 17px/1.55 var(--font-body);
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-size-adjust: 100%;
+  }
+  body.stage-open { overflow: hidden; }
+  /* Embossed chocolate squares, fading out down the page. */
+  body::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 680px;
+    pointer-events: none;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='92' height='92' viewBox='0 0 92 92'%3E%3Crect x='4' y='4' width='84' height='84' rx='10' fill='%23291710'/%3E%3Cpath d='M12 84V18a6 6 0 0 1 6-6h66' fill='none' stroke='%23382016' stroke-width='2.5'/%3E%3Cpath d='M84 12v66a6 6 0 0 1-6 6H12' fill='none' stroke='%23180b06' stroke-width='2.5'/%3E%3C/svg%3E") 50% 0 / 92px 92px;
+    -webkit-mask: linear-gradient(#000, rgba(0, 0, 0, 0.55) 45%, transparent);
+    mask: linear-gradient(#000, rgba(0, 0, 0, 0.55) 45%, transparent);
+  }
+  .page { position: relative; max-width: 1080px; margin: 0 auto; padding-block: 22px 40px; }
+  button { font: inherit; }
+  :focus-visible { outline: 3px solid var(--gold-hi); outline-offset: 3px; }
+
+  .masthead { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; }
+  .eyebrow {
+    margin: 0;
+    font: 700 12.5px/1.35 var(--font-body);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+  .eyebrow .sep { opacity: 0.55; padding-inline: 0.35em; }
+
+  .demo {
+    margin-top: 16px;
+    padding: 12px 14px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 10px;
+    border-radius: 12px;
+    background: rgba(98, 205, 182, 0.1);
+    border: 1px solid rgba(98, 205, 182, 0.35);
+    font-size: 15px;
+  }
+  .demo p { margin: 0; flex: 1 1 260px; }
+  .demo strong { color: var(--mint); }
+  .demo-picks { display: flex; flex-wrap: wrap; gap: 8px; }
+  .demo-pick {
+    padding: 6px 12px;
+    border-radius: 999px;
+    border: 1px solid rgba(98, 205, 182, 0.5);
+    background: rgba(98, 205, 182, 0.14);
+    color: var(--cream);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .demo-pick:hover { background: rgba(98, 205, 182, 0.26); }
+
+  /* ---- The form view ---- */
+  .intro { display: grid; grid-template-columns: minmax(0, 1fr); gap: 34px; margin-top: 26px; }
+  @media (min-width: 900px) {
+    .intro { grid-template-columns: minmax(0, 1fr) minmax(0, 0.92fr); align-items: center; gap: 56px; margin-top: 44px; }
+  }
+  .headline {
+    margin: 0;
+    font: 400 clamp(2.7rem, 9vw, 4.7rem)/1 var(--font-display);
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+    background: linear-gradient(180deg, #ffeab0 10%, #eab84e 55%, #c48b2c 95%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    filter: drop-shadow(0 3px 0 rgba(0, 0, 0, 0.35));
+    padding-bottom: 0.08em;
+  }
+  .lede { margin: 14px 0 0; max-width: 34ch; font-size: 1.15rem; color: var(--cream-2); }
+  .welcome {
+    margin: 18px 0 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 12px;
+    color: var(--cream-2);
+    font-size: 15.5px;
+  }
+  .link-btn {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--gold);
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    cursor: pointer;
+  }
+
+  .form-wrap { margin-top: 26px; max-width: 540px; filter: drop-shadow(0 26px 34px rgba(0, 0, 0, 0.5)); }
+  .ticket-form {
+    --notch-y: 118px;
+    position: relative;
+    padding: 22px 22px 16px;
+    border-radius: 18px;
+    color: var(--paper-ink);
+    background:
+      radial-gradient(120% 80% at 0% 0%, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0) 55%),
+      repeating-linear-gradient(115deg, rgba(255, 255, 255, 0.07) 0 3px, rgba(255, 255, 255, 0) 3px 9px),
+      linear-gradient(160deg, #fbe9b6, #f0d17d 58%, #e3bb5a);
+    -webkit-mask:
+      radial-gradient(circle 13px at 0 var(--notch-y), #0000 97%, #000) left / 51% 100% no-repeat,
+      radial-gradient(circle 13px at 100% var(--notch-y), #0000 97%, #000) right / 51% 100% no-repeat;
+    mask:
+      radial-gradient(circle 13px at 0 var(--notch-y), #0000 97%, #000) left / 51% 100% no-repeat,
+      radial-gradient(circle 13px at 100% var(--notch-y), #0000 97%, #000) right / 51% 100% no-repeat;
+  }
+  .ticket-form::before {
+    content: "";
+    position: absolute;
+    inset: 8px;
+    border: 1.5px solid rgba(90, 51, 12, 0.28);
+    border-radius: 12px;
+    pointer-events: none;
+  }
+  .field label {
+    display: block;
+    margin-bottom: 7px;
+    font: 700 12.5px/1.2 var(--font-body);
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--paper-ink-2);
+  }
+  .field input {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 13px 14px;
+    border: 2px solid rgba(74, 44, 14, 0.28);
+    border-radius: 12px;
+    background: rgba(255, 251, 238, 0.94);
+    color: var(--paper-ink);
+    font: 600 20px/1.2 var(--font-body);
+  }
+  .field input.code { font-family: var(--font-mono); letter-spacing: 0.09em; text-transform: uppercase; }
+  .field input::placeholder { color: rgba(74, 44, 14, 0.38); font-weight: 400; letter-spacing: 0.02em; text-transform: none; }
+  .field input:focus { outline: none; border-color: var(--paper-ink); box-shadow: 0 0 0 4px rgba(58, 34, 18, 0.16); }
+  .field input[aria-invalid="true"] { border-color: var(--error-paper); background: #fff2ea; }
+  .perf { margin: 20px -22px 18px; border-top: 2px dashed rgba(74, 44, 14, 0.34); }
+  .pair { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); align-items: end; gap: 12px; }
+  @media (max-width: 459px) { .pair { grid-template-columns: minmax(0, 1fr); gap: 16px; } }
+  .form-error {
+    margin: 16px 0 0;
+    padding: 10px 12px;
+    border-radius: 10px;
+    background: rgba(155, 39, 23, 0.1);
+    color: var(--error-paper);
+    font-size: 15.5px;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+  .form-error span { display: block; margin-top: 4px; font-weight: 400; }
+  .btn-reveal {
+    display: block;
+    width: 100%;
+    margin-top: 18px;
+    padding: 17px 20px 19px;
+    border: 0;
+    border-radius: 14px;
+    background: linear-gradient(180deg, #4c2b19, #2b170e);
+    color: var(--gold-hi);
+    font: 400 23px/1 var(--font-display);
+    letter-spacing: 0.01em;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), 0 4px 0 #170b06;
+    cursor: pointer;
+    transition: transform 0.08s ease, box-shadow 0.08s ease;
+  }
+  .btn-reveal:hover { background: linear-gradient(180deg, #57321d, #311a10); }
+  .btn-reveal:active { transform: translateY(3px); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), 0 1px 0 #170b06; }
+  .btn-reveal:focus-visible { outline: 3px solid var(--paper-ink); outline-offset: 3px; }
+  .btn-reveal[disabled] { cursor: progress; opacity: 0.8; }
+  .form-foot { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-top: 10px; font-size: 14px; color: var(--paper-ink-2); }
+  .sound-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 6px 8px;
+    margin-left: -8px;
+    border: 0;
+    border-radius: 8px;
+    background: none;
+    color: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  .sound-toggle svg { width: 20px; height: 20px; }
+  [data-sound-toggle] .off { display: none; }
+  [data-sound-toggle][aria-pressed="false"] .on { display: none; }
+  [data-sound-toggle][aria-pressed="false"] .off { display: inline; }
+  .ticket-form .sound-toggle:focus-visible { outline-color: var(--paper-ink); }
+
+  .example { margin: 0; display: grid; justify-items: center; gap: 22px; }
+  #example-ticket { width: min(100%, 440px); }
+  .example .gt { transform: rotate(-4deg); filter: drop-shadow(0 26px 30px rgba(0, 0, 0, 0.55)); }
+  @media (max-width: 899px) { #example-ticket { width: min(88%, 360px); } }
+  .example figcaption { max-width: 34ch; text-align: center; font-size: 15px; color: var(--cream-2); }
+  .notice {
+    margin-top: 26px;
+    max-width: 540px;
+    padding: 20px 22px;
+    border-radius: 16px;
+    background: var(--cocoa-3);
+    border: 1px solid var(--line);
+  }
+  .notice h2 { margin: 0 0 6px; font: 400 1.6rem/1.15 var(--font-display); color: var(--gold); }
+  .notice p { margin: 0; color: var(--cream-2); }
+
+  /* ---- Golden ticket (drawn at any width; text sizes follow the ticket) ---- */
+  .gt { position: relative; width: 100%; aspect-ratio: 2 / 1; container-type: inline-size; perspective: 1100px; }
+  .gt-card { position: absolute; inset: 0; transform-style: preserve-3d; }
+  .gt.is-flipped .gt-card { transform: rotateY(180deg); }
+  .gt-face { position: absolute; inset: 0; -webkit-backface-visibility: hidden; backface-visibility: hidden; }
+  .gt-back { transform: rotateY(180deg); }
+  .gt-paper {
+    --nx: 73%;
+    position: absolute;
+    inset: 0;
+    display: flex;
+    overflow: hidden;
+    border-radius: 10px;
+    border-radius: 3.2cqw;
+    color: #4b2c0b;
+    background:
+      radial-gradient(90% 130% at 16% 0%, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0) 55%),
+      repeating-linear-gradient(115deg, rgba(255, 255, 255, 0.07) 0 2px, rgba(255, 255, 255, 0) 2px 6px),
+      var(--foil);
+    -webkit-mask:
+      radial-gradient(circle 10px at var(--nx) 0, #0000 97%, #000) top / 100% 51% no-repeat,
+      radial-gradient(circle 10px at var(--nx) 100%, #0000 97%, #000) bottom / 100% 51% no-repeat;
+    mask:
+      radial-gradient(circle 10px at var(--nx) 0, #0000 97%, #000) top / 100% 51% no-repeat,
+      radial-gradient(circle 10px at var(--nx) 100%, #0000 97%, #000) bottom / 100% 51% no-repeat;
+    -webkit-mask:
+      radial-gradient(circle 3.3cqw at var(--nx) 0, #0000 97%, #000) top / 100% 51% no-repeat,
+      radial-gradient(circle 3.3cqw at var(--nx) 100%, #0000 97%, #000) bottom / 100% 51% no-repeat;
+    mask:
+      radial-gradient(circle 3.3cqw at var(--nx) 0, #0000 97%, #000) top / 100% 51% no-repeat,
+      radial-gradient(circle 3.3cqw at var(--nx) 100%, #0000 97%, #000) bottom / 100% 51% no-repeat;
+  }
+  .gt-back .gt-paper { --nx: 27%; }
+  .gt-paper::before {
+    content: "";
+    position: absolute;
+    inset: 2.4cqw;
+    border: 0.5cqw solid rgba(92, 56, 12, 0.34);
+    border-radius: 2cqw;
+    pointer-events: none;
+  }
+  .gt-paper::after {
+    content: "";
+    position: absolute;
+    inset: -20% -60%;
+    background: linear-gradient(105deg, rgba(255, 255, 255, 0) 42%, rgba(255, 255, 255, 0.55) 50%, rgba(255, 255, 255, 0) 58%);
+    transform: translateX(-60%);
+    animation: gt-shine 4.2s ease-in-out infinite;
+    pointer-events: none;
+  }
+  @keyframes gt-shine { 0%, 55% { transform: translateX(-60%); } 100% { transform: translateX(60%); } }
+  .gt-main {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 5.4cqw 3cqw 5cqw 6.6cqw;
+  }
+  .gt-school {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font: 700 11px/1.1 var(--font-body);
+    font-size: 3.3cqw;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+  .gt-title {
+    display: block;
+    font: 400 29px/0.9 var(--font-display);
+    font-size: 9.8cqw;
+    color: #5a330c;
+    text-shadow: 0 0.35cqw 0 rgba(255, 244, 200, 0.8);
+    white-space: nowrap;
+  }
+  .gt-refline { display: flex; align-items: baseline; gap: 2.2cqw; white-space: nowrap; }
+  .gt-label {
+    font: 700 8px/1 var(--font-body);
+    font-size: 2.7cqw;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    opacity: 0.82;
+  }
+  .gt-ref { font: 600 15px/1 var(--font-mono); font-size: 5.2cqw; letter-spacing: 0.06em; }
+  .gt-stub {
+    width: 27%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.4cqw;
+    border-left: 0.6cqw dashed rgba(90, 51, 12, 0.42);
+  }
+  .gt-no { font: 600 30px/1 var(--font-mono); font-size: 10cqw; color: #4a2a0a; font-variant-numeric: tabular-nums; }
+  .gt-no.is-long { font-size: 6.5cqw; }
+  .gt-back .gt-paper { flex-direction: column; align-items: center; justify-content: center; gap: 2cqw; padding: 5cqw 8cqw; text-align: center; }
+  .gt-win { font: 700 10px/1 var(--font-body); font-size: 3.2cqw; letter-spacing: 0.34em; text-transform: uppercase; }
+  .gt-prizeline { display: flex; align-items: center; justify-content: center; gap: 3cqw; max-width: 100%; }
+  .gt-emoji { font-size: 12cqw; line-height: 1; }
+  .gt-emoji:empty { display: none; }
+  .gt-prize {
+    min-width: 0;
+    font: 400 24px/1.02 var(--font-display);
+    font-size: 8cqw;
+    color: #5a330c;
+    text-shadow: 0 0.3cqw 0 rgba(255, 244, 200, 0.8);
+    text-wrap: balance;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .gt-prize.is-long { font-size: 6.4cqw; }
+  .gt-prize.is-xlong { font-size: 5cqw; }
+  .gt-mystery { font: 400 80px/1 var(--font-display); font-size: 25cqw; color: #5a330c; text-shadow: 0 0.6cqw 0 rgba(255, 244, 200, 0.8); }
+  .gt.is-mystery .gt-win, .gt.is-mystery .gt-prizeline { display: none; }
+  .gt:not(.is-mystery) .gt-mystery { display: none; }
+
+  /* ---- Result view ---- */
+  .result { max-width: 760px; margin: 18px auto 0; display: grid; gap: 34px; }
+  .result:focus { outline: none; }
+  .result-hero { display: grid; justify-items: center; text-align: center; }
+  .result-hero #result-ticket { width: min(92%, 360px); margin-bottom: 26px; }
+  .result-hero .gt { transform: rotate(-3deg); filter: drop-shadow(0 24px 26px rgba(0, 0, 0, 0.55)); }
+  .result-eyebrow { margin: 0 0 8px; font: 700 12.5px/1.3 var(--font-mono); letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); }
+  .result-title {
+    margin: 0;
+    font: 400 clamp(2.2rem, 7.5vw, 3.5rem)/1.04 var(--font-display);
+    color: var(--gold);
+    text-wrap: balance;
+  }
+  .result-title:focus { outline: none; }
+  .won-label { margin: 22px 0 2px; font-size: 13px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--cream-2); }
+  .result-prize { margin: 0; max-width: 22ch; font: 700 clamp(1.7rem, 5.6vw, 2.4rem)/1.15 var(--font-body); color: var(--cream); text-wrap: balance; }
+  .result-details { margin: 10px 0 0; max-width: 46ch; color: var(--cream-2); white-space: pre-line; }
+  .result-donor { margin: 10px 0 0; color: var(--gold); font-style: italic; }
+  .star-badge {
+    margin: 16px 0 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 14px 7px 12px;
+    border-radius: 999px;
+    background: var(--foil);
+    color: #432607;
+    font-size: 12.5px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  .star-badge svg { width: 16px; height: 16px; }
+
+  .collect { display: grid; gap: 14px; }
+  .collect h3 { margin: 0; font: 400 1.75rem/1.1 var(--font-display); color: var(--gold); }
+  .collect-intro { margin: 0; color: var(--cream-2); }
+  .options { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); }
+  .option {
+    display: grid;
+    align-content: start;
+    gap: 12px;
+    padding: 18px 18px 20px;
+    border-radius: 16px;
+    background: var(--cocoa-3);
+    border: 1px solid var(--line);
+  }
+  .option-head { display: flex; align-items: center; gap: 12px; }
+  .option-head svg { flex: none; width: 34px; height: 34px; color: var(--gold); }
+  .option h4 { margin: 0; font: 700 1.15rem/1.25 var(--font-body); color: var(--cream); }
+  .option p { margin: 0; color: var(--cream-2); white-space: pre-line; }
+  .option .must { color: var(--cream); font-weight: 600; }
+  .contact {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 10px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.2);
+  }
+  .contact-label { font-size: 12px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--cream-2); }
+  .contact-value { flex: 1 1 auto; min-width: 0; overflow-wrap: anywhere; font: 600 15.5px/1.3 var(--font-mono); color: var(--cream); -webkit-user-select: all; user-select: all; }
+  .btn-row { display: flex; flex-wrap: wrap; gap: 10px; }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 46px;
+    padding: 10px 16px;
+    border: 0;
+    border-radius: 12px;
+    font: 700 15.5px/1.2 var(--font-body);
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .btn-gold { background: var(--foil); color: #3a2210; box-shadow: 0 3px 0 #6d4611; }
+  .btn-gold:active { transform: translateY(2px); box-shadow: 0 1px 0 #6d4611; }
+  .btn-ghost { background: transparent; color: var(--cream); border: 1.5px solid rgba(248, 236, 212, 0.35); }
+  .btn-ghost:hover { border-color: rgba(248, 236, 212, 0.7); }
+  .btn-small { min-height: 34px; padding: 5px 12px; border-radius: 9px; font-size: 14px; }
+  .copy-status { min-height: 1.4em; margin: 0; font-size: 14px; color: var(--mint); }
+  .claim-by { margin: 0; font-weight: 700; color: var(--cream); text-wrap: pretty; }
+
+  .stub {
+    position: relative;
+    padding: 20px 22px;
+    border-radius: 16px;
+    color: var(--paper-ink);
+    background:
+      repeating-linear-gradient(115deg, rgba(255, 255, 255, 0.07) 0 3px, rgba(255, 255, 255, 0) 3px 9px),
+      linear-gradient(160deg, #fbe9b6, #f0d17d 58%, #e3bb5a);
+    -webkit-mask:
+      radial-gradient(circle 12px at 0 50%, #0000 97%, #000) left / 51% 100% no-repeat,
+      radial-gradient(circle 12px at 100% 50%, #0000 97%, #000) right / 51% 100% no-repeat;
+    mask:
+      radial-gradient(circle 12px at 0 50%, #0000 97%, #000) left / 51% 100% no-repeat,
+      radial-gradient(circle 12px at 100% 50%, #0000 97%, #000) right / 51% 100% no-repeat;
+  }
+  .stub dl { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 140px), 1fr)); gap: 12px 20px; margin: 0; }
+  .stub dt { font-size: 11.5px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--paper-ink-2); }
+  .stub dd { margin: 3px 0 0; font-size: 17px; font-weight: 700; line-height: 1.3; overflow-wrap: anywhere; }
+  .stub dd.code { font-family: var(--font-mono); font-weight: 600; letter-spacing: 0.05em; font-variant-numeric: tabular-nums; }
+  .stub-note { margin: 16px 0 0; padding-top: 14px; border-top: 2px dashed rgba(74, 44, 14, 0.3); font-weight: 700; }
+  .result-actions { display: grid; justify-items: center; gap: 12px; }
+  .result-actions .btn-row { justify-content: center; }
+  .hint { margin: 0; font-size: 14.5px; color: var(--cream-2); text-align: center; }
+
+  .foot {
+    margin-top: 64px;
+    padding-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 8px 24px;
+    border-top: 1px solid var(--line);
+    font-size: 14.5px;
+    color: var(--cream-2);
+  }
+  .foot p { margin: 0; }
+  .stats { font-family: var(--font-mono); letter-spacing: 0.03em; font-variant-numeric: tabular-nums; }
+  .foot a { color: var(--cream); }
+
+  /* ---- The reveal stage ---- */
+  .stage {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    display: flex;
+    flex-direction: column;
+    padding: env(safe-area-inset-top, 0px) 16px env(safe-area-inset-bottom, 0px);
+    overflow: hidden;
+    color: var(--cream);
+    background: radial-gradient(120% 80% at 50% 36%, #4b2c1b 0%, #2a170e 46%, #140a05 100%);
+  }
+  .stage:focus { outline: none; }
+  .stage-bar { position: relative; z-index: 8; display: flex; justify-content: flex-end; gap: 8px; padding-top: 12px; min-height: 44px; }
+  .stage-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 8px 14px;
+    border-radius: 999px;
+    border: 1px solid rgba(248, 236, 212, 0.28);
+    background: rgba(248, 236, 212, 0.1);
+    color: var(--cream);
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  .stage-btn svg { width: 18px; height: 18px; }
+  .scene-box { position: relative; flex: 1; min-height: 0; }
+  .scene { position: absolute; left: 50%; top: 50%; width: 360px; height: 560px; margin: -280px 0 0 -180px; transform: scale(var(--fit, 1)); }
+  .caption {
+    position: relative;
+    z-index: 8;
+    flex: none;
+    min-height: 2.5em;
+    max-width: 24ch;
+    margin: 0 auto 26px;
+    text-align: center;
+    font: 400 clamp(22px, 5.8vw, 31px)/1.15 var(--font-display);
+    color: var(--cream);
+    text-wrap: balance;
+    text-shadow: 0 2px 0 rgba(0, 0, 0, 0.4);
+  }
+  .rays { position: absolute; left: -420px; top: -405px; width: 1200px; height: 1200px; opacity: 0; pointer-events: none; }
+  .rays-spin {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: repeating-conic-gradient(from 0deg, rgba(255, 215, 120, 0.3) 0deg 6deg, rgba(255, 215, 120, 0) 6deg 15deg);
+    -webkit-mask: radial-gradient(closest-side, #000 6%, rgba(0, 0, 0, 0.5) 34%, transparent 72%);
+    mask: radial-gradient(closest-side, #000 6%, rgba(0, 0, 0, 0.5) 34%, transparent 72%);
+    animation: spin 28s linear infinite;
+    will-change: transform;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .glow {
+    position: absolute;
+    left: 10px;
+    top: 170px;
+    width: 340px;
+    height: 210px;
+    border-radius: 50%;
+    background: radial-gradient(closest-side, rgba(255, 230, 150, 0.95), rgba(255, 196, 80, 0.45) 45%, rgba(255, 180, 60, 0) 100%);
+    opacity: 0;
+    pointer-events: none;
+  }
+  .gt-pos { position: absolute; left: 30px; top: 120px; width: 300px; height: 150px; z-index: 2; opacity: 0; }
+  .gt-pos.is-front { z-index: 4; }
+  .gt-shake { width: 100%; height: 100%; }
+  .bar-pos { position: absolute; left: 95px; top: 270px; width: 170px; height: 260px; z-index: 3; transform-origin: 50% 100%; transform: translateY(-900px); }
+  .bar-wobble { position: relative; width: 100%; height: 100%; transform-origin: 50% 92%; }
+  .bar-choc {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(5, 1fr);
+    gap: 6px;
+    padding: 12px 10px;
+    border-radius: 10px;
+    background: #45240f;
+    box-shadow: inset 0 0 0 2px #321a0c, 0 18px 30px rgba(0, 0, 0, 0.5);
+  }
+  .bar-choc i {
+    border-radius: 6px;
+    background: linear-gradient(150deg, #7c4b2d, #5d341e 60%, #51301b);
+    box-shadow: inset 2px 2px 0 rgba(255, 214, 180, 0.17), inset -2px -3px 0 rgba(0, 0, 0, 0.36);
+  }
+  .wrap { position: absolute; left: -3px; right: -3px; overflow: hidden; }
+  .wrap-top { top: -4px; height: 114px; transform-origin: 0% 100%; z-index: 2; }
+  .wrap-bottom { top: 100px; bottom: -4px; z-index: 1; }
+  .wrap-print {
+    position: absolute;
+    left: 0;
+    width: 176px;
+    height: 268px;
+    border-radius: 9px;
+    color: #fdf3dc;
+    background:
+      linear-gradient(90deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0) 13%, rgba(255, 255, 255, 0.13) 28%, rgba(255, 255, 255, 0) 42%, rgba(0, 0, 0, 0) 84%, rgba(0, 0, 0, 0.32)),
+      repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.07) 0 6px, rgba(255, 255, 255, 0) 6px 15px),
+      #2e9e89;
+  }
+  .wrap-top .wrap-print { top: 0; }
+  .wrap-bottom .wrap-print { top: -104px; }
+  .wrap-print::before, .wrap-print::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 13px;
+    background: repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.24) 0 2px, rgba(255, 255, 255, 0.14) 2px 4px), #237d6d;
+  }
+  .wrap-print::before { top: 0; border-radius: 9px 9px 0 0; }
+  .wrap-print::after { bottom: 0; border-radius: 0 0 9px 9px; }
+  .wp-school {
+    position: absolute;
+    top: 30px;
+    left: 12px;
+    right: 12px;
+    text-align: center;
+    font: 700 10px/1.3 var(--font-body);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+  .wp-stars { position: absolute; top: 70px; left: 0; right: 0; text-align: center; color: var(--gold); font-size: 13px; letter-spacing: 0.5em; padding-left: 0.5em; }
+  .wp-label {
+    position: absolute;
+    left: 14px;
+    right: 14px;
+    top: 128px;
+    height: 84px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #fdf1d6;
+    box-shadow: 0 0 0 3px #e3b04a, 0 0 0 5px #fdf1d6;
+  }
+  .wp-milk { font: 700 10px/1 var(--font-body); letter-spacing: 0.26em; text-transform: uppercase; color: #6b3d20; padding-left: 0.26em; }
+  .wp-choc { margin-top: 3px; font: 400 25px/1 var(--font-display); color: #5a2f18; }
+  .wp-small { position: absolute; left: 0; right: 0; bottom: 24px; text-align: center; font: 700 8.5px/1.3 var(--font-body); letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.85; }
+  .sparkles { position: absolute; inset: 0; z-index: 5; opacity: 0; pointer-events: none; }
+  .sparkle {
+    position: absolute;
+    width: var(--s);
+    height: var(--s);
+    background: radial-gradient(circle, #fffbe8 20%, #ffd978 60%);
+    clip-path: polygon(50% 0, 61% 39%, 100% 50%, 61% 61%, 50% 100%, 39% 61%, 0 50%, 39% 39%);
+    animation: twinkle 1.7s ease-in-out infinite;
+    animation-delay: var(--d);
+    transform: scale(0.2);
+    opacity: 0;
+  }
+  @keyframes twinkle { 0%, 100% { transform: scale(0.2) rotate(0deg); opacity: 0; } 50% { transform: scale(1) rotate(45deg); opacity: 1; } }
+  .countdown {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 322px;
+    height: 180px;
+    z-index: 6;
+    display: grid;
+    place-items: center;
+    font: 400 150px/1 var(--font-display);
+    color: var(--gold-hi);
+    text-shadow: 0 7px 0 #7a4a12, 0 0 44px rgba(255, 200, 90, 0.65);
+    opacity: 0;
+    pointer-events: none;
+  }
+  .flash {
+    position: absolute;
+    inset: 0;
+    z-index: 7;
+    background: radial-gradient(circle at 50% 40%, rgba(255, 250, 228, 0.95), rgba(255, 222, 150, 0.55) 35%, rgba(255, 200, 100, 0) 72%);
+    opacity: 0;
+    pointer-events: none;
+  }
+  /* Reduced motion: no falling bar or flip, just a calm cross-fade. */
+  .stage.is-gentle .bar-pos, .stage.is-gentle .glow, .stage.is-gentle .sparkles { display: none; }
+  .stage.is-gentle .gt-pos { opacity: 1; }
+  .stage.is-gentle .rays { opacity: 0.45; }
+  .stage.is-gentle .gt-back { transform: none; opacity: 0; transition: opacity 0.6s ease; }
+  .stage.is-gentle .gt-front { transition: opacity 0.6s ease; }
+  .stage.is-gentle .gt.show-back .gt-back { opacity: 1; }
+  .stage.is-gentle .gt.show-back .gt-front { opacity: 0; }
+  .confetti { position: fixed; inset: 0; z-index: 60; width: 100%; height: 100%; pointer-events: none; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .gt-paper::after, .rays-spin, .sparkle { animation: none; }
+    .btn-reveal, .btn-gold { transition: none; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="masthead">
+    <p class="eyebrow"><span data-setting="schoolName">Our school</span><span class="sep" aria-hidden="true">·</span><span data-setting="eventName">Golden Ticket Chocolate Sale</span></p>
+  </header>
+
+  <aside class="demo" id="demo" hidden>
+    <p><strong>Demo prizes.</strong> These tickets are made up so you can try the page. Pick one to fill in the form:</p>
+    <div class="demo-picks" id="demo-picks"></div>
+  </aside>
+
+  <main id="main">
+    <section class="intro" id="view-form" aria-labelledby="headline">
+      <div class="intro-copy">
+        <h1 class="headline" id="headline">Found a golden ticket?</h1>
+        <p class="lede">Type in the details from your ticket to find out what you’ve won.</p>
+
+        <p class="welcome" id="welcome" hidden>
+          <span id="welcome-text">Welcome back.</span>
+          <button type="button" class="link-btn" id="welcome-btn">Show my prize again</button>
+        </p>
+
+        <div class="notice" id="closed-notice" hidden>
+          <h2>Prize checking opens soon</h2>
+          <p id="closed-text">The prize list isn’t ready yet. Please come back later.</p>
+        </div>
+
+        <div class="form-wrap" id="form-wrap">
+          <form class="ticket-form" id="claim-form" novalidate autocomplete="off">
+            <div class="field">
+              <label for="f-name">Your name</label>
+              <input id="f-name" name="name" type="text" maxlength="40" autocomplete="off" autocapitalize="words" spellcheck="false" placeholder="e.g. Lily" aria-describedby="form-error">
+            </div>
+            <div class="perf" id="perf" aria-hidden="true"></div>
+            <div class="pair">
+              <div class="field">
+                <label for="f-number">Ticket number</label>
+                <input id="f-number" name="number" type="text" class="code" maxlength="12" inputmode="numeric" autocomplete="off" spellcheck="false" placeholder="e.g. 12" aria-describedby="form-error">
+              </div>
+              <div class="field">
+                <label for="f-ref">Reference code</label>
+                <input id="f-ref" name="reference" type="text" class="code" maxlength="24" autocomplete="off" autocapitalize="characters" autocorrect="off" spellcheck="false" placeholder="e.g. ABC-DEF" aria-describedby="form-error">
+              </div>
+            </div>
+            <p class="form-error" id="form-error" role="alert" hidden></p>
+            <button type="submit" class="btn-reveal" id="reveal-btn">Reveal my prize</button>
+            <div class="form-foot">
+              <button type="button" class="sound-toggle" data-sound-toggle aria-pressed="true">
+                <svg class="on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg>
+                <svg class="off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="m22 9-6 6"/><path d="m16 9 6 6"/></svg>
+                <span class="on">Sound on</span><span class="off">Sound off</span>
+              </button>
+              <span>Takes about 10 seconds</span>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <figure class="example" id="example">
+        <div id="example-ticket"></div>
+        <figcaption>Your ticket number and reference code are both printed on your golden ticket.</figcaption>
+      </figure>
+    </section>
+
+    <section class="result" id="view-result" hidden aria-labelledby="result-title">
+      <div class="result-hero">
+        <div id="result-ticket"></div>
+        <p class="result-eyebrow">Golden ticket No. <span id="r-number"></span></p>
+        <h2 class="result-title" id="result-title" tabindex="-1">Congratulations, <span id="r-name"></span>!</h2>
+        <p class="won-label">You’ve won</p>
+        <p class="result-prize" id="r-prize"></p>
+        <p class="result-details" id="r-details"></p>
+        <p class="result-donor" id="r-donor"></p>
+        <p class="star-badge" id="r-star" hidden>
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m12 2 2.9 6.6 7.1.6-5.4 4.7 1.6 7L12 17.3 5.8 21l1.6-7L2 9.2l7.1-.6z"/></svg>
+          Star prize
+        </p>
+      </div>
+
+      <div class="collect" aria-labelledby="collect-title">
+        <h3 id="collect-title">How to get your prize</h3>
+        <p class="collect-intro" id="collect-intro"></p>
+        <div class="options">
+          <article class="option" id="opt-school">
+            <div class="option-head">
+              <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M5 35V17l15-9 15 9v18"/><path d="M2 35h36"/><path d="M16 35v-9h8v9"/><path d="M20 8V2l6 2.5-6 2.5"/><circle cx="20" cy="17.5" r="3"/><path d="M9 22h3M28 22h3M9 28h3M28 28h3"/></svg>
+              <h4 id="school-title">Collect it from school</h4>
+            </div>
+            <p id="school-text"></p>
+            <p class="must">Bring your golden ticket. We swap it for your prize.</p>
+          </article>
+          <article class="option" id="opt-delivery">
+            <div class="option-head">
+              <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M3 9h21v19H3z"/><path d="M24 15h7l6 7v6H24"/><circle cx="10" cy="30" r="3.5"/><circle cx="30" cy="30" r="3.5"/><path d="M28 15v7h9"/></svg>
+              <h4 id="delivery-title">We’ll bring it to you</h4>
+            </div>
+            <p id="delivery-text"></p>
+            <div class="contact" id="contact-email-row">
+              <span class="contact-label">Email</span>
+              <span class="contact-value" id="contact-email"></span>
+              <button type="button" class="btn btn-ghost btn-small" id="copy-email">Copy</button>
+            </div>
+            <div class="contact" id="contact-phone-row">
+              <span class="contact-label">Phone</span>
+              <span class="contact-value" id="contact-phone"></span>
+            </div>
+            <div class="btn-row">
+              <a class="btn btn-gold" id="mail-link" href="#">Email us to arrange delivery</a>
+              <button type="button" class="btn btn-ghost" id="copy-message">Copy a ready-made message</button>
+            </div>
+            <p class="copy-status" id="copy-status" role="status"></p>
+            <p class="must">Have your golden ticket ready to hand over.</p>
+          </article>
+        </div>
+        <p class="claim-by" id="claim-by" hidden></p>
+      </div>
+
+      <div class="stub">
+        <dl>
+          <div><dt>Winner</dt><dd id="s-name"></dd></div>
+          <div><dt>Ticket No.</dt><dd class="code" id="s-number"></dd></div>
+          <div><dt>Reference</dt><dd class="code" id="s-ref"></dd></div>
+          <div><dt>Prize</dt><dd id="s-prize"></dd></div>
+        </dl>
+        <p class="stub-note">Keep your golden ticket safe. You’ll need to hand it over to get your prize.</p>
+      </div>
+
+      <div class="result-actions">
+        <p class="hint">Take a screenshot to keep these details handy.</p>
+        <div class="btn-row">
+          <button type="button" class="btn btn-gold" id="replay-btn">Watch the reveal again</button>
+          <button type="button" class="btn btn-ghost" id="another-btn">Check another ticket</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <p class="stats" id="stats" hidden></p>
+    <p>Organised by <span data-setting="organiser">the Parent Council</span><span id="foot-contact" hidden> · Questions? <a id="foot-email" href="#"></a></span></p>
+  </footer>
+</div>
+
+<noscript><p style="margin:24px 16px;color:#f8ecd4">Please turn on JavaScript to check your golden ticket.</p></noscript>
+
+<div class="stage" id="stage" hidden tabindex="-1" role="dialog" aria-modal="true" aria-label="Revealing your prize">
+  <div class="stage-bar">
+    <button type="button" class="stage-btn" data-sound-toggle aria-pressed="true">
+      <svg class="on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg>
+      <svg class="off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="m22 9-6 6"/><path d="m16 9 6 6"/></svg>
+      <span class="on">Sound on</span><span class="off">Sound off</span>
+    </button>
+    <button type="button" class="stage-btn" id="skip-btn" hidden>Skip</button>
+  </div>
+  <div class="scene-box" id="scene-box">
+    <div class="scene" id="scene">
+      <div class="rays" id="rays"><div class="rays-spin"></div></div>
+      <div class="glow" id="glow"></div>
+      <div class="gt-pos" id="gt-pos"><div class="gt-shake" id="gt-shake"></div></div>
+      <div class="bar-pos" id="bar-pos">
+        <div class="bar-wobble" id="bar-wobble">
+          <div class="bar-choc" id="bar-choc"></div>
+          <div class="wrap wrap-bottom" id="wrap-bottom"></div>
+          <div class="wrap wrap-top" id="wrap-top"></div>
+        </div>
+      </div>
+      <div class="sparkles" id="sparkles"></div>
+      <div class="countdown" id="countdown" aria-hidden="true"></div>
+    </div>
+  </div>
+  <p class="caption" id="caption" aria-live="polite"></p>
+  <div class="flash" id="flash"></div>
+</div>
+<canvas class="confetti" id="confetti" aria-hidden="true"></canvas>
+
+<template id="tpl-ticket">
+  <div class="gt is-mystery">
+    <div class="gt-card">
+      <div class="gt-face gt-front">
+        <div class="gt-paper">
+          <div class="gt-main">
+            <span class="gt-school" data-setting="schoolName">Our school</span>
+            <span class="gt-title">Golden<br>Ticket</span>
+            <span class="gt-refline"><span class="gt-label">Reference</span><span class="gt-ref">ABC-DEF</span></span>
+          </div>
+          <div class="gt-stub">
+            <span class="gt-label">No.</span>
+            <span class="gt-no">12</span>
+          </div>
+        </div>
+      </div>
+      <div class="gt-face gt-back">
+        <div class="gt-paper">
+          <span class="gt-win">Winner</span>
+          <span class="gt-prizeline"><span class="gt-emoji"></span><span class="gt-prize"></span></span>
+          <span class="gt-mystery" aria-hidden="true">?</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<template id="tpl-wrapper">
+  <div class="wrap-print">
+    <span class="wp-school" data-setting="schoolName">Our school</span>
+    <span class="wp-stars" aria-hidden="true">★★★</span>
+    <div class="wp-label"><span class="wp-milk">Milk</span><span class="wp-choc">Chocolate</span></div>
+    <span class="wp-small">Every bar helps</span>
+  </div>
+</template>
+
+<script src="core.js"></script>
+<script src="prizes.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  var GT = window.GoldenTicket;
+  var DATA = window.GOLDEN_TICKET_DATA || null;
+  var SETTINGS = (DATA && DATA.settings) || {};
+  var REVEAL_MS = 10000;
+  var canAnimate = typeof Element !== 'undefined' && 'animate' in Element.prototype;
+  var motionQuery = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : null;
+
+  function reduceMotion() { return !canAnimate || !!(motionQuery && motionQuery.matches); }
+  function $(id) { return document.getElementById(id); }
+
+  // Browser storage is a convenience only: the page works without it.
+  var store = {
+    get: function (key, fallback) {
+      try { var v = window.localStorage.getItem(key); return v == null ? fallback : JSON.parse(v); } catch (e) { return fallback; }
+    },
+    set: function (key, value) {
+      try { window.localStorage.setItem(key, JSON.stringify(value)); } catch (e) { /* ignore */ }
+    }
+  };
+
+  function applySettings(scope) {
+    Array.prototype.forEach.call(scope.querySelectorAll('[data-setting]'), function (el) {
+      var value = SETTINGS[el.getAttribute('data-setting')];
+      if (value) el.textContent = value;
+    });
+  }
+
+  function firstName(name) { return name.split(' ')[0]; }
+
+  // ---------------------------------------------------------------------------------------
+  // Golden ticket drawing
+  // ---------------------------------------------------------------------------------------
+  function makeTicket(host) {
+    var node = $('tpl-ticket').content.firstElementChild.cloneNode(true);
+    applySettings(node);
+    host.appendChild(node);
+    return node;
+  }
+
+  function fillFront(node, number, reference) {
+    var no = node.querySelector('.gt-no');
+    no.textContent = number;
+    no.classList.toggle('is-long', String(number).length > 3);
+    node.querySelector('.gt-ref').textContent = reference;
+  }
+
+  function fillBack(node, prize) {
+    var name = node.querySelector('.gt-prize');
+    name.textContent = prize.prize;
+    name.classList.toggle('is-long', prize.prize.length > 16 && prize.prize.length <= 30);
+    name.classList.toggle('is-xlong', prize.prize.length > 30);
+    node.querySelector('.gt-emoji').textContent = prize.emoji || '';
+    node.classList.remove('is-mystery');
+  }
+
+  // ---------------------------------------------------------------------------------------
+  // Sound: everything is synthesised, so there are no audio files to host
+  // ---------------------------------------------------------------------------------------
+  var sound = (function () {
+    var enabled = store.get('gt.sound', true) !== false;
+    var ctx = null;
+    var master = null;
+    var noise = null;
+    var bus = null;
+    var VOLUME = 0.6;
+    var SPARKLE = [1318.5, 1568, 1760, 1975.5, 2349.3, 2637];
+
+    function prime() {
+      var AC = window.AudioContext || window.webkitAudioContext;
+      if (!AC) return;
+      try {
+        if (!ctx) {
+          ctx = new AC();
+          var squash = ctx.createDynamicsCompressor();
+          squash.connect(ctx.destination);
+          master = ctx.createGain();
+          master.gain.value = enabled ? VOLUME : 0;
+          master.connect(squash);
+          noise = ctx.createBuffer(1, ctx.sampleRate * 2, ctx.sampleRate);
+          var d = noise.getChannelData(0);
+          for (var i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+        }
+        if (ctx.state !== 'running' && ctx.resume) ctx.resume();
+      } catch (e) {
+        ctx = null;
+      }
+    }
+
+    function freshBus() {
+      stop();
+      bus = ctx.createGain();
+      bus.connect(master);
+      return bus;
+    }
+
+    function stop() {
+      if (!bus) return;
+      var old = bus;
+      bus = null;
+      try { old.gain.setTargetAtTime(0, ctx.currentTime, 0.03); } catch (e) { /* ignore */ }
+      setTimeout(function () { try { old.disconnect(); } catch (e) { /* ignore */ } }, 400);
+    }
+
+    function envelope(gain, t, peak, attack, decay) {
+      gain.gain.setValueAtTime(0.0001, t);
+      gain.gain.exponentialRampToValueAtTime(peak, t + attack);
+      gain.gain.exponentialRampToValueAtTime(0.0001, t + attack + decay);
+    }
+
+    function hiss(out, t, dur, type, freq, q, peak, attack) {
+      var src = ctx.createBufferSource();
+      src.buffer = noise;
+      src.loop = true;
+      var filter = ctx.createBiquadFilter();
+      filter.type = type;
+      filter.frequency.setValueAtTime(freq, t);
+      filter.Q.value = q;
+      var gain = ctx.createGain();
+      envelope(gain, t, peak, attack || 0.002, dur);
+      src.connect(filter);
+      filter.connect(gain);
+      gain.connect(out);
+      src.start(t, Math.random());
+      src.stop(t + (attack || 0.002) + dur + 0.05);
+      return filter;
+    }
+
+    function tone(out, t, freq, dur, type, peak, attack) {
+      var osc = ctx.createOscillator();
+      osc.type = type;
+      osc.frequency.setValueAtTime(freq, t);
+      var gain = ctx.createGain();
+      envelope(gain, t, peak, attack || 0.004, dur);
+      osc.connect(gain);
+      gain.connect(out);
+      osc.start(t);
+      osc.stop(t + dur + 0.1);
+      return osc;
+    }
+
+    function bell(out, t, freq, peak) {
+      tone(out, t, freq, 1.1, 'sine', peak);
+      tone(out, t, freq * 2.76, 0.45, 'sine', peak * 0.3);
+      tone(out, t, freq * 5.4, 0.2, 'sine', peak * 0.12);
+    }
+
+    function brass(out, t, freq, dur, peak) {
+      var filter = ctx.createBiquadFilter();
+      filter.type = 'lowpass';
+      filter.Q.value = 2;
+      filter.frequency.setValueAtTime(700, t);
+      filter.frequency.exponentialRampToValueAtTime(3400, t + 0.06);
+      filter.frequency.exponentialRampToValueAtTime(1500, t + dur);
+      var gain = ctx.createGain();
+      gain.gain.setValueAtTime(0.0001, t);
+      gain.gain.exponentialRampToValueAtTime(peak, t + 0.03);
+      gain.gain.setValueAtTime(peak * 0.8, t + dur);
+      gain.gain.exponentialRampToValueAtTime(0.0001, t + dur + 0.3);
+      [-7, 7].forEach(function (cents) {
+        var osc = ctx.createOscillator();
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(freq, t);
+        osc.detune.value = cents;
+        osc.connect(filter);
+        osc.start(t);
+        osc.stop(t + dur + 0.35);
+      });
+      filter.connect(gain);
+      gain.connect(out);
+    }
+
+    function thud(out, t) {
+      var osc = tone(out, t, 150, 0.28, 'sine', 0.8, 0.003);
+      osc.frequency.exponentialRampToValueAtTime(42, t + 0.22);
+      hiss(out, t, 0.07, 'lowpass', 900, 0.7, 0.2);
+    }
+
+    function rip(out, t) {
+      var src = ctx.createBufferSource();
+      src.buffer = noise;
+      var filter = ctx.createBiquadFilter();
+      filter.type = 'bandpass';
+      filter.Q.value = 1.1;
+      filter.frequency.setValueAtTime(900, t);
+      filter.frequency.exponentialRampToValueAtTime(4300, t + 0.34);
+      var chop = ctx.createGain();
+      chop.gain.value = 0.5;
+      var lfo = ctx.createOscillator();
+      lfo.type = 'square';
+      lfo.frequency.value = 36;
+      var depth = ctx.createGain();
+      depth.gain.value = 0.5;
+      lfo.connect(depth);
+      depth.connect(chop.gain);
+      var gain = ctx.createGain();
+      envelope(gain, t, 0.55, 0.02, 0.38);
+      src.connect(filter);
+      filter.connect(chop);
+      chop.connect(gain);
+      gain.connect(out);
+      src.start(t, Math.random());
+      src.stop(t + 0.5);
+      lfo.start(t);
+      lfo.stop(t + 0.5);
+    }
+
+    function tick(out, t, freq) {
+      var osc = tone(out, t, freq, 0.09, 'triangle', 0.4, 0.002);
+      osc.frequency.exponentialRampToValueAtTime(freq * 0.6, t + 0.08);
+    }
+
+    function crash(out, t) {
+      hiss(out, t, 1.8, 'highpass', 5200, 0.5, 0.26, 0.004);
+      hiss(out, t, 0.45, 'bandpass', 2500, 0.6, 0.16, 0.003);
+    }
+
+    function fanfare(out, t, star) {
+      var G4 = 392, C4 = 261.63, C5 = 523.25, E5 = 659.25, G5 = 783.99, C6 = 1046.5;
+      brass(out, t, G4, 0.1, 0.12);
+      brass(out, t + 0.12, C5, 0.1, 0.12);
+      brass(out, t + 0.24, E5, 0.1, 0.12);
+      [C4, G4, C5, E5, G5, C6].forEach(function (f, i) { brass(out, t + 0.36, f, 1.15, i === 5 ? 0.06 : 0.1); });
+      if (star) {
+        [0.5, 0.65, 0.8, 0.95, 1.1, 1.3].forEach(function (d, i) { bell(out, t + d, SPARKLE[(i * 2) % SPARKLE.length] * 2, 0.05); });
+      }
+    }
+
+    // The full ten-second score. Times match the animation timeline below.
+    function playReveal(star) {
+      if (!ctx) return;
+      var out = freshBus();
+      var t0 = ctx.currentTime + 0.03;
+      var whoosh = hiss(out, t0 + 0.25, 0.7, 'lowpass', 300, 0.8, 0.2, 0.3);
+      whoosh.frequency.exponentialRampToValueAtTime(2600, t0 + 1.0);
+      thud(out, t0 + 1.04);
+      // Drum roll: starts at 1.5s, drops back while the wrapper tears, then builds to the reveal.
+      for (var t = 1.5; t < 9.0;) {
+        var p = (t - 1.5) / 7.5;
+        var vol = t < 3.0 ? 0.04 + 0.04 * (t - 1.5) : t < 5.8 ? 0.045 : 0.045 + 0.3 * Math.pow((t - 5.8) / 3.2, 2);
+        hiss(out, t0 + t, 0.07, 'bandpass', 2300 + Math.random() * 1300, 0.9, vol);
+        t += 1 / (9 + 17 * p);
+      }
+      rip(out, t0 + 3.0);
+      [3.35, 3.6, 3.95, 4.2, 4.5, 4.9, 5.25].forEach(function (d, i) { bell(out, t0 + d, SPARKLE[i % SPARKLE.length], 0.06); });
+      [1046.5, 1318.5, 1568].forEach(function (f, i) { bell(out, t0 + 4.75 + i * 0.09, f, 0.08); });
+      [7.5, 8.0, 8.5].forEach(function (d, i) { tick(out, t0 + d, i === 2 ? 1500 : 1100); });
+      crash(out, t0 + 9.0);
+      fanfare(out, t0 + 9.0, star);
+    }
+
+    function playFanfare(delay, star) {
+      if (!ctx) return;
+      var out = freshBus();
+      var t = ctx.currentTime + (delay || 0) + 0.03;
+      crash(out, t);
+      fanfare(out, t, star);
+    }
+
+    function setEnabled(on) {
+      enabled = on;
+      store.set('gt.sound', on);
+      if (ctx && master) master.gain.setTargetAtTime(on ? VOLUME : 0, ctx.currentTime, 0.02);
+      Array.prototype.forEach.call(document.querySelectorAll('[data-sound-toggle]'), function (btn) {
+        btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+      });
+    }
+
+    return {
+      prime: prime,
+      playReveal: playReveal,
+      playFanfare: playFanfare,
+      stop: stop,
+      isEnabled: function () { return enabled; },
+      setEnabled: setEnabled
+    };
+  })();
+
+  // ---------------------------------------------------------------------------------------
+  // Confetti
+  // ---------------------------------------------------------------------------------------
+  var confetti = (function () {
+    var canvas = $('confetti');
+    var ctx = canvas.getContext ? canvas.getContext('2d') : null;
+    var pieces = [];
+    var rainUntil = 0;
+    var raf = 0;
+    var last = 0;
+    var W = 0;
+    var H = 0;
+    var PARTY = ['#f6d36b', '#eab84e', '#fff1c1', '#62cdb6', '#e0457b', '#f8ecd4', '#ff9f43'];
+    var GOLD = ['#f6d36b', '#eab84e', '#fff1c1', '#ffd98a'];
+
+    function size() {
+      var dpr = Math.min(window.devicePixelRatio || 1, 2);
+      W = window.innerWidth;
+      H = window.innerHeight;
+      canvas.width = Math.round(W * dpr);
+      canvas.height = Math.round(H * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+
+    function spawn(x, y, angle, spread, speed, count, colors, small, life) {
+      if (!ctx) return;
+      for (var i = 0; i < count; i++) {
+        var a = angle + (Math.random() - 0.5) * spread;
+        var v = speed * (0.45 + Math.random() * 0.75);
+        pieces.push({
+          x: x, y: y, vx: Math.cos(a) * v, vy: Math.sin(a) * v,
+          w: small ? 2.5 + Math.random() * 3 : 7 + Math.random() * 6,
+          h: small ? 2.5 + Math.random() * 3 : 9 + Math.random() * 8,
+          rot: Math.random() * 6.283, spin: (Math.random() - 0.5) * 10,
+          flip: Math.random() * 6.283, flipSpeed: 5 + Math.random() * 7,
+          sway: Math.random() * 6.283,
+          color: colors[(Math.random() * colors.length) | 0],
+          round: Math.random() < 0.22, age: 0, life: life || 7
+        });
+      }
+      if (!raf) {
+        size();
+        last = performance.now();
+        raf = requestAnimationFrame(frame);
+      }
+    }
+
+    function frame(now) {
+      var dt = Math.min(0.035, Math.max(0, (now - last) / 1000));
+      last = now;
+      if (now < rainUntil) spawn(Math.random() * W, -16, Math.PI / 2, 0.5, 90, 1, PARTY);
+      ctx.clearRect(0, 0, W, H);
+      for (var i = pieces.length - 1; i >= 0; i--) {
+        var p = pieces[i];
+        p.age += dt;
+        p.vx -= p.vx * 2.4 * dt;
+        p.vy += 700 * dt;
+        p.vy -= p.vy * 2.1 * dt;
+        p.sway += 3 * dt;
+        p.x += (p.vx + Math.sin(p.sway) * 26) * dt;
+        p.y += p.vy * dt;
+        p.rot += p.spin * dt;
+        p.flip += p.flipSpeed * dt;
+        if (p.y > H + 30 || p.age > p.life) { pieces.splice(i, 1); continue; }
+        ctx.globalAlpha = Math.min(1, p.life - p.age);
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.rot);
+        ctx.scale(1, Math.cos(p.flip));
+        ctx.fillStyle = p.color;
+        if (p.round) {
+          ctx.beginPath();
+          ctx.arc(0, 0, p.w / 2, 0, 6.283);
+          ctx.fill();
+        } else {
+          ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+        }
+        ctx.restore();
+      }
+      ctx.globalAlpha = 1;
+      if (pieces.length || now < rainUntil) {
+        raf = requestAnimationFrame(frame);
+      } else {
+        raf = 0;
+        ctx.clearRect(0, 0, W, H);
+      }
+    }
+
+    function celebrate(star) {
+      var s = Math.max(0.8, Math.min(1.6, window.innerHeight / 800));
+      var w = window.innerWidth;
+      var h = window.innerHeight;
+      spawn(0, h, -Math.PI / 3, 0.75, 1500 * s, 80, PARTY);
+      spawn(w, h, -Math.PI * 2 / 3, 0.75, 1500 * s, 80, PARTY);
+      rainUntil = performance.now() + (star ? 4800 : 3200);
+      if (star) {
+        // Extra gold bursts for a star prize, fired from the sides so the prize stays readable.
+        [[450, 0.08], [900, 0.92]].forEach(function (b) {
+          setTimeout(function () { spawn(w * b[1], h * 0.62, b[1] < 0.5 ? -Math.PI / 4 : -Math.PI * 3 / 4, 0.9, 1100 * s, 80, GOLD); }, b[0]);
+        });
+      }
+    }
+
+    function glitter(point) { spawn(point.x, point.y, -Math.PI / 2, 2.4, 520, 40, GOLD, true, 2.2); }
+    function clear() { pieces = []; rainUntil = 0; }
+
+    window.addEventListener('resize', function () { if (raf) size(); });
+    return { celebrate: celebrate, glitter: glitter, clear: clear };
+  })();
+
+  // ---------------------------------------------------------------------------------------
+  // The reveal
+  // ---------------------------------------------------------------------------------------
+  var stage = $('stage');
+  var scene = $('scene');
+  var sceneBox = $('scene-box');
+  var caption = $('caption');
+  var countdown = $('countdown');
+  var skipBtn = $('skip-btn');
+  var gtPos = $('gt-pos');
+  var gtShake = $('gt-shake');
+  var barPos = $('bar-pos');
+  var barWobble = $('bar-wobble');
+  var wrapTop = $('wrap-top');
+  var wrapBottom = $('wrap-bottom');
+  var stageTicket = makeTicket(gtShake);
+  var gtCard = stageTicket.querySelector('.gt-card');
+  var reveal = null;
+
+  function Timeline() { this.timers = []; this.animations = []; }
+  Timeline.prototype.at = function (ms, fn) { this.timers.push(setTimeout(fn, ms)); };
+  Timeline.prototype.play = function (el, frames, options) {
+    if (!canAnimate) return null;
+    var animation = el.animate(frames, options);
+    this.animations.push(animation);
+    return animation;
+  };
+  Timeline.prototype.stop = function () {
+    this.timers.forEach(clearTimeout);
+    this.animations.forEach(function (a) { try { a.cancel(); } catch (e) { /* ignore */ } });
+    this.timers = [];
+    this.animations = [];
+  };
+
+  function buildBar() {
+    var choc = $('bar-choc');
+    for (var i = 0; i < 15; i++) choc.appendChild(document.createElement('i'));
+    [wrapTop, wrapBottom].forEach(function (half) {
+      var print = $('tpl-wrapper').content.firstElementChild.cloneNode(true);
+      applySettings(print);
+      half.appendChild(print);
+    });
+    // A zig-zag tear line shared by both halves of the wrapper, so they fit together.
+    var width = 176;
+    var step = 11;
+    var points = [];
+    for (var x = 0; x <= width; x += step) points.push([x, (x / step) % 2 ? 101 : 109]);
+    var top = ['0px 0px', width + 'px 0px'].concat(points.slice().reverse().map(function (p) { return p[0] + 'px ' + (p[1] + 4) + 'px'; }));
+    var bottom = points.map(function (p) { return p[0] + 'px ' + (p[1] - 100) + 'px'; }).concat([width + 'px 100%', '0px 100%']);
+    wrapTop.style.webkitClipPath = wrapTop.style.clipPath = 'polygon(' + top.join(',') + ')';
+    wrapBottom.style.webkitClipPath = wrapBottom.style.clipPath = 'polygon(' + bottom.join(',') + ')';
+
+    var sparkles = $('sparkles');
+    var spots = [[16, 96], [58, 52], [128, 84], [214, 58], [300, 92], [340, 140], [326, 262], [262, 300], [24, 232], [70, 300], [182, 36], [344, 36], [8, 164], [150, 318]];
+    spots.forEach(function (s, i) {
+      var star = document.createElement('i');
+      star.className = 'sparkle';
+      star.style.left = s[0] + 'px';
+      star.style.top = s[1] + 'px';
+      star.style.setProperty('--s', (12 + (i * 7) % 16) + 'px');
+      star.style.setProperty('--d', (-(i * 0.37) % 1.7).toFixed(2) + 's');
+      sparkles.appendChild(star);
+    });
+  }
+
+  function fitScene() {
+    var fit = Math.min(sceneBox.clientWidth / 360, sceneBox.clientHeight / 560, 1.35);
+    scene.style.setProperty('--fit', Math.max(0.4, fit).toFixed(3));
+  }
+
+  // Converts a point in the 360 x 560 scene to screen pixels, for confetti.
+  function scenePoint(x, y) {
+    var r = scene.getBoundingClientRect();
+    var k = r.width / 360;
+    return { x: r.left + x * k, y: r.top + y * k };
+  }
+
+  function setCaption(text) {
+    caption.textContent = text;
+    if (canAnimate && !reduceMotion()) {
+      caption.animate([{ opacity: 0, transform: 'translateY(10px) scale(0.96)' }, { opacity: 1, transform: 'none' }], { duration: 320, easing: 'cubic-bezier(.2,.7,.3,1)' });
+    }
+  }
+
+  function wobbleFrames(steps, from, to) {
+    var frames = [{ transform: 'rotate(0deg)' }];
+    for (var i = 1; i < steps; i++) {
+      var a = from + (to - from) * (i / steps);
+      frames.push({ transform: 'rotate(' + (i % 2 ? a : -a).toFixed(2) + 'deg)' });
+    }
+    frames.push({ transform: 'rotate(0deg)' });
+    return frames;
+  }
+
+  // Floats gently, then shakes harder and harder through the countdown.
+  function floatShakeFrames() {
+    var frames = [];
+    var bob = [0, -9, 0, -6, 0];
+    bob.forEach(function (y, i) { frames.push({ transform: 'translate(0px,' + y + 'px) rotate(0deg)', offset: (i / (bob.length - 1)) * 0.46 }); });
+    var shakes = 26;
+    for (var i = 1; i <= shakes; i++) {
+      var amp = 0.8 + 6 * (i / shakes);
+      var x = (i % 2 ? 1 : -1) * amp;
+      var y = ((i * 7) % 3 - 1) * amp * 0.5;
+      var r = (i % 2 ? -1 : 1) * amp * 0.35;
+      frames.push({ transform: 'translate(' + x.toFixed(1) + 'px,' + y.toFixed(1) + 'px) rotate(' + r.toFixed(2) + 'deg)', offset: 0.46 + 0.54 * (i / (shakes + 1)) });
+    }
+    frames.push({ transform: 'translate(0px,0px) rotate(0deg)', offset: 1 });
+    return frames;
+  }
+
+  function openStage(claim) {
+    stageTicket.className = 'gt is-mystery';
+    fillFront(stageTicket, claim.prize.number, claim.prize.reference);
+    stage.classList.remove('is-gentle');
+    gtPos.classList.remove('is-front');
+    caption.textContent = '';
+    countdown.textContent = '';
+    skipBtn.hidden = true;
+    stage.hidden = false;
+    document.body.classList.add('stage-open');
+    $('main').setAttribute('aria-hidden', 'true');
+    fitScene();
+    stage.focus({ preventScroll: true });
+  }
+
+  function closeStage() {
+    if (reveal) reveal.tl.stop();
+    stage.hidden = true;
+    stage.classList.remove('is-gentle');
+    document.body.classList.remove('stage-open');
+    $('main').removeAttribute('aria-hidden');
+  }
+
+  function fullSequence(tl, claim) {
+    var ease = {
+      fall: 'cubic-bezier(.45,0,.85,.4)',
+      out: 'cubic-bezier(.2,.7,.3,1)',
+      inOut: 'cubic-bezier(.65,0,.35,1)',
+      sink: 'cubic-bezier(.55,0,1,.45)'
+    };
+    var bar = function (y, r, sx, sy) { return 'translateY(' + y + 'px) rotate(' + r + 'deg) scale(' + sx + ',' + sy + ')'; };
+    var tk = function (y, s) { return 'translateY(' + y + 'px) scale(' + s + ')'; };
+    var name = firstName(claim.name);
+
+    tl.play(stage, [{ opacity: 0 }, { opacity: 1 }], { duration: 350, fill: 'both' });
+
+    // 0.25s: the bar drops in and lands with a squash.
+    tl.play(barPos, [
+      { transform: bar(-900, -12, 1, 1), easing: ease.fall },
+      { transform: bar(0, 0, 1, 1), offset: 0.72, easing: 'ease-out' },
+      { transform: bar(0, 0, 1.07, 0.9), offset: 0.82, easing: 'ease-in-out' },
+      { transform: bar(-14, 0, 0.97, 1.04), offset: 0.92, easing: 'ease-in-out' },
+      { transform: bar(0, 0, 1, 1) }
+    ], { duration: 1100, delay: 250, fill: 'both' });
+
+    // 1.5s: it wobbles, more and more.
+    tl.play(barWobble, wobbleFrames(12, 1, 7), { duration: 1450, delay: 1500 });
+
+    // 3.0s: the top of the wrapper tears off, and light spills out.
+    tl.play(wrapTop, [
+      { transform: 'translate(0px, 0px) rotate(0deg)', opacity: 1, easing: 'ease-out' },
+      { transform: 'translate(4px, -10px) rotate(-6deg)', opacity: 1, offset: 0.18, easing: ease.out },
+      { transform: 'translate(-240px, -420px) rotate(-52deg)', opacity: 0 }
+    ], { duration: 900, delay: 3000, fill: 'both' });
+    tl.at(3050, function () { if (!reduceMotion()) confetti.glitter(scenePoint(180, 376)); });
+    tl.play($('glow'), [
+      { opacity: 0, transform: 'scale(0.6)' },
+      { opacity: 1, transform: 'scale(1)', offset: 0.35 },
+      { opacity: 0.85, transform: 'scale(1.05)', offset: 0.8 },
+      { opacity: 0, transform: 'scale(1.2)' }
+    ], { duration: 2600, delay: 3050, fill: 'both' });
+    tl.play($('rays'), [{ opacity: 0, transform: 'scale(0.6)' }, { opacity: 0.8, transform: 'scale(1)' }], { duration: 1400, delay: 3200, fill: 'both', easing: ease.out });
+
+    // 3.45s: the ticket peeks out of the bar, ducks back, then pops out and comes forward.
+    tl.play(gtPos, [
+      { transform: tk(150, 0.55), opacity: 0 },
+      { transform: tk(150, 0.55), opacity: 1, offset: 0.02, easing: ease.out },
+      { transform: tk(78, 0.55), opacity: 1, offset: 0.3, easing: 'ease-in-out' },
+      { transform: tk(88, 0.55), opacity: 1, offset: 0.43, easing: 'cubic-bezier(.3,0,.2,1)' },
+      { transform: tk(-40, 0.74), opacity: 1, offset: 0.66, easing: ease.inOut },
+      { transform: tk(0, 1), opacity: 1 }
+    ], { duration: 2750, delay: 3450, fill: 'both' });
+    tl.at(5150, function () { gtPos.classList.add('is-front'); });
+    tl.play($('sparkles'), [{ opacity: 0 }, { opacity: 1 }], { duration: 700, delay: 4300, fill: 'both' });
+
+    // 5.0s: the bar sinks away.
+    tl.play(barPos, [
+      { transform: bar(0, 0, 1, 1), opacity: 1 },
+      { transform: bar(460, 8, 1, 1), opacity: 0 }
+    ], { duration: 1100, delay: 5000, fill: 'forwards', easing: ease.sink });
+
+    // 6.2s: the ticket floats, spins once (the back just shows a question mark), then shakes.
+    tl.play(gtShake, floatShakeFrames(), { duration: 2800, delay: 6200, fill: 'both' });
+    tl.play(gtCard, [{ transform: 'rotateY(0deg) scale(1)' }, { transform: 'rotateY(360deg) scale(1)' }], { duration: 1100, delay: 6300, fill: 'both', easing: ease.inOut });
+
+    // 7.5s: 3, 2, 1...
+    [['3', 7500], ['2', 8000], ['1', 8500]].forEach(function (step) {
+      tl.at(step[1], function () {
+        countdown.textContent = step[0];
+        tl.play(countdown, [
+          { opacity: 0, transform: 'scale(0.3)' },
+          { opacity: 1, transform: 'scale(1.15)', offset: 0.35 },
+          { opacity: 1, transform: 'scale(1)', offset: 0.7 },
+          { opacity: 0, transform: 'scale(1.5)' }
+        ], { duration: 500, easing: 'ease-out' });
+      });
+    });
+
+    // 9.0s: flash, flip, confetti, fanfare.
+    tl.at(8950, function () { fillBack(stageTicket, claim.prize); });
+    tl.play(gtCard, [
+      { transform: 'rotateY(360deg) scale(1)' },
+      { transform: 'rotateY(450deg) scale(1.16)', offset: 0.5 },
+      { transform: 'rotateY(540deg) scale(1.06)' }
+    ], { duration: 620, delay: 9000, fill: 'forwards', easing: ease.out });
+    tl.play($('flash'), [{ opacity: 0 }, { opacity: 0.85, offset: 0.2 }, { opacity: 0 }], { duration: 700, delay: 9000 });
+    tl.play($('rays'), [{ opacity: 0.8, transform: 'scale(1)' }, { opacity: 1, transform: 'scale(1.3)' }], { duration: 800, delay: 9000, fill: 'forwards', easing: ease.out });
+    tl.at(9000, function () { confetti.celebrate(claim.prize.star); });
+
+    [
+      [300, 'Here comes your chocolate bar…'],
+      [1500, 'Ready, ' + name + '? Let’s unwrap it…'],
+      [3100, 'Ooh! What’s that shining?'],
+      [4700, 'Your golden ticket!'],
+      [6300, 'Now… what have you won?'],
+      [7500, 'Here it comes…'],
+      [9050, claim.prize.star ? 'A star prize, ' + name + '!' : name + ', you’ve won…']
+    ].forEach(function (c) { tl.at(c[0], function () { setCaption(c[1]); }); });
+
+    sound.playReveal(claim.prize.star);
+    tl.at(REVEAL_MS, finishReveal);
+  }
+
+  function gentleSequence(tl, claim) {
+    stage.classList.add('is-gentle');
+    gtPos.classList.add('is-front');
+    tl.play(stage, [{ opacity: 0 }, { opacity: 1 }], { duration: 300, fill: 'both' });
+    setCaption('Checking your golden ticket…');
+    tl.at(1500, function () {
+      fillBack(stageTicket, claim.prize);
+      stageTicket.classList.add('show-back');
+      setCaption(firstName(claim.name) + ', you’ve won…');
+    });
+    sound.playFanfare(1.5, claim.prize.star);
+    tl.at(3200, finishReveal);
+  }
+
+  function startReveal(claim) {
+    var key = GT.canonNumber(claim.prize.number);
+    var seen = store.get('gt.seen', []);
+    var seenBefore = seen.indexOf(key) > -1;
+    if (!seenBefore) store.set('gt.seen', seen.concat(key).slice(-30));
+    if (reveal) reveal.tl.stop();
+    confetti.clear();
+    openStage(claim);
+    reveal = { tl: new Timeline(), claim: claim, finished: false };
+    if (reduceMotion()) {
+      gentleSequence(reveal.tl, claim);
+    } else {
+      fullSequence(reveal.tl, claim);
+      if (seenBefore) reveal.tl.at(1200, function () { skipBtn.hidden = false; });
+    }
+  }
+
+  function finishReveal() {
+    if (!reveal || reveal.finished) return;
+    reveal.finished = true;
+    showResult(reveal.claim);
+    if (!canAnimate) { closeStage(); return; }
+    var fade = stage.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 450, fill: 'forwards' });
+    fade.onfinish = function () { closeStage(); fade.cancel(); };
+  }
+
+  function skipReveal() {
+    if (!reveal || reveal.finished) return;
+    reveal.finished = true;
+    sound.playFanfare(0, reveal.claim.prize.star);
+    closeStage();
+    showResult(reveal.claim);
+    if (!reduceMotion()) confetti.celebrate(reveal.claim.prize.star);
+  }
+
+  // ---------------------------------------------------------------------------------------
+  // The result
+  // ---------------------------------------------------------------------------------------
+  var resultTicket = makeTicket($('result-ticket'));
+  var lastClaim = null;
+
+  function deliveryMessage(claim) {
+    var p = claim.prize;
+    return [
+      'Hello,',
+      '',
+      'We found a golden ticket and would like the prize delivered, please.',
+      '',
+      'Winner: ' + claim.name,
+      'Ticket number: ' + p.number,
+      'Reference: ' + p.reference,
+      'Prize: ' + p.prize,
+      '',
+      'Delivery address:',
+      '',
+      '',
+      'Phone number:',
+      '',
+      'Best days and times:',
+      '',
+      '',
+      'Thank you!'
+    ].join('\r\n');
+  }
+
+  function showResult(claim) {
+    var p = claim.prize;
+    lastClaim = claim;
+    fillFront(resultTicket, p.number, p.reference);
+    fillBack(resultTicket, p);
+    resultTicket.classList.add('is-flipped');
+
+    $('r-number').textContent = p.number;
+    $('r-name').textContent = claim.name;
+    $('r-prize').textContent = p.prize;
+    $('r-details').textContent = p.details || '';
+    $('r-details').hidden = !p.details;
+    $('r-donor').textContent = p.donor ? 'Kindly donated by ' + p.donor : '';
+    $('r-donor').hidden = !p.donor;
+    $('r-star').hidden = !p.star;
+
+    var method = GT.COLLECTION_METHODS.indexOf(p.collection) > -1 ? p.collection : 'school';
+    $('opt-school').hidden = method === 'delivery';
+    $('opt-delivery').hidden = method === 'school';
+    $('collect-intro').textContent = {
+      school: 'This prize is collected from school.',
+      delivery: 'We’ll deliver this prize to you (local area only).',
+      either: 'You can choose: collect it from school, or we can bring it to you.'
+    }[method];
+    $('school-text').textContent = SETTINGS.schoolCollection || 'Collect your prize from the school office.';
+    $('delivery-text').textContent = SETTINGS.delivery || 'Email us your address and a good time, and we’ll drop your prize round.';
+
+    var email = SETTINGS.contactEmail || '';
+    $('contact-email').textContent = email;
+    $('contact-email-row').hidden = !email;
+    $('contact-phone').textContent = SETTINGS.contactPhone || '';
+    $('contact-phone-row').hidden = !SETTINGS.contactPhone;
+    var mail = $('mail-link');
+    mail.hidden = !email;
+    mail.href = 'mailto:' + email +
+      '?subject=' + encodeURIComponent('Golden ticket No. ' + p.number + ': delivery please') +
+      '&body=' + encodeURIComponent(deliveryMessage(claim));
+    $('copy-status').textContent = '';
+    $('claim-by').textContent = SETTINGS.claimBy ? 'Please claim your prize by ' + SETTINGS.claimBy + '.' : '';
+    $('claim-by').hidden = !SETTINGS.claimBy;
+
+    $('s-name').textContent = claim.name;
+    $('s-number').textContent = p.number;
+    $('s-ref').textContent = p.reference;
+    $('s-prize').textContent = p.prize;
+
+    $('view-form').hidden = true;
+    $('demo').hidden = true;
+    $('view-result').hidden = false;
+    window.scrollTo(0, 0);
+    $('result-title').focus({ preventScroll: true });
+  }
+
+  function copyText(text, statusEl, doneMessage) {
+    function fallback() {
+      var area = document.createElement('textarea');
+      area.value = text;
+      area.setAttribute('readonly', '');
+      area.style.position = 'fixed';
+      area.style.opacity = '0';
+      document.body.appendChild(area);
+      area.select();
+      var ok = false;
+      try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+      document.body.removeChild(area);
+      statusEl.textContent = ok ? doneMessage : 'Copying didn’t work here. Please type the details into your message instead.';
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function () { statusEl.textContent = doneMessage; }, fallback);
+    } else {
+      fallback();
+    }
+  }
+
+  // ---------------------------------------------------------------------------------------
+  // The form
+  // ---------------------------------------------------------------------------------------
+  var form = $('claim-form');
+  var fName = $('f-name');
+  var fNumber = $('f-number');
+  var fRef = $('f-ref');
+  var revealBtn = $('reveal-btn');
+  var formError = $('form-error');
+  var failures = 0;
+
+  function clearErrors() {
+    formError.hidden = true;
+    formError.textContent = '';
+    [fName, fNumber, fRef].forEach(function (f) { f.removeAttribute('aria-invalid'); });
+  }
+
+  function showError(message, fields, help) {
+    formError.textContent = message;
+    if (help) {
+      var extra = document.createElement('span');
+      extra.textContent = help;
+      formError.appendChild(extra);
+    }
+    formError.hidden = false;
+    fields.forEach(function (f) { f.setAttribute('aria-invalid', 'true'); });
+    if (canAnimate && !reduceMotion()) {
+      $('form-wrap').animate([
+        { transform: 'translateX(0)' }, { transform: 'translateX(-10px)' }, { transform: 'translateX(9px)' },
+        { transform: 'translateX(-6px)' }, { transform: 'translateX(4px)' }, { transform: 'translateX(0)' }
+      ], { duration: 420, easing: 'ease-out' });
+    }
+  }
+
+  function setBusy(busy) {
+    revealBtn.disabled = busy;
+    revealBtn.textContent = busy ? 'Checking your ticket…' : 'Reveal my prize';
+  }
+
+  form.addEventListener('submit', function (event) {
+    event.preventDefault();
+    if (revealBtn.disabled) return;
+    sound.prime(); // must happen inside the tap, or phones keep the sound locked
+    clearErrors();
+    var name = fName.value.trim().replace(/\s+/g, ' ');
+    var number = fNumber.value.trim();
+    var reference = fRef.value.trim();
+    var missing = [];
+    if (!name) missing.push([fName, 'Type your name so we know who has won.']);
+    if (!number) missing.push([fNumber, 'Type the ticket number from your golden ticket.']);
+    if (!reference) missing.push([fRef, 'Type the reference code from your golden ticket.']);
+    if (missing.length) {
+      showError(missing[0][1], missing.map(function (m) { return m[0]; }));
+      missing[0][0].focus();
+      return;
+    }
+
+    setBusy(true);
+    GT.openTicket(DATA, number, reference).then(function (result) {
+      setBusy(false);
+      if (result.status === 'ok') {
+        failures = 0;
+        store.set('gt.last', { name: name, number: result.number, display: result.prize.number, ref: GT.canonRef(reference) });
+        startReveal({ name: name, prize: result.prize });
+        return;
+      }
+      failures += 1;
+      var help = failures >= 3 && SETTINGS.contactEmail
+        ? 'Still stuck? Email ' + SETTINGS.contactEmail + ' with a photo of your ticket and we’ll sort it out.'
+        : '';
+      if (result.status === 'no-ticket') {
+        showError('There’s no golden ticket numbered ' + number + '. Check the number on your ticket and try again.', [fNumber], help);
+        fNumber.focus();
+      } else {
+        showError('That reference code doesn’t match ticket ' + number + '. Check each letter and number and try again.', [fRef], help);
+        fRef.focus();
+      }
+    }, function () {
+      setBusy(false);
+      showError('Something went wrong checking your ticket. Please try again.', []);
+    });
+  });
+
+  [fName, fNumber, fRef].forEach(function (f) {
+    f.addEventListener('input', function () { f.removeAttribute('aria-invalid'); });
+  });
+
+  // ---------------------------------------------------------------------------------------
+  // Start-up
+  // ---------------------------------------------------------------------------------------
+  function placeNotches() {
+    var perf = $('perf');
+    if (perf.offsetParent) form.style.setProperty('--notch-y', (perf.offsetTop + 1) + 'px');
+  }
+
+  function prefillFromLink() {
+    // Printed QR codes open the page as  .../#t=12&r=ABCDEF
+    var raw = (window.location.hash || '').replace(/^#/, '') || (window.location.search || '').replace(/^\?/, '');
+    if (!/(^|&)(t|r)=/.test(raw)) return;
+    var params = {};
+    raw.split('&').forEach(function (pair) {
+      var bits = pair.split('=');
+      try { params[bits[0]] = decodeURIComponent((bits[1] || '').replace(/\+/g, ' ')); } catch (e) { /* ignore */ }
+    });
+    if (params.t) fNumber.value = params.t;
+    if (params.r) fRef.value = GT.displayRef(params.r);
+    try { history.replaceState(null, '', window.location.pathname); } catch (e) { /* ignore */ }
+    fName.focus();
+  }
+
+  function init() {
+    applySettings(document);
+    if (SETTINGS.schoolName) document.title = 'Golden Ticket Reveal · ' + SETTINGS.schoolName;
+
+    var example = makeTicket($('example-ticket'));
+    fillFront(example, '12', 'ABC-DEF');
+    buildBar();
+
+    if (!DATA || !GT) {
+      $('form-wrap').hidden = true;
+      $('closed-notice').hidden = false;
+      return;
+    }
+    if (!GT.isSupported()) {
+      $('form-wrap').hidden = true;
+      $('closed-notice').hidden = false;
+      $('closed-text').textContent = 'This page needs a secure (https://) web address to check tickets. Please let the organisers know.';
+      return;
+    }
+
+    // Numbers-only tickets get the number keypad on phones.
+    var numbersOnly = Object.keys(DATA.tickets).every(function (k) { return /^\d+$/.test(k); });
+    fNumber.setAttribute('inputmode', numbersOnly ? 'numeric' : 'text');
+
+    if (SETTINGS.totalBars) {
+      $('stats').textContent = SETTINGS.totalBars + ' chocolate bars · ' + DATA.count + ' golden tickets';
+      $('stats').hidden = false;
+    }
+    if (SETTINGS.contactEmail) {
+      $('foot-email').textContent = SETTINGS.contactEmail;
+      $('foot-email').href = 'mailto:' + SETTINGS.contactEmail;
+      $('foot-contact').hidden = false;
+    }
+
+    if (DATA.demo && SETTINGS.demoTickets) {
+      $('demo').hidden = false;
+      SETTINGS.demoTickets.forEach(function (t) {
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'demo-pick';
+        b.textContent = 'No. ' + t.number + ' · ' + t.label;
+        b.addEventListener('click', function () {
+          clearErrors();
+          if (!fName.value.trim()) fName.value = 'Sam';
+          fNumber.value = t.number;
+          fRef.value = t.reference;
+          revealBtn.focus();
+        });
+        $('demo-picks').appendChild(b);
+      });
+    }
+
+    var last = store.get('gt.last', null);
+    if (last && last.number && last.ref) {
+      $('welcome').hidden = false;
+      $('welcome-text').textContent = 'Welcome back' + (last.name ? ', ' + last.name : '') + '.';
+      $('welcome-btn').textContent = 'Show my prize for ticket No. ' + (last.display || last.number);
+      $('welcome-btn').addEventListener('click', function () {
+        GT.openTicket(DATA, last.number, last.ref).then(function (result) {
+          if (result.status === 'ok') {
+            showResult({ name: last.name || 'you', prize: result.prize });
+          } else {
+            $('welcome').hidden = true;
+            store.set('gt.last', null);
+          }
+        });
+      });
+    }
+
+    prefillFromLink();
+    placeNotches();
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(placeNotches);
+    window.addEventListener('resize', function () {
+      placeNotches();
+      if (!stage.hidden) fitScene();
+    });
+
+    sound.setEnabled(sound.isEnabled());
+    Array.prototype.forEach.call(document.querySelectorAll('[data-sound-toggle]'), function (btn) {
+      btn.addEventListener('click', function () {
+        sound.prime();
+        sound.setEnabled(!sound.isEnabled());
+      });
+    });
+    skipBtn.addEventListener('click', skipReveal);
+    stage.addEventListener('keydown', function (e) { if (e.key === 'Escape') skipReveal(); });
+
+    $('replay-btn').addEventListener('click', function () {
+      if (!lastClaim) return;
+      sound.prime();
+      startReveal(lastClaim);
+    });
+    $('another-btn').addEventListener('click', function () {
+      $('view-result').hidden = true;
+      $('view-form').hidden = false;
+      $('demo').hidden = !(DATA.demo && SETTINGS.demoTickets);
+      fNumber.value = '';
+      fRef.value = '';
+      clearErrors();
+      confetti.clear();
+      window.scrollTo(0, 0);
+      placeNotches();
+      fNumber.focus();
+    });
+    $('copy-email').addEventListener('click', function () {
+      copyText(SETTINGS.contactEmail || '', $('copy-status'), 'Email address copied.');
+    });
+    $('copy-message').addEventListener('click', function () {
+      if (lastClaim) copyText(deliveryMessage(lastClaim), $('copy-status'), 'Message copied. Paste it into an email or text, and add your address.');
+    });
+  }
+
+  init();
+})();
+</script>
+<!-- page:end -->
+</body>
+</html>
