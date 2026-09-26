@@ -4,6 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <!-- page:start -->
+<script>
+  // Checking codes needs a secure page, so move anyone who typed http:// over to https://.
+  if (location.protocol === 'http:' && window.isSecureContext === false) location.replace('https:' + location.href.slice(5));
+</script>
 <title>Golden Ticket Reveal</title>
 <meta name="description" content="Found a golden ticket in your chocolate bar? Type in your ticket details to see what you've won.">
 <meta name="theme-color" content="#22130d">

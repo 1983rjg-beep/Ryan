@@ -50,19 +50,29 @@ Allow about half an hour, and do it **before** the tickets go into the bars.
 
 The spreadsheet has a *Given out* column for you: tick off each prize as you hand it over.
 
-## Putting it online
+## Putting it online (one.com)
 
-The page needs `index.html`, `core.js` and `prizes.js` in the same folder, on an `https://`
-address (it can't check codes on plain `http://`).
+The page needs `index.html`, `core.js` and `prizes.js` together in one folder, on an
+`https://` address. one.com includes a free SSL certificate and turns on `https://`
+automatically when your domain uses one.com's name servers. The page moves anyone who
+types `http://` over to `https://` by itself.
 
-- **Your school or parent council website**, if it lets you upload files (many WordPress sites
-  do, through a file manager or FTP). Put the three files in a folder such as `/golden-ticket/`
-  and link to it from a news post or the newsletter.
-- **Netlify** (free), if your site can't host files (Wix, Squarespace, Google Sites and most
-  school website platforms). Make a free account at netlify.com, drag a folder holding just the
-  three files onto *Netlify Drop*, and you'll get an address like
-  `golden-ticket-yourschool.netlify.app`. Link to it from your site. A link works better on
-  phones than squeezing the page into an embed box.
+1. Log in to one.com and open **Hosting settings › File Manager**.
+2. In the top folder (the one holding your site's own files), create a folder called
+   `golden-ticket`.
+3. Open it and upload `index.html`, `core.js` and your built `prizes.js`. Don't upload
+   `admin.html` or the spreadsheet.
+4. Visit `https://yourdomain/golden-ticket/` and check a ticket.
+5. Put that address into step 1 of the builder **before printing**, so the QR codes point at it.
+
+**Keep that address working until the last prize is delivered.** Every printed ticket points
+at it. If the website is rebuilt, moved to another platform, or its web space is cleared
+before then, the links on the tickets break. Either carry the `golden-ticket` folder across
+unchanged, or do the rebuild after the last delivery.
+
+If you ever host it somewhere that can't take files (Wix, Squarespace, Google Sites), make a
+free Netlify account, drag a folder holding just the three files onto *Netlify Drop*, and
+link to the address it gives you.
 
 Shorter addresses make QR codes that scan more easily.
 
@@ -94,16 +104,6 @@ key made from that ticket's number and reference code (PBKDF2, 150,000 rounds). 
 page source reveals neither the codes nor who won what, and guessing a code means trying
 hundreds of millions of combinations, each deliberately slow. That protects the surprise.
 The physical ticket protects the prize.
-
-## Before you start selling: the law
-
-Selling chocolate where some bars win prizes can count as a lottery under the Gambling Act 2005
-(people pay, and chance decides who wins). At a school event it usually falls under the
-*incidental lottery* rules, which need no licence when the bars are sold only at the event,
-no more than £500 is spent on bought prizes (donated prizes don't count) and no more than
-£100 goes on costs. Selling bars in the days or weeks beforehand falls outside those rules.
-Check the Gambling Commission's guidance on incidental lotteries, or ask your council's
-licensing team, before you start.
 
 ## For developers
 
