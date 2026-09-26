@@ -288,6 +288,7 @@
 
 <script src="core.js"></script>
 <script src="vendor/qrcode.js"></script>
+<script src="assets/fonts/print-fonts.js"></script>
 <script src="prizes.js"></script>
 <script>
 (function () {
@@ -501,7 +502,10 @@
       ? 'Print at 100% scale (“Actual size”) with “Background graphics” turned on, then cut along the dashed lines.'
       : 'For gold paper: print at 100% scale (“Actual size”), and try one sheet first. Cut along the dashed lines.';
     return '<!doctype html><html lang="en-GB"><head><meta charset="utf-8"><title>Golden tickets to print</title>' +
-      '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Mono:wght@600&family=Chewy&family=Poppins:wght@400;600;700&display=swap">' +
+      // Fonts come built in (assets/fonts/print-fonts.js); Google Fonts is only a fallback.
+      (window.GT_PRINT_FONTS
+        ? '<style>' + window.GT_PRINT_FONTS + '</style>'
+        : '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Mono:wght@600&family=Chewy&family=Poppins:wght@400;600;700&display=swap">') +
       '<style>' + PRINT_CSS + '</style></head><body class="' + (gold ? 'gold' : 'plain') + '">' +
       '<div class="bar"><p>' + tickets.length + ' golden tickets on ' + pages.length + ' A4 page' + (pages.length === 1 ? '' : 's') + '. ' + advice + '</p>' +
       '<button type="button" id="print-now" disabled onclick="window.print()">Loading fonts…</button></div>' + html +
