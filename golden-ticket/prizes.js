@@ -4,64 +4,70 @@
 window.GOLDEN_TICKET_DATA = {
  "format": 1,
  "demo": true,
- "built": "2026-09-26T22:09:40.644Z",
+ "built": "2026-09-26T23:11:58.977Z",
  "kdf": {
   "hash": "SHA-256",
   "iterations": 150000,
-  "salt": "KCQgiVeu5E61onU7TvPv7A=="
+  "salt": "g6BLv2rv5+1E3m37jRX5oQ=="
  },
  "settings": {
-  "schoolName": "Thistlebank Primary",
-  "organiser": "Thistlebank Parent Council",
-  "eventName": "Golden Ticket Chocolate Sale",
-  "contactEmail": "parentcouncil@example.org",
+  "schoolName": "Colgrain Primary",
+  "organiser": "Colgrain Parent Council",
+  "eventName": "Wonderlicious",
+  "contactEmail": "secretary@colgrainparentcouncil.co.uk",
   "contactPhone": "",
-  "claimBy": "Friday 12 December",
+  "claimBy": "Friday 30 October",
   "totalBars": 300,
-  "schoolCollection": "Pop into the school office any weekday between 3:00 and 3:30pm.",
-  "delivery": "We deliver around Thistlebank only. Email us your address and a good time, and a parent council volunteer will drop your prize round.",
-  "defaultCollection": "school",
-  "pageUrl": "",
+  "schoolCollection": "Prize day is Thursday 1 October. Bring your ticket into school that day to collect your prize.",
+  "delivery": "Off school on prize day? Email us and we’ll make sure you get your prize.",
+  "defaultCollection": "either",
+  "pageUrl": "https://colgrainparentcouncil.co.uk/wonderlicious/",
+  "facebookUrl": "https://www.facebook.com/groups/203407226747873",
+  "raisingFor": "Every penny raised goes to Colgrain Primary.",
   "demoTickets": [
    {
     "number": "1",
     "reference": "GTK-4PX",
-    "label": "Star prize"
+    "label": "Star prize",
+    "item": "bar"
    },
    {
     "number": "2",
     "reference": "M8R-ZQ3",
-    "label": "Delivered"
+    "label": "Day out",
+    "item": "bag"
    },
    {
     "number": "3",
     "reference": "B2N-7HW",
-    "label": "Collect at school"
+    "label": "Play-Doh",
+    "item": "bar"
    },
    {
     "number": "4",
     "reference": "YXC-5TD",
-    "label": "Your choice"
+    "label": "Books",
+    "item": "bag"
    }
   ]
  },
  "count": 4,
  "tickets": {
   "1": {
-   "iv": "eZwrUZhuUtuDi9jJ",
-   "box": "QWsDsPgU8eSFjQQTfU46bKNLPuxjb6SOePi+3tY+G7V0nzmJ+ZPS5R2ejaaaRhWs6UuN+xkyJ5yuKdMRNi5xMVbqFDP5hkdGJ4Pjr5me2OKGJOxmgFEZZIctUEEoB1kWgfmeuPf+NlE7TfEfBYfUQANvb0wKV00Fnft0TQlyYbLDGCaWZFD4I9pwpxi8h7HlAVlXS9TI3iyqG5yLLYyYkVUQzKb5iNrMxGdVBSeDySokT6GgvlBa/dyYhn14oMlFA9NwTVenDuJDDrXRyGmH0RDYsWZKuI7HsgfBxch7e8OV+ogJIoNjd0omwQzI0bO3/brlv4Ah67nwsamfcQ=="
+   "iv": "WSCj2LllZgD/2CVt",
+   "box": "g/aLSbbgnY0X49pBXbAD004DYpmaihxLn0K7wQdGKYI9Y3L4YzSJDXMCoeT5qU28JhGl58HdCEIcQ7PHzkDugxzU5MYlCalFfc+y7tLr6DLD/yiP0VOnZIfO2FJe4dTyjmG3sSnEkwngbGXBtgAxc7YYwSURxnqQ98LlMqaqFczwJiXZ7cSUtGXyIdOn24Fl5FtOp4ypIldrGZ0hgbAx+9unjHoenL7XeVMvnIvgrkLoj1/vI/q0sOQ77HHpA/b4beF+2ul8u8gj0P9uUOJF4LY="
   },
   "2": {
-   "iv": "i2nmM3paFEnKLPpl",
-   "box": "fArwJkCivrvEAtBf34Irs10qtz/uOXpBGLiL2KT7akATzKdEmUFrwBDKhZxz5c92Qd0iD/DiPU6kOR7MoyrDMc/p1gayV2U8YfYgMSWNQnbbHeVWhB3xrkAsaWqrc3xkEXMqTrJQR6OTp3LtiegAwtowcmVGF/GhEJgTCAjjn7MXSIFJAunbmTPgjjNbjSaHZa0eamLiERYdX/gATQouMrZEYlyk/jmFdx8H4dk6gwA00OkFu2Xl9Yl8bOHDjtMivx4ArnM7D+4hsgU689hP44Ai+5jrkn5AIroSSIU3MXzscEUdBppcfBRglb8N3NOIqHBaK0E5+1DOjn2UHt8OEylPo3A9mbqDt2TvWG3LSw3vVdgTVYo22v2FCB6UcoNksmQq5ZAWt5Rt6fF3"
+   "iv": "sm+PskSJdW4lB8YN",
+   "box": "EDNkE/j3uDkOac8UXVUddSrPQqstk0iSA8L+iqbsNOwm6WjoscWbsbRo8DhWStxwoAWfhieuOQLqKDHKIWPQvigQ62j1/uwS5DgZndbIJY0YHvA5dvCn8Oj/redE/RyiVo5RgtOQhQRYAaRKZ8+rDnLmKHuZmyiuGbAvfC7BZ6mF6cZYKfnPPe5yMyi+RiHXVBQvoMOOooGZNO3AzDqsmBEDcH/PPIuStTLZkhQva/xBxkXTf0IqcIBShkKYi/3KRzzWtmgQ9ZZg6fhmOX4OeAoW8P8wTrqfHvd6"
   },
   "3": {
-   "iv": "VJdpedyJ8tgDOrJ5",
-   "box": "IjUoZ45fP4B/6RQbuKPPX7v+ORJ38KFRvruQotkYijAFvh93Q8Ud+WjrM4PRTZzidMePfuRqgAutfljiqQD4A2SWMPL67ZgLZsa3DY5KCrv69ePiMIYQV2s6s8PMwIP8n6fMYfY9VYpDHIFURR813NXU5lqluG6E2pMtVeknzDvOTT/Wc/NBtyql7XDumLsoq+cXIyocAEJrKjyzPET0QvTeWD9Du+uGJ1D/hhbp6TAr3FN8fdrcXVRGnuz5+LeHjCYrygQ94RPSwhpYJUuLyaILmvtSwd+RwImCcN+itzLULKvKzlqRr1mYV2OU21NHbALfOi+Q7nlVIiSQau8+5KOIUvfcvgQaNu4="
+   "iv": "uwF4XL1gE4EbiSol",
+   "box": "Z23zM11F/fijipifAeejqYDZ8VGzPduOw1iOyjt7PQ81GCdaO6ch3iIQChAGYtngc2fM/riUtZOl1OqdR0FOMzO6goDqRe6ozyFOmuAc5/BWPZt/2EJDBzqI1W71ZQOWZErPrW6hhXb72/V5nHAPh/R/mxAWy2CANpS8Kh2XYJuxo1XLOSjP8alYWgSErhnWehyMlKpZq4YMVyv6r5bP6A/ixRGL2F8gvF91UQsTmD/nXyCPENoY0HrIvnEPvCAJEJF9Bx7F7iDf/Okohg=="
   },
   "4": {
-   "iv": "WuL0kYrtmnLh7khK",
-   "box": "TPTMaoo2DjZwj7JHzvi3VGSM9J+kOgSNy94LHtSep7xp0Y0SmunawCyT6Tcym9Ocfw61SwcnmaQaAYNsO12UJ6NjQ2hkQH1S9fC/4k040YZFhdd24NqljWT52evAikQy3G8n5XZEA6IGfnsjKukBm4MvpKbrEoIvpCLleJM6rOzMfBc6FVKTGJA4GF2E6ImkWeRi61FKwAIt93VuRE0LVibeNfqJSEtBUnO8z0CvLBO4f3gBaB7mZFK+0vSWVkhhYHOcwH1HH6UYLL20jVqBlbBo/fL5PJbgKf8="
+   "iv": "2XTs18Ij2SMjGVix",
+   "box": "M0mv0CmML07GKdrUA1ndbjRAUDKCfHbunkjZRu5YJAEPIyHAGQ4YOTOUMoj5NsNuoW/WLBRTeXP39q+6i7g0tKsev6qw6I8Xq/xvsMX5mYclT4X37qr5BgFF5dxzZMI4sGgiTHMsnU8wR7WsbmDoeM5iPyhVcM5FcenPCkOQ6pFgjrNuGiOaEm09lZzmD/xr3xAOn8nR1PJW1QLlxmKoKrYCYb90eKUO+6CMkuyOw1x+6ZPd65+Z4ylIMbF6rx4U"
   }
  }
 };

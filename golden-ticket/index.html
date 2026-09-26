@@ -8,149 +8,165 @@
   // Checking codes needs a secure page, so move anyone who typed http:// over to https://.
   if (location.protocol === 'http:' && window.isSecureContext === false) location.replace('https:' + location.href.slice(5));
 </script>
-<title>Golden Ticket Reveal</title>
-<meta name="description" content="Found a golden ticket in your chocolate bar? Type in your ticket details to see what you've won.">
-<meta name="theme-color" content="#22130d">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='1' y='8' width='30' height='16' rx='3' fill='%23eab84e'/%3E%3Cpath d='M22 9v14' stroke='%235a330c' stroke-width='1.5' stroke-dasharray='2 2'/%3E%3C/svg%3E">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Mono:wght@400;600&family=Atkinson+Hyperlegible+Next:wght@400;600;700&family=Shrikhand&display=swap">
+<title>Wonderlicious Golden Ticket</title>
+<meta name="description" content="Found a Wonderlicious golden ticket? Type in your ticket details to see which prize you've won.">
+<meta name="theme-color" content="#2a0a3d">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='1' y='8' width='30' height='16' rx='3' fill='%23eab84e'/%3E%3Cpath d='M22 9v14' stroke='%233a0c57' stroke-width='1.5' stroke-dasharray='2 2'/%3E%3C/svg%3E">
 <style>
-  /* One committed look: dark chocolate, gold foil, a mint wrapper. */
+  /* Fonts are served with the page (see assets/fonts/LICENSE.md). */
+  @font-face { font-family: "Chewy"; font-weight: 400; font-display: swap; src: url("assets/fonts/chewy-400.woff2") format("woff2"); }
+  @font-face { font-family: "Poppins"; font-weight: 400; font-display: swap; src: url("assets/fonts/poppins-400.woff2") format("woff2"); }
+  @font-face { font-family: "Poppins"; font-weight: 600; font-display: swap; src: url("assets/fonts/poppins-600.woff2") format("woff2"); }
+  @font-face { font-family: "Poppins"; font-weight: 700; font-display: swap; src: url("assets/fonts/poppins-700.woff2") format("woff2"); }
+  @font-face { font-family: "Atkinson Hyperlegible Mono"; font-weight: 400 600; font-display: swap; src: url("assets/fonts/atkinson-hyperlegible-mono.woff2") format("woff2"); }
+
+  /* Wonderlicious: wrapper purple, label cream and gold foil, taken from the packaging artwork. */
   :root {
     color-scheme: dark;
-    --cocoa: #22130d;
-    --cocoa-2: #2e1a12;
-    --cocoa-3: #3a2319;
-    --line: rgba(248, 236, 212, 0.14);
-    --cream: #f8ecd4;
-    --cream-2: #d4bf9f;
+    --grape: #2a0a3d;
+    --grape-2: #3a0f55;
+    --purple: #54127c;
+    --pink: #e0457b;
+    --cream: #fef7e5;
+    --cream-2: #e2d0ec;
+    --ink: #3a0c57;
+    --ink-2: #6b3d86;
     --gold: #eab84e;
     --gold-hi: #ffe7a3;
-    --paper-ink: #3a2212;
-    --paper-ink-2: #6e4b28;
-    --mint: #62cdb6;
-    --error-paper: #9b2717;
+    --line: rgba(254, 247, 229, 0.16);
+    --error: #a3261a;
     --foil: linear-gradient(115deg, #a8741f 0%, #e7bb57 16%, #fff0c0 29%, #e9b949 43%, #b98224 60%, #f2d27c 79%, #c18d2e 100%);
-    --font-display: "Shrikhand", "Cooper Black", Georgia, serif;
-    --font-body: "Atkinson Hyperlegible Next", "Atkinson Hyperlegible", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --ribbon: linear-gradient(180deg, #fff0bd 0%, #f0c55c 42%, #d49b37 100%);
+    --frame: inset 0 0 0 3px #d9a93f, inset 0 0 0 6px #fef7e5, inset 0 0 0 7.5px #d9a93f;
+    --font-display: "Chewy", "Cooper Black", "Arial Rounded MT Bold", system-ui, sans-serif;
+    --font-body: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
     --font-mono: "Atkinson Hyperlegible Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
   }
   [hidden] { display: none !important; }
-  html { background: var(--cocoa); }
+  html { background: var(--grape); }
   body {
     position: relative;
     margin: 0;
     min-height: 100vh;
     padding-inline: 16px;
-    background: var(--cocoa);
     color: var(--cream);
-    font: 400 17px/1.55 var(--font-body);
+    font: 400 16px/1.6 var(--font-body);
     -webkit-font-smoothing: antialiased;
     -webkit-text-size-adjust: 100%;
+    background:
+      linear-gradient(180deg, rgba(42, 10, 61, 0) 0, rgba(42, 10, 61, 0.5) 380px, #2a0a3d 760px),
+      url("assets/haze.jpg") 50% 0 / 100% 760px no-repeat,
+      #2a0a3d;
   }
   body.stage-open { overflow: hidden; }
-  /* Embossed chocolate squares, fading out down the page. */
-  body::before {
-    content: "";
-    position: absolute;
-    inset: 0 0 auto 0;
-    height: 680px;
-    pointer-events: none;
-    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='92' height='92' viewBox='0 0 92 92'%3E%3Crect x='4' y='4' width='84' height='84' rx='10' fill='%23291710'/%3E%3Cpath d='M12 84V18a6 6 0 0 1 6-6h66' fill='none' stroke='%23382016' stroke-width='2.5'/%3E%3Cpath d='M84 12v66a6 6 0 0 1-6 6H12' fill='none' stroke='%23180b06' stroke-width='2.5'/%3E%3C/svg%3E") 50% 0 / 92px 92px;
-    -webkit-mask: linear-gradient(#000, rgba(0, 0, 0, 0.55) 45%, transparent);
-    mask: linear-gradient(#000, rgba(0, 0, 0, 0.55) 45%, transparent);
-  }
   .page { position: relative; max-width: 1080px; margin: 0 auto; padding-block: 22px 40px; }
   button { font: inherit; }
   :focus-visible { outline: 3px solid var(--gold-hi); outline-offset: 3px; }
 
-  .masthead { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; }
-  .eyebrow {
-    margin: 0;
-    font: 700 12.5px/1.35 var(--font-body);
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--gold);
+  .masthead { display: flex; align-items: center; gap: 14px; }
+  .logo-tile {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 62px;
+    height: 62px;
+    border-radius: 16px;
+    background: #fff;
+    box-shadow: 0 4px 0 rgba(0, 0, 0, 0.35);
+    transform: rotate(-3deg);
   }
-  .eyebrow .sep { opacity: 0.55; padding-inline: 0.35em; }
+  .logo-tile img { width: 52px; height: 52px; }
+  .presents { margin: 0; font: 600 11.5px/1.35 var(--font-body); letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); }
+  .wordmark {
+    margin: 0;
+    font: 400 clamp(36px, 10vw, 54px)/1 var(--font-display);
+    letter-spacing: 0.01em;
+    color: var(--cream);
+    text-shadow: 0 3px 0 #b27f27, 0 6px 12px rgba(0, 0, 0, 0.35);
+  }
 
   .demo {
-    margin-top: 16px;
+    margin-top: 18px;
     padding: 12px 14px;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     gap: 8px 10px;
     border-radius: 12px;
-    background: rgba(98, 205, 182, 0.1);
-    border: 1px solid rgba(98, 205, 182, 0.35);
-    font-size: 15px;
+    background: rgba(254, 247, 229, 0.08);
+    border: 1px dashed rgba(234, 184, 78, 0.6);
+    font-size: 14.5px;
   }
   .demo p { margin: 0; flex: 1 1 260px; }
-  .demo strong { color: var(--mint); }
+  .demo strong { color: var(--gold-hi); }
   .demo-picks { display: flex; flex-wrap: wrap; gap: 8px; }
   .demo-pick {
     padding: 6px 12px;
     border-radius: 999px;
-    border: 1px solid rgba(98, 205, 182, 0.5);
-    background: rgba(98, 205, 182, 0.14);
+    border: 1px solid rgba(234, 184, 78, 0.6);
+    background: rgba(234, 184, 78, 0.14);
     color: var(--cream);
-    font-size: 14px;
+    font-size: 13.5px;
     font-weight: 600;
     cursor: pointer;
   }
-  .demo-pick:hover { background: rgba(98, 205, 182, 0.26); }
+  .demo-pick:hover { background: rgba(234, 184, 78, 0.28); }
 
   /* ---- The form view ---- */
-  .intro { display: grid; grid-template-columns: minmax(0, 1fr); gap: 34px; margin-top: 26px; }
+  .intro { display: grid; grid-template-columns: minmax(0, 1fr); gap: 40px; margin-top: 30px; }
   @media (min-width: 900px) {
-    .intro { grid-template-columns: minmax(0, 1fr) minmax(0, 0.92fr); align-items: center; gap: 56px; margin-top: 44px; }
+    .intro { grid-template-columns: minmax(0, 1fr) minmax(0, 0.9fr); align-items: center; gap: 56px; margin-top: 38px; }
   }
-  .headline {
-    margin: 0;
-    font: 400 clamp(2.7rem, 9vw, 4.7rem)/1 var(--font-display);
-    letter-spacing: -0.01em;
+  /* The headline is a gold ribbon, like "Win a GOLDEN Ticket" on the wrapper. */
+  .ribbon {
+    position: relative;
+    display: inline-block;
+    margin: 0 0.8em;
+    font: 400 clamp(27px, 7.4vw, 44px)/1.05 var(--font-display);
+    color: var(--ink);
+  }
+  .ribbon span {
+    position: relative;
+    z-index: 1;
+    display: block;
+    padding: 0.26em 0.7em 0.32em;
+    border-radius: 3px;
+    background: var(--ribbon);
+    box-shadow: 0 3px 0 #8a5d18, 0 12px 26px rgba(0, 0, 0, 0.35);
     text-wrap: balance;
-    background: linear-gradient(180deg, #ffeab0 10%, #eab84e 55%, #c48b2c 95%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    filter: drop-shadow(0 3px 0 rgba(0, 0, 0, 0.35));
-    padding-bottom: 0.08em;
   }
-  .lede { margin: 14px 0 0; max-width: 34ch; font-size: 1.15rem; color: var(--cream-2); }
-  .welcome {
-    margin: 18px 0 0;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 6px 12px;
-    color: var(--cream-2);
-    font-size: 15.5px;
+  .ribbon::before, .ribbon::after {
+    content: "";
+    position: absolute;
+    top: 0.34em;
+    bottom: -0.3em;
+    width: 1.25em;
+    background: linear-gradient(180deg, #d9a646, #9c6a1c);
   }
+  .ribbon::before { left: -0.8em; clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 0.42em 50%); }
+  .ribbon::after { right: -0.8em; clip-path: polygon(0 0, 100% 0, calc(100% - 0.42em) 50%, 100% 100%, 0 100%); }
+  .lede { margin: 20px 0 0; max-width: 36ch; font-size: 1.08rem; color: var(--cream-2); }
+  .welcome { margin: 16px 0 0; display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; color: var(--cream-2); font-size: 15px; }
   .link-btn {
     padding: 0;
     border: 0;
     background: none;
-    color: var(--gold);
+    color: var(--gold-hi);
     font-weight: 700;
     text-decoration: underline;
     text-underline-offset: 3px;
     cursor: pointer;
   }
 
-  .form-wrap { margin-top: 26px; max-width: 540px; filter: drop-shadow(0 26px 34px rgba(0, 0, 0, 0.5)); }
+  .form-wrap { margin-top: 24px; max-width: 540px; filter: drop-shadow(0 22px 30px rgba(10, 0, 20, 0.55)); }
   .ticket-form {
     --notch-y: 118px;
     position: relative;
-    padding: 22px 22px 16px;
-    border-radius: 18px;
-    color: var(--paper-ink);
-    background:
-      radial-gradient(120% 80% at 0% 0%, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0) 55%),
-      repeating-linear-gradient(115deg, rgba(255, 255, 255, 0.07) 0 3px, rgba(255, 255, 255, 0) 3px 9px),
-      linear-gradient(160deg, #fbe9b6, #f0d17d 58%, #e3bb5a);
+    padding: 24px 24px 16px;
+    border-radius: 16px;
+    color: var(--ink);
+    background: var(--cream);
+    box-shadow: var(--frame);
     -webkit-mask:
       radial-gradient(circle 13px at 0 var(--notch-y), #0000 97%, #000) left / 51% 100% no-repeat,
       radial-gradient(circle 13px at 100% var(--notch-y), #0000 97%, #000) right / 51% 100% no-repeat;
@@ -158,82 +174,108 @@
       radial-gradient(circle 13px at 0 var(--notch-y), #0000 97%, #000) left / 51% 100% no-repeat,
       radial-gradient(circle 13px at 100% var(--notch-y), #0000 97%, #000) right / 51% 100% no-repeat;
   }
-  .ticket-form::before {
-    content: "";
-    position: absolute;
-    inset: 8px;
-    border: 1.5px solid rgba(90, 51, 12, 0.28);
-    border-radius: 12px;
-    pointer-events: none;
-  }
-  .field label {
+  .field label, .found legend {
     display: block;
     margin-bottom: 7px;
-    font: 700 12.5px/1.2 var(--font-body);
+    padding: 0;
+    font: 700 12px/1.2 var(--font-body);
     letter-spacing: 0.13em;
     text-transform: uppercase;
-    color: var(--paper-ink-2);
+    color: var(--ink-2);
   }
   .field input {
     display: block;
     width: 100%;
     box-sizing: border-box;
-    padding: 13px 14px;
-    border: 2px solid rgba(74, 44, 14, 0.28);
+    padding: 12px 14px;
+    border: 2px solid rgba(58, 12, 87, 0.22);
     border-radius: 12px;
-    background: rgba(255, 251, 238, 0.94);
-    color: var(--paper-ink);
-    font: 600 20px/1.2 var(--font-body);
+    background: #fff;
+    color: var(--ink);
+    font: 600 19px/1.3 var(--font-body);
   }
   .field input.code { font-family: var(--font-mono); letter-spacing: 0.09em; text-transform: uppercase; }
-  .field input::placeholder { color: rgba(74, 44, 14, 0.38); font-weight: 400; letter-spacing: 0.02em; text-transform: none; }
-  .field input:focus { outline: none; border-color: var(--paper-ink); box-shadow: 0 0 0 4px rgba(58, 34, 18, 0.16); }
-  .field input[aria-invalid="true"] { border-color: var(--error-paper); background: #fff2ea; }
-  .perf { margin: 20px -22px 18px; border-top: 2px dashed rgba(74, 44, 14, 0.34); }
+  .field input::placeholder { color: rgba(58, 12, 87, 0.36); font-weight: 400; letter-spacing: 0.02em; text-transform: none; }
+  .field input:focus { outline: none; border-color: var(--purple); box-shadow: 0 0 0 4px rgba(84, 18, 124, 0.16); }
+  .field input[aria-invalid="true"] { border-color: var(--error); background: #fff3ee; }
+  .perf { margin: 20px -24px 18px; border-top: 2px dashed rgba(58, 12, 87, 0.28); }
   .pair { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); align-items: end; gap: 12px; }
   @media (max-width: 459px) { .pair { grid-template-columns: minmax(0, 1fr); gap: 16px; } }
+  .found { margin: 18px 0 0; padding: 0; border: 0; min-width: 0; }
+  .found-opts { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .found-opt {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 62px;
+    padding: 6px 10px;
+    border: 2px solid rgba(58, 12, 87, 0.2);
+    border-radius: 12px;
+    background: #fff;
+    font-size: 14.5px;
+    font-weight: 600;
+    line-height: 1.25;
+    cursor: pointer;
+  }
+  .found-opt input { position: absolute; opacity: 0; pointer-events: none; }
+  .found-opt img { flex: none; border-radius: 3px; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3); }
+  .found-opt .thumb-bar { width: 24px; height: 48px; object-fit: cover; }
+  .found-opt .thumb-bag { width: 44px; height: 44px; object-fit: cover; }
+  .found-opt.is-on { border-color: var(--purple); background: #f6ecfb; box-shadow: 0 0 0 3px rgba(84, 18, 124, 0.15); }
+  .found-opt.is-on::after {
+    content: "";
+    position: absolute;
+    top: 7px;
+    right: 8px;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--purple);
+  }
+  .found-opt:focus-within { outline: 3px solid var(--purple); outline-offset: 2px; }
   .form-error {
     margin: 16px 0 0;
     padding: 10px 12px;
     border-radius: 10px;
-    background: rgba(155, 39, 23, 0.1);
-    color: var(--error-paper);
-    font-size: 15.5px;
+    background: rgba(163, 38, 26, 0.08);
+    color: var(--error);
+    font-size: 15px;
     font-weight: 600;
-    line-height: 1.4;
+    line-height: 1.45;
   }
   .form-error span { display: block; margin-top: 4px; font-weight: 400; }
   .btn-reveal {
     display: block;
     width: 100%;
     margin-top: 18px;
-    padding: 17px 20px 19px;
+    padding: 15px 20px 17px;
     border: 0;
     border-radius: 14px;
-    background: linear-gradient(180deg, #4c2b19, #2b170e);
+    background: linear-gradient(180deg, #6d22a0, #4a0f70);
     color: var(--gold-hi);
-    font: 400 23px/1 var(--font-display);
-    letter-spacing: 0.01em;
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), 0 4px 0 #170b06;
+    font: 400 26px/1 var(--font-display);
+    letter-spacing: 0.02em;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 4px 0 #26063a;
     cursor: pointer;
     transition: transform 0.08s ease, box-shadow 0.08s ease;
   }
-  .btn-reveal:hover { background: linear-gradient(180deg, #57321d, #311a10); }
-  .btn-reveal:active { transform: translateY(3px); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), 0 1px 0 #170b06; }
-  .btn-reveal:focus-visible { outline: 3px solid var(--paper-ink); outline-offset: 3px; }
+  .btn-reveal:hover { background: linear-gradient(180deg, #7a2bb0, #551279); }
+  .btn-reveal:active { transform: translateY(3px); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 1px 0 #26063a; }
+  .btn-reveal:focus-visible { outline: 3px solid var(--purple); outline-offset: 3px; }
   .btn-reveal[disabled] { cursor: progress; opacity: 0.8; }
-  .form-foot { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-top: 10px; font-size: 14px; color: var(--paper-ink-2); }
+  .form-foot { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-top: 10px; font-size: 13.5px; color: var(--ink-2); }
   .sound-toggle {
     display: inline-flex;
     align-items: center;
     gap: 7px;
-    padding: 6px 8px;
     margin-left: -8px;
+    padding: 6px 8px;
     border: 0;
     border-radius: 8px;
     background: none;
     color: inherit;
-    font-size: 14px;
+    font-size: 13.5px;
     font-weight: 700;
     cursor: pointer;
   }
@@ -241,23 +283,28 @@
   [data-sound-toggle] .off { display: none; }
   [data-sound-toggle][aria-pressed="false"] .on { display: none; }
   [data-sound-toggle][aria-pressed="false"] .off { display: inline; }
-  .ticket-form .sound-toggle:focus-visible { outline-color: var(--paper-ink); }
+  .ticket-form .sound-toggle:focus-visible { outline-color: var(--purple); }
 
-  .example { margin: 0; display: grid; justify-items: center; gap: 22px; }
-  #example-ticket { width: min(100%, 440px); }
-  .example .gt { transform: rotate(-4deg); filter: drop-shadow(0 26px 30px rgba(0, 0, 0, 0.55)); }
-  @media (max-width: 899px) { #example-ticket { width: min(88%, 360px); } }
-  .example figcaption { max-width: 34ch; text-align: center; font-size: 15px; color: var(--cream-2); }
+  /* The bar, the bag and a golden ticket, as they look in real life. */
+  .showcase { margin: 0; display: grid; justify-items: center; gap: 18px; }
+  .stack { position: relative; width: min(100%, 440px); aspect-ratio: 1 / 0.92; }
+  .stack img { position: absolute; display: block; box-shadow: 0 18px 30px rgba(10, 0, 20, 0.55); }
+  .sc-bag { left: 0; top: 9%; width: 60%; border-radius: 6px; transform: rotate(-7deg); }
+  .sc-bar { right: 3%; top: 0; width: 33%; border-radius: 5px; transform: rotate(6deg); }
+  .sc-ticket { position: absolute; left: 10%; bottom: 0; width: 76%; transform: rotate(-3deg); filter: drop-shadow(0 16px 20px rgba(10, 0, 20, 0.55)); }
+  .showcase figcaption { max-width: 34ch; text-align: center; font-size: 14.5px; color: var(--cream-2); }
+  @media (max-width: 899px) { .stack { width: min(92%, 380px); } }
   .notice {
-    margin-top: 26px;
+    margin-top: 24px;
     max-width: 540px;
-    padding: 20px 22px;
+    padding: 22px 24px;
     border-radius: 16px;
-    background: var(--cocoa-3);
-    border: 1px solid var(--line);
+    background: var(--cream);
+    box-shadow: var(--frame);
+    color: var(--ink);
   }
-  .notice h2 { margin: 0 0 6px; font: 400 1.6rem/1.15 var(--font-display); color: var(--gold); }
-  .notice p { margin: 0; color: var(--cream-2); }
+  .notice h2 { margin: 0 0 6px; font: 400 1.7rem/1.15 var(--font-display); color: var(--purple); }
+  .notice p { margin: 0; }
 
   /* ---- Golden ticket (drawn at any width; text sizes follow the ticket) ---- */
   .gt { position: relative; width: 100%; aspect-ratio: 2 / 1; container-type: inline-size; perspective: 1100px; }
@@ -273,7 +320,7 @@
     overflow: hidden;
     border-radius: 10px;
     border-radius: 3.2cqw;
-    color: #4b2c0b;
+    color: var(--ink);
     background:
       radial-gradient(90% 130% at 16% 0%, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0) 55%),
       repeating-linear-gradient(115deg, rgba(255, 255, 255, 0.07) 0 2px, rgba(255, 255, 255, 0) 2px 6px),
@@ -296,7 +343,7 @@
     content: "";
     position: absolute;
     inset: 2.4cqw;
-    border: 0.5cqw solid rgba(92, 56, 12, 0.34);
+    border: 0.5cqw solid rgba(58, 12, 87, 0.3);
     border-radius: 2cqw;
     pointer-events: none;
   }
@@ -318,30 +365,28 @@
     justify-content: space-between;
     padding: 5.4cqw 3cqw 5cqw 6.6cqw;
   }
-  .gt-school {
+  .gt-event {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    font: 700 11px/1.1 var(--font-body);
-    font-size: 3.3cqw;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
+    font: 400 17px/1 var(--font-display);
+    font-size: 6.2cqw;
+    color: var(--purple);
   }
   .gt-title {
-    display: block;
-    font: 400 29px/0.9 var(--font-display);
-    font-size: 9.8cqw;
-    color: #5a330c;
-    text-shadow: 0 0.35cqw 0 rgba(255, 244, 200, 0.8);
+    font: 400 33px/0.95 var(--font-display);
+    font-size: 11cqw;
+    color: #4a0f70;
+    text-shadow: 0 0.35cqw 0 rgba(255, 244, 200, 0.85);
     white-space: nowrap;
   }
   .gt-refline { display: flex; align-items: baseline; gap: 2.2cqw; white-space: nowrap; }
   .gt-label {
     font: 700 8px/1 var(--font-body);
-    font-size: 2.7cqw;
+    font-size: 2.6cqw;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    opacity: 0.82;
+    opacity: 0.85;
   }
   .gt-ref { font: 600 15px/1 var(--font-mono); font-size: 5.2cqw; letter-spacing: 0.06em; }
   .gt-stub {
@@ -351,9 +396,9 @@
     align-items: center;
     justify-content: center;
     gap: 1.4cqw;
-    border-left: 0.6cqw dashed rgba(90, 51, 12, 0.42);
+    border-left: 0.6cqw dashed rgba(58, 12, 87, 0.4);
   }
-  .gt-no { font: 600 30px/1 var(--font-mono); font-size: 10cqw; color: #4a2a0a; font-variant-numeric: tabular-nums; }
+  .gt-no { font: 600 30px/1 var(--font-mono); font-size: 10cqw; color: #3a0c57; font-variant-numeric: tabular-nums; }
   .gt-no.is-long { font-size: 6.5cqw; }
   .gt-back .gt-paper { flex-direction: column; align-items: center; justify-content: center; gap: 2cqw; padding: 5cqw 8cqw; text-align: center; }
   .gt-win { font: 700 10px/1 var(--font-body); font-size: 3.2cqw; letter-spacing: 0.34em; text-transform: uppercase; }
@@ -362,38 +407,38 @@
   .gt-emoji:empty { display: none; }
   .gt-prize {
     min-width: 0;
-    font: 400 24px/1.02 var(--font-display);
-    font-size: 8cqw;
-    color: #5a330c;
-    text-shadow: 0 0.3cqw 0 rgba(255, 244, 200, 0.8);
+    font: 400 26px/1.02 var(--font-display);
+    font-size: 8.6cqw;
+    color: #4a0f70;
+    text-shadow: 0 0.3cqw 0 rgba(255, 244, 200, 0.85);
     text-wrap: balance;
     display: -webkit-box;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
-  .gt-prize.is-long { font-size: 6.4cqw; }
-  .gt-prize.is-xlong { font-size: 5cqw; }
-  .gt-mystery { font: 400 80px/1 var(--font-display); font-size: 25cqw; color: #5a330c; text-shadow: 0 0.6cqw 0 rgba(255, 244, 200, 0.8); }
+  .gt-prize.is-long { font-size: 7cqw; }
+  .gt-prize.is-xlong { font-size: 5.6cqw; }
+  .gt-mystery { font: 400 80px/1 var(--font-display); font-size: 26cqw; color: #4a0f70; text-shadow: 0 0.6cqw 0 rgba(255, 244, 200, 0.85); }
   .gt.is-mystery .gt-win, .gt.is-mystery .gt-prizeline { display: none; }
   .gt:not(.is-mystery) .gt-mystery { display: none; }
 
   /* ---- Result view ---- */
-  .result { max-width: 760px; margin: 18px auto 0; display: grid; gap: 34px; }
-  .result:focus { outline: none; }
+  .result { max-width: 760px; margin: 22px auto 0; display: grid; gap: 34px; }
   .result-hero { display: grid; justify-items: center; text-align: center; }
-  .result-hero #result-ticket { width: min(92%, 360px); margin-bottom: 26px; }
-  .result-hero .gt { transform: rotate(-3deg); filter: drop-shadow(0 24px 26px rgba(0, 0, 0, 0.55)); }
-  .result-eyebrow { margin: 0 0 8px; font: 700 12.5px/1.3 var(--font-mono); letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); }
+  #result-ticket { width: min(92%, 360px); margin-bottom: 26px; }
+  .result-hero .gt { transform: rotate(-3deg); filter: drop-shadow(0 24px 26px rgba(10, 0, 20, 0.6)); }
+  .result-eyebrow { margin: 0 0 6px; font: 700 12.5px/1.3 var(--font-mono); letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); }
   .result-title {
     margin: 0;
-    font: 400 clamp(2.2rem, 7.5vw, 3.5rem)/1.04 var(--font-display);
-    color: var(--gold);
+    font: 400 clamp(2.3rem, 8vw, 3.6rem)/1.04 var(--font-display);
+    color: var(--cream);
+    text-shadow: 0 3px 0 #b27f27, 0 6px 14px rgba(0, 0, 0, 0.35);
     text-wrap: balance;
   }
   .result-title:focus { outline: none; }
-  .won-label { margin: 22px 0 2px; font-size: 13px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--cream-2); }
-  .result-prize { margin: 0; max-width: 22ch; font: 700 clamp(1.7rem, 5.6vw, 2.4rem)/1.15 var(--font-body); color: var(--cream); text-wrap: balance; }
+  .won-label { margin: 22px 0 2px; font-size: 12.5px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--cream-2); }
+  .result-prize { margin: 0; max-width: 22ch; font: 700 clamp(1.6rem, 5.4vw, 2.3rem)/1.18 var(--font-body); color: var(--gold-hi); text-wrap: balance; }
   .result-details { margin: 10px 0 0; max-width: 46ch; color: var(--cream-2); white-space: pre-line; }
   .result-donor { margin: 10px 0 0; color: var(--gold); font-style: italic; }
   .star-badge {
@@ -404,7 +449,7 @@
     padding: 7px 14px 7px 12px;
     border-radius: 999px;
     background: var(--foil);
-    color: #432607;
+    color: var(--ink);
     font-size: 12.5px;
     font-weight: 700;
     letter-spacing: 0.14em;
@@ -413,23 +458,24 @@
   .star-badge svg { width: 16px; height: 16px; }
 
   .collect { display: grid; gap: 14px; }
-  .collect h3 { margin: 0; font: 400 1.75rem/1.1 var(--font-display); color: var(--gold); }
+  .collect h3 { margin: 0; font: 400 1.95rem/1.1 var(--font-display); color: var(--gold-hi); }
   .collect-intro { margin: 0; color: var(--cream-2); }
-  .options { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); }
+  .options { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); }
   .option {
     display: grid;
     align-content: start;
     gap: 12px;
-    padding: 18px 18px 20px;
+    padding: 20px 20px 22px;
     border-radius: 16px;
-    background: var(--cocoa-3);
-    border: 1px solid var(--line);
+    background: var(--cream);
+    box-shadow: var(--frame);
+    color: var(--ink);
   }
   .option-head { display: flex; align-items: center; gap: 12px; }
-  .option-head svg { flex: none; width: 34px; height: 34px; color: var(--gold); }
-  .option h4 { margin: 0; font: 700 1.15rem/1.25 var(--font-body); color: var(--cream); }
-  .option p { margin: 0; color: var(--cream-2); white-space: pre-line; }
-  .option .must { color: var(--cream); font-weight: 600; }
+  .option-head svg { flex: none; width: 34px; height: 34px; color: var(--purple); }
+  .option h4 { margin: 0; font: 400 1.45rem/1.15 var(--font-display); color: var(--purple); }
+  .option p { margin: 0; white-space: pre-line; }
+  .option .must { font-weight: 700; }
   .contact {
     display: flex;
     flex-wrap: wrap;
@@ -437,10 +483,10 @@
     gap: 6px 10px;
     padding: 10px 12px;
     border-radius: 10px;
-    background: rgba(0, 0, 0, 0.2);
+    background: #f3e8f8;
   }
-  .contact-label { font-size: 12px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--cream-2); }
-  .contact-value { flex: 1 1 auto; min-width: 0; overflow-wrap: anywhere; font: 600 15.5px/1.3 var(--font-mono); color: var(--cream); -webkit-user-select: all; user-select: all; }
+  .contact-label { font-size: 11.5px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-2); }
+  .contact-value { flex: 1 1 auto; min-width: 0; overflow-wrap: anywhere; font: 600 15px/1.35 var(--font-mono); -webkit-user-select: all; user-select: all; }
   .btn-row { display: flex; flex-wrap: wrap; gap: 10px; }
   .btn {
     display: inline-flex;
@@ -451,27 +497,29 @@
     padding: 10px 16px;
     border: 0;
     border-radius: 12px;
-    font: 700 15.5px/1.2 var(--font-body);
+    font: 700 15px/1.2 var(--font-body);
     text-align: center;
     text-decoration: none;
     cursor: pointer;
   }
-  .btn-gold { background: var(--foil); color: #3a2210; box-shadow: 0 3px 0 #6d4611; }
-  .btn-gold:active { transform: translateY(2px); box-shadow: 0 1px 0 #6d4611; }
-  .btn-ghost { background: transparent; color: var(--cream); border: 1.5px solid rgba(248, 236, 212, 0.35); }
-  .btn-ghost:hover { border-color: rgba(248, 236, 212, 0.7); }
-  .btn-small { min-height: 34px; padding: 5px 12px; border-radius: 9px; font-size: 14px; }
-  .copy-status { min-height: 1.4em; margin: 0; font-size: 14px; color: var(--mint); }
+  .btn-gold { background: var(--ribbon); color: var(--ink); box-shadow: 0 3px 0 #8a5d18; }
+  .btn-gold:active { transform: translateY(2px); box-shadow: 0 1px 0 #8a5d18; }
+  .btn-purple { background: linear-gradient(180deg, #6d22a0, #4a0f70); color: var(--gold-hi); box-shadow: 0 3px 0 #26063a; }
+  .btn-ghost { background: transparent; color: var(--ink); border: 1.5px solid rgba(58, 12, 87, 0.35); }
+  .btn-ghost-light { background: transparent; color: var(--cream); border: 1.5px solid rgba(254, 247, 229, 0.4); }
+  .btn-ghost-light:hover { border-color: rgba(254, 247, 229, 0.75); }
+  .btn-small { min-height: 34px; padding: 5px 12px; border-radius: 9px; font-size: 13.5px; }
+  .copy-status { min-height: 1.4em; margin: 0; font-size: 14px; color: #17705e; font-weight: 600; }
   .claim-by { margin: 0; font-weight: 700; color: var(--cream); text-wrap: pretty; }
 
   .stub {
     position: relative;
-    padding: 20px 22px;
+    padding: 20px 24px;
     border-radius: 16px;
-    color: var(--paper-ink);
+    color: var(--ink);
     background:
-      repeating-linear-gradient(115deg, rgba(255, 255, 255, 0.07) 0 3px, rgba(255, 255, 255, 0) 3px 9px),
-      linear-gradient(160deg, #fbe9b6, #f0d17d 58%, #e3bb5a);
+      radial-gradient(90% 130% at 16% 0%, rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0) 55%),
+      var(--foil);
     -webkit-mask:
       radial-gradient(circle 12px at 0 50%, #0000 97%, #000) left / 51% 100% no-repeat,
       radial-gradient(circle 12px at 100% 50%, #0000 97%, #000) right / 51% 100% no-repeat;
@@ -480,28 +528,28 @@
       radial-gradient(circle 12px at 100% 50%, #0000 97%, #000) right / 51% 100% no-repeat;
   }
   .stub dl { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 140px), 1fr)); gap: 12px 20px; margin: 0; }
-  .stub dt { font-size: 11.5px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--paper-ink-2); }
-  .stub dd { margin: 3px 0 0; font-size: 17px; font-weight: 700; line-height: 1.3; overflow-wrap: anywhere; }
+  .stub dt { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-2); }
+  .stub dd { margin: 3px 0 0; font-size: 16.5px; font-weight: 700; line-height: 1.3; overflow-wrap: anywhere; }
   .stub dd.code { font-family: var(--font-mono); font-weight: 600; letter-spacing: 0.05em; font-variant-numeric: tabular-nums; }
-  .stub-note { margin: 16px 0 0; padding-top: 14px; border-top: 2px dashed rgba(74, 44, 14, 0.3); font-weight: 700; }
+  .stub-note { margin: 16px 0 0; padding-top: 14px; border-top: 2px dashed rgba(58, 12, 87, 0.3); font-weight: 700; }
   .result-actions { display: grid; justify-items: center; gap: 12px; }
   .result-actions .btn-row { justify-content: center; }
-  .hint { margin: 0; font-size: 14.5px; color: var(--cream-2); text-align: center; }
+  .hint { margin: 0; font-size: 14px; color: var(--cream-2); text-align: center; }
 
   .foot {
     margin-top: 64px;
-    padding-top: 20px;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    gap: 8px 24px;
+    padding-top: 22px;
+    display: grid;
+    gap: 6px;
     border-top: 1px solid var(--line);
-    font-size: 14.5px;
+    font-size: 14px;
     color: var(--cream-2);
   }
   .foot p { margin: 0; }
-  .stats { font-family: var(--font-mono); letter-spacing: 0.03em; font-variant-numeric: tabular-nums; }
+  .raising { font: 400 1.35rem/1.2 var(--font-display); color: var(--gold-hi); }
+  .stats { font-family: var(--font-mono); font-size: 13.5px; letter-spacing: 0.03em; font-variant-numeric: tabular-nums; }
   .foot a { color: var(--cream); }
+  .fine { font-size: 12.5px; opacity: 0.8; }
 
   /* ---- The reveal stage ---- */
   .stage {
@@ -513,20 +561,20 @@
     padding: env(safe-area-inset-top, 0px) 16px env(safe-area-inset-bottom, 0px);
     overflow: hidden;
     color: var(--cream);
-    background: radial-gradient(120% 80% at 50% 36%, #4b2c1b 0%, #2a170e 46%, #140a05 100%);
+    background: radial-gradient(120% 80% at 50% 36%, #6a1f97 0%, #3a0d57 46%, #16041f 100%);
   }
   .stage:focus { outline: none; }
-  .stage-bar { position: relative; z-index: 8; display: flex; justify-content: flex-end; gap: 8px; padding-top: 12px; min-height: 44px; }
+  .stage-bar { position: relative; z-index: 8; display: flex; justify-content: flex-end; gap: 8px; min-height: 44px; padding-top: 12px; }
   .stage-btn {
     display: inline-flex;
     align-items: center;
     gap: 7px;
     padding: 8px 14px;
     border-radius: 999px;
-    border: 1px solid rgba(248, 236, 212, 0.28);
-    background: rgba(248, 236, 212, 0.1);
+    border: 1px solid rgba(254, 247, 229, 0.3);
+    background: rgba(254, 247, 229, 0.1);
     color: var(--cream);
-    font-size: 14px;
+    font-size: 13.5px;
     font-weight: 700;
     cursor: pointer;
   }
@@ -541,10 +589,10 @@
     max-width: 24ch;
     margin: 0 auto 26px;
     text-align: center;
-    font: 400 clamp(22px, 5.8vw, 31px)/1.15 var(--font-display);
+    font: 400 clamp(24px, 6.4vw, 34px)/1.12 var(--font-display);
     color: var(--cream);
     text-wrap: balance;
-    text-shadow: 0 2px 0 rgba(0, 0, 0, 0.4);
+    text-shadow: 0 3px 0 rgba(0, 0, 0, 0.35);
   }
   .rays { position: absolute; left: -420px; top: -405px; width: 1200px; height: 1200px; opacity: 0; pointer-events: none; }
   .rays-spin {
@@ -561,91 +609,93 @@
   .glow {
     position: absolute;
     left: 10px;
-    top: 170px;
+    top: 160px;
     width: 340px;
     height: 210px;
     border-radius: 50%;
-    background: radial-gradient(closest-side, rgba(255, 230, 150, 0.95), rgba(255, 196, 80, 0.45) 45%, rgba(255, 180, 60, 0) 100%);
+    background: radial-gradient(closest-side, rgba(255, 232, 150, 0.95), rgba(255, 196, 80, 0.45) 45%, rgba(255, 180, 60, 0) 100%);
     opacity: 0;
     pointer-events: none;
   }
   .gt-pos { position: absolute; left: 30px; top: 120px; width: 300px; height: 150px; z-index: 2; opacity: 0; }
   .gt-pos.is-front { z-index: 4; }
   .gt-shake { width: 100%; height: 100%; }
-  .bar-pos { position: absolute; left: 95px; top: 270px; width: 170px; height: 260px; z-index: 3; transform-origin: 50% 100%; transform: translateY(-900px); }
-  .bar-wobble { position: relative; width: 100%; height: 100%; transform-origin: 50% 92%; }
+  .item-pos { position: absolute; z-index: 3; transform-origin: 50% 100%; transform: translateY(-900px); }
+  .item-wobble { position: relative; width: 100%; height: 100%; transform-origin: 50% 92%; }
+  .stage:not(.is-bag) .item-bag, .stage.is-bag .item-bar { display: none; }
+  .wrap { position: absolute; left: 0; right: 0; overflow: hidden; }
+  .wrap-top { top: 0; transform-origin: 0% 100%; z-index: 2; }
+  .wrap-bottom { bottom: 0; z-index: 1; }
+  /* The chocolate bar, wrapped in the real Wonderlicious wrapper. */
+  .item-bar { left: 105px; top: 240px; width: 150px; height: 301px; }
+  .item-bar .wrap-top { height: 112px; }
+  .item-bar .wrap-bottom { top: 100px; }
+  .bar-print {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 150px;
+    height: 301px;
+    border-radius: 6px;
+    background: url("assets/bar.jpg") 0 0 / 150px 301px no-repeat, #54127c;
+  }
+  .item-bar .wrap-bottom .bar-print { top: -100px; }
   .bar-choc {
     position: absolute;
-    inset: 0;
+    inset: 2px 3px;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(5, 1fr);
-    gap: 6px;
-    padding: 12px 10px;
-    border-radius: 10px;
+    grid-template-rows: repeat(6, 1fr);
+    gap: 5px;
+    padding: 9px 8px;
+    border-radius: 6px;
     background: #45240f;
     box-shadow: inset 0 0 0 2px #321a0c, 0 18px 30px rgba(0, 0, 0, 0.5);
   }
   .bar-choc i {
-    border-radius: 6px;
+    border-radius: 5px;
     background: linear-gradient(150deg, #7c4b2d, #5d341e 60%, #51301b);
     box-shadow: inset 2px 2px 0 rgba(255, 214, 180, 0.17), inset -2px -3px 0 rgba(0, 0, 0, 0.36);
   }
-  .wrap { position: absolute; left: -3px; right: -3px; overflow: hidden; }
-  .wrap-top { top: -4px; height: 114px; transform-origin: 0% 100%; z-index: 2; }
-  .wrap-bottom { top: 100px; bottom: -4px; z-index: 1; }
-  .wrap-print {
+  /* The Magic Mix bag, with crimped seals top and bottom. */
+  .item-bag { left: 60px; top: 250px; width: 240px; height: 270px; }
+  .item-bag .wrap-top { height: 48px; }
+  .item-bag .wrap-bottom { top: 36px; }
+  .bag-print {
     position: absolute;
     left: 0;
-    width: 176px;
-    height: 268px;
-    border-radius: 9px;
-    color: #fdf3dc;
-    background:
-      linear-gradient(90deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0) 13%, rgba(255, 255, 255, 0.13) 28%, rgba(255, 255, 255, 0) 42%, rgba(0, 0, 0, 0) 84%, rgba(0, 0, 0, 0.32)),
-      repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.07) 0 6px, rgba(255, 255, 255, 0) 6px 15px),
-      #2e9e89;
+    top: 0;
+    width: 240px;
+    height: 270px;
+    border-radius: 4px;
+    background: url("assets/bag.jpg") 0 16px / 240px 238px no-repeat, #120a02;
+    box-shadow: 0 18px 30px rgba(0, 0, 0, 0.5);
   }
-  .wrap-top .wrap-print { top: 0; }
-  .wrap-bottom .wrap-print { top: -104px; }
-  .wrap-print::before, .wrap-print::after {
+  .bag-print::before, .bag-print::after {
     content: "";
     position: absolute;
     left: 0;
     right: 0;
-    height: 13px;
-    background: repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.24) 0 2px, rgba(255, 255, 255, 0.14) 2px 4px), #237d6d;
+    height: 16px;
+    background: repeating-linear-gradient(90deg, #9c6a1c 0 3px, #f3d27a 3px 6px);
   }
-  .wrap-print::before { top: 0; border-radius: 9px 9px 0 0; }
-  .wrap-print::after { bottom: 0; border-radius: 0 0 9px 9px; }
-  .wp-school {
+  .bag-print::before { top: 0; border-radius: 4px 4px 0 0; }
+  .bag-print::after { bottom: 0; border-radius: 0 0 4px 4px; }
+  .item-bag .wrap-bottom .bag-print { top: -36px; }
+  .bag-inside {
     position: absolute;
-    top: 30px;
-    left: 12px;
-    right: 12px;
-    text-align: center;
-    font: 700 10px/1.3 var(--font-body);
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-  }
-  .wp-stars { position: absolute; top: 70px; left: 0; right: 0; text-align: center; color: var(--gold); font-size: 13px; letter-spacing: 0.5em; padding-left: 0.5em; }
-  .wp-label {
-    position: absolute;
-    left: 14px;
-    right: 14px;
-    top: 128px;
-    height: 84px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    left: 10px;
+    right: 10px;
+    top: 22px;
+    height: 44px;
     border-radius: 50%;
-    background: #fdf1d6;
-    box-shadow: 0 0 0 3px #e3b04a, 0 0 0 5px #fdf1d6;
+    background:
+      radial-gradient(circle at 22% 62%, #ff5d8f 0 6px, transparent 7px),
+      radial-gradient(circle at 40% 48%, #ffd23f 0 5px, transparent 6px),
+      radial-gradient(circle at 60% 64%, #3ddc97 0 6px, transparent 7px),
+      radial-gradient(circle at 78% 50%, #ff8a3d 0 5px, transparent 6px),
+      radial-gradient(ellipse at 50% 40%, #2b0b3d, #0c0212);
   }
-  .wp-milk { font: 700 10px/1 var(--font-body); letter-spacing: 0.26em; text-transform: uppercase; color: #6b3d20; padding-left: 0.26em; }
-  .wp-choc { margin-top: 3px; font: 400 25px/1 var(--font-display); color: #5a2f18; }
-  .wp-small { position: absolute; left: 0; right: 0; bottom: 24px; text-align: center; font: 700 8.5px/1.3 var(--font-body); letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.85; }
   .sparkles { position: absolute; inset: 0; z-index: 5; opacity: 0; pointer-events: none; }
   .sparkle {
     position: absolute;
@@ -668,9 +718,9 @@
     z-index: 6;
     display: grid;
     place-items: center;
-    font: 400 150px/1 var(--font-display);
+    font: 400 160px/1 var(--font-display);
     color: var(--gold-hi);
-    text-shadow: 0 7px 0 #7a4a12, 0 0 44px rgba(255, 200, 90, 0.65);
+    text-shadow: 0 7px 0 #6d22a0, 0 0 44px rgba(255, 200, 90, 0.65);
     opacity: 0;
     pointer-events: none;
   }
@@ -683,7 +733,7 @@
     pointer-events: none;
   }
   /* Reduced motion: no falling bar or flip, just a calm cross-fade. */
-  .stage.is-gentle .bar-pos, .stage.is-gentle .glow, .stage.is-gentle .sparkles { display: none; }
+  .stage.is-gentle .item-pos, .stage.is-gentle .glow, .stage.is-gentle .sparkles { display: none; }
   .stage.is-gentle .gt-pos { opacity: 1; }
   .stage.is-gentle .rays { opacity: 0.45; }
   .stage.is-gentle .gt-back { transform: none; opacity: 0; transition: opacity 0.6s ease; }
@@ -701,7 +751,11 @@
 <body>
 <div class="page">
   <header class="masthead">
-    <p class="eyebrow"><span data-setting="schoolName">Our school</span><span class="sep" aria-hidden="true">·</span><span data-setting="eventName">Golden Ticket Chocolate Sale</span></p>
+    <span class="logo-tile"><img src="assets/colgrain-logo.png" alt="Colgrain Parent Council" width="52" height="52"></span>
+    <div>
+      <p class="presents"><span data-setting="organiser">The Parent Council</span> presents</p>
+      <p class="wordmark" data-setting="eventName">Wonderlicious</p>
+    </div>
   </header>
 
   <aside class="demo" id="demo" hidden>
@@ -712,8 +766,8 @@
   <main id="main">
     <section class="intro" id="view-form" aria-labelledby="headline">
       <div class="intro-copy">
-        <h1 class="headline" id="headline">Found a golden ticket?</h1>
-        <p class="lede">Type in the details from your ticket to find out what you’ve won.</p>
+        <h1 class="ribbon" id="headline"><span>Found a golden ticket?</span></h1>
+        <p class="lede">Type in the details from your ticket to see which prize you’ve won.</p>
 
         <p class="welcome" id="welcome" hidden>
           <span id="welcome-text">Welcome back.</span>
@@ -742,6 +796,13 @@
                 <input id="f-ref" name="reference" type="text" class="code" maxlength="24" autocomplete="off" autocapitalize="characters" autocorrect="off" spellcheck="false" placeholder="e.g. ABC-DEF" aria-describedby="form-error">
               </div>
             </div>
+            <fieldset class="found">
+              <legend>Where did you find it?</legend>
+              <div class="found-opts">
+                <label class="found-opt is-on"><input type="radio" name="found" value="bar" checked><img class="thumb-bar" src="assets/bar.jpg" alt="">Chocolate bar</label>
+                <label class="found-opt"><input type="radio" name="found" value="bag"><img class="thumb-bag" src="assets/bag.jpg" alt="">Magic Mix bag</label>
+              </div>
+            </fieldset>
             <p class="form-error" id="form-error" role="alert" hidden></p>
             <button type="submit" class="btn-reveal" id="reveal-btn">Reveal my prize</button>
             <div class="form-foot">
@@ -756,8 +817,12 @@
         </div>
       </div>
 
-      <figure class="example" id="example">
-        <div id="example-ticket"></div>
+      <figure class="showcase">
+        <div class="stack">
+          <img class="sc-bag" src="assets/bag.jpg" alt="A Wonderlicious Magic Mix bag">
+          <img class="sc-bar" src="assets/bar.jpg" alt="A Wonderlicious chocolate bar">
+          <div class="sc-ticket" id="example-ticket"></div>
+        </div>
         <figcaption>Your ticket number and reference code are both printed on your golden ticket.</figcaption>
       </figure>
     </section>
@@ -784,7 +849,7 @@
           <article class="option" id="opt-school">
             <div class="option-head">
               <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M5 35V17l15-9 15 9v18"/><path d="M2 35h36"/><path d="M16 35v-9h8v9"/><path d="M20 8V2l6 2.5-6 2.5"/><circle cx="20" cy="17.5" r="3"/><path d="M9 22h3M28 22h3M9 28h3M28 28h3"/></svg>
-              <h4 id="school-title">Collect it from school</h4>
+              <h4 id="school-title">Collect it at school</h4>
             </div>
             <p id="school-text"></p>
             <p class="must">Bring your golden ticket. We swap it for your prize.</p>
@@ -792,7 +857,7 @@
           <article class="option" id="opt-delivery">
             <div class="option-head">
               <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M3 9h21v19H3z"/><path d="M24 15h7l6 7v6H24"/><circle cx="10" cy="30" r="3.5"/><circle cx="30" cy="30" r="3.5"/><path d="M28 15v7h9"/></svg>
-              <h4 id="delivery-title">We’ll bring it to you</h4>
+              <h4 id="delivery-title">We’ll get it to you</h4>
             </div>
             <p id="delivery-text"></p>
             <div class="contact" id="contact-email-row">
@@ -805,7 +870,7 @@
               <span class="contact-value" id="contact-phone"></span>
             </div>
             <div class="btn-row">
-              <a class="btn btn-gold" id="mail-link" href="#">Email us to arrange delivery</a>
+              <a class="btn btn-purple" id="mail-link" href="#">Email us about your prize</a>
               <button type="button" class="btn btn-ghost" id="copy-message">Copy a ready-made message</button>
             </div>
             <p class="copy-status" id="copy-status" role="status"></p>
@@ -829,19 +894,21 @@
         <p class="hint">Take a screenshot to keep these details handy.</p>
         <div class="btn-row">
           <button type="button" class="btn btn-gold" id="replay-btn">Watch the reveal again</button>
-          <button type="button" class="btn btn-ghost" id="another-btn">Check another ticket</button>
+          <button type="button" class="btn btn-ghost-light" id="another-btn">Check another ticket</button>
         </div>
       </div>
     </section>
   </main>
 
   <footer class="foot">
+    <p class="raising" id="raising" hidden></p>
     <p class="stats" id="stats" hidden></p>
-    <p>Organised by <span data-setting="organiser">the Parent Council</span><span id="foot-contact" hidden> · Questions? <a id="foot-email" href="#"></a></span></p>
+    <p id="foot-links"><span id="foot-facebook" hidden>Updates and winners on our <a id="facebook-link" href="#" target="_blank" rel="noopener">Facebook group</a>. </span><span id="foot-contact" hidden>Questions? <a id="foot-email" href="#"></a></span></p>
+    <p class="fine">Run by <span data-setting="organiser">the Parent Council</span>. Not affiliated with, sponsored or endorsed by any confectionery brand.</p>
   </footer>
 </div>
 
-<noscript><p style="margin:24px 16px;color:#f8ecd4">Please turn on JavaScript to check your golden ticket.</p></noscript>
+<noscript><p style="margin:24px 16px;color:#fef7e5">Please turn on JavaScript to check your golden ticket.</p></noscript>
 
 <div class="stage" id="stage" hidden tabindex="-1" role="dialog" aria-modal="true" aria-label="Revealing your prize">
   <div class="stage-bar">
@@ -857,11 +924,18 @@
       <div class="rays" id="rays"><div class="rays-spin"></div></div>
       <div class="glow" id="glow"></div>
       <div class="gt-pos" id="gt-pos"><div class="gt-shake" id="gt-shake"></div></div>
-      <div class="bar-pos" id="bar-pos">
-        <div class="bar-wobble" id="bar-wobble">
+      <div class="item-pos item-bar" id="bar-pos">
+        <div class="item-wobble" id="bar-wobble">
           <div class="bar-choc" id="bar-choc"></div>
-          <div class="wrap wrap-bottom" id="wrap-bottom"></div>
-          <div class="wrap wrap-top" id="wrap-top"></div>
+          <div class="wrap wrap-bottom" id="bar-bottom"><div class="bar-print"></div></div>
+          <div class="wrap wrap-top" id="bar-top"><div class="bar-print"></div></div>
+        </div>
+      </div>
+      <div class="item-pos item-bag" id="bag-pos">
+        <div class="item-wobble" id="bag-wobble">
+          <div class="bag-inside"></div>
+          <div class="wrap wrap-bottom" id="bag-bottom"><div class="bag-print"></div></div>
+          <div class="wrap wrap-top" id="bag-top"><div class="bag-print"></div></div>
         </div>
       </div>
       <div class="sparkles" id="sparkles"></div>
@@ -879,8 +953,8 @@
       <div class="gt-face gt-front">
         <div class="gt-paper">
           <div class="gt-main">
-            <span class="gt-school" data-setting="schoolName">Our school</span>
-            <span class="gt-title">Golden<br>Ticket</span>
+            <span class="gt-event" data-setting="eventName">Wonderlicious</span>
+            <span class="gt-title">Golden Ticket</span>
             <span class="gt-refline"><span class="gt-label">Reference</span><span class="gt-ref">ABC-DEF</span></span>
           </div>
           <div class="gt-stub">
@@ -897,15 +971,6 @@
         </div>
       </div>
     </div>
-  </div>
-</template>
-
-<template id="tpl-wrapper">
-  <div class="wrap-print">
-    <span class="wp-school" data-setting="schoolName">Our school</span>
-    <span class="wp-stars" aria-hidden="true">★★★</span>
-    <div class="wp-label"><span class="wp-milk">Milk</span><span class="wp-choc">Chocolate</span></div>
-    <span class="wp-small">Every bar helps</span>
   </div>
 </template>
 
@@ -1193,7 +1258,7 @@
   })();
 
   // ---------------------------------------------------------------------------------------
-  // Confetti
+  // Confetti, in lollipop colours
   // ---------------------------------------------------------------------------------------
   var confetti = (function () {
     var canvas = $('confetti');
@@ -1204,7 +1269,7 @@
     var last = 0;
     var W = 0;
     var H = 0;
-    var PARTY = ['#f6d36b', '#eab84e', '#fff1c1', '#62cdb6', '#e0457b', '#f8ecd4', '#ff9f43'];
+    var PARTY = ['#f6d36b', '#eab84e', '#fff1c1', '#b15cf0', '#f15bb5', '#29b6f6', '#8bd346', '#ff7b54'];
     var GOLD = ['#f6d36b', '#eab84e', '#fff1c1', '#ffd98a'];
 
     function size() {
@@ -1313,13 +1378,15 @@
   var skipBtn = $('skip-btn');
   var gtPos = $('gt-pos');
   var gtShake = $('gt-shake');
-  var barPos = $('bar-pos');
-  var barWobble = $('bar-wobble');
-  var wrapTop = $('wrap-top');
-  var wrapBottom = $('wrap-bottom');
   var stageTicket = makeTicket(gtShake);
   var gtCard = stageTicket.querySelector('.gt-card');
   var reveal = null;
+
+  // Where each pack sits in the 360 x 560 scene. `edge` is the opening the ticket rises from.
+  var ITEMS = {
+    bar: { name: 'Wonderlicious bar', pos: $('bar-pos'), wobble: $('bar-wobble'), top: $('bar-top'), edge: 240, tearY: 345, glowY: 262 },
+    bag: { name: 'Magic Mix bag', pos: $('bag-pos'), wobble: $('bag-wobble'), top: $('bag-top'), edge: 290, tearY: 292, glowY: 300 }
+  };
 
   function Timeline() { this.timers = []; this.animations = []; }
   Timeline.prototype.at = function (ms, fn) { this.timers.push(setTimeout(fn, ms)); };
@@ -1336,23 +1403,22 @@
     this.animations = [];
   };
 
-  function buildBar() {
-    var choc = $('bar-choc');
-    for (var i = 0; i < 15; i++) choc.appendChild(document.createElement('i'));
-    [wrapTop, wrapBottom].forEach(function (half) {
-      var print = $('tpl-wrapper').content.firstElementChild.cloneNode(true);
-      applySettings(print);
-      half.appendChild(print);
-    });
-    // A zig-zag tear line shared by both halves of the wrapper, so they fit together.
-    var width = 176;
-    var step = 11;
+  // A zig-zag tear line shared by both halves of a wrapper, so they fit together until torn.
+  function tearLine(topEl, bottomEl, width, step, low, high, bottomTop) {
     var points = [];
-    for (var x = 0; x <= width; x += step) points.push([x, (x / step) % 2 ? 101 : 109]);
-    var top = ['0px 0px', width + 'px 0px'].concat(points.slice().reverse().map(function (p) { return p[0] + 'px ' + (p[1] + 4) + 'px'; }));
-    var bottom = points.map(function (p) { return p[0] + 'px ' + (p[1] - 100) + 'px'; }).concat([width + 'px 100%', '0px 100%']);
-    wrapTop.style.webkitClipPath = wrapTop.style.clipPath = 'polygon(' + top.join(',') + ')';
-    wrapBottom.style.webkitClipPath = wrapBottom.style.clipPath = 'polygon(' + bottom.join(',') + ')';
+    for (var x = 0; x <= width; x += step) points.push([x, (x / step) % 2 ? low : high]);
+    if (points[points.length - 1][0] < width) points.push([width, (low + high) / 2]);
+    var top = ['0px 0px', width + 'px 0px'].concat(points.slice().reverse().map(function (p) { return p[0] + 'px ' + p[1] + 'px'; }));
+    var bottom = points.map(function (p) { return p[0] + 'px ' + (p[1] - bottomTop) + 'px'; }).concat([width + 'px 100%', '0px 100%']);
+    topEl.style.webkitClipPath = topEl.style.clipPath = 'polygon(' + top.join(',') + ')';
+    bottomEl.style.webkitClipPath = bottomEl.style.clipPath = 'polygon(' + bottom.join(',') + ')';
+  }
+
+  function buildScene() {
+    var choc = $('bar-choc');
+    for (var i = 0; i < 18; i++) choc.appendChild(document.createElement('i'));
+    tearLine($('bar-top'), $('bar-bottom'), 150, 10, 100, 110, 100);
+    tearLine($('bag-top'), $('bag-bottom'), 240, 12, 38, 46, 36);
 
     var sparkles = $('sparkles');
     var spots = [[16, 96], [58, 52], [128, 84], [214, 58], [300, 92], [340, 140], [326, 262], [262, 300], [24, 232], [70, 300], [182, 36], [344, 36], [8, 164], [150, 318]];
@@ -1417,6 +1483,8 @@
     stageTicket.className = 'gt is-mystery';
     fillFront(stageTicket, claim.prize.number, claim.prize.reference);
     stage.classList.remove('is-gentle');
+    stage.classList.toggle('is-bag', claim.item === 'bag');
+    $('glow').style.top = (ITEMS[claim.item].glowY - 105) + 'px';
     gtPos.classList.remove('is-front');
     caption.textContent = '';
     countdown.textContent = '';
@@ -1443,31 +1511,33 @@
       inOut: 'cubic-bezier(.65,0,.35,1)',
       sink: 'cubic-bezier(.55,0,1,.45)'
     };
-    var bar = function (y, r, sx, sy) { return 'translateY(' + y + 'px) rotate(' + r + 'deg) scale(' + sx + ',' + sy + ')'; };
+    var item = ITEMS[claim.item];
+    var drop = function (y, r, sx, sy) { return 'translateY(' + y + 'px) rotate(' + r + 'deg) scale(' + sx + ',' + sy + ')'; };
     var tk = function (y, s) { return 'translateY(' + y + 'px) scale(' + s + ')'; };
     var name = firstName(claim.name);
+    var e = item.edge;
 
     tl.play(stage, [{ opacity: 0 }, { opacity: 1 }], { duration: 350, fill: 'both' });
 
-    // 0.25s: the bar drops in and lands with a squash.
-    tl.play(barPos, [
-      { transform: bar(-900, -12, 1, 1), easing: ease.fall },
-      { transform: bar(0, 0, 1, 1), offset: 0.72, easing: 'ease-out' },
-      { transform: bar(0, 0, 1.07, 0.9), offset: 0.82, easing: 'ease-in-out' },
-      { transform: bar(-14, 0, 0.97, 1.04), offset: 0.92, easing: 'ease-in-out' },
-      { transform: bar(0, 0, 1, 1) }
+    // 0.25s: the pack drops in and lands with a squash.
+    tl.play(item.pos, [
+      { transform: drop(-900, -12, 1, 1), easing: ease.fall },
+      { transform: drop(0, 0, 1, 1), offset: 0.72, easing: 'ease-out' },
+      { transform: drop(0, 0, 1.07, 0.9), offset: 0.82, easing: 'ease-in-out' },
+      { transform: drop(-14, 0, 0.97, 1.04), offset: 0.92, easing: 'ease-in-out' },
+      { transform: drop(0, 0, 1, 1) }
     ], { duration: 1100, delay: 250, fill: 'both' });
 
     // 1.5s: it wobbles, more and more.
-    tl.play(barWobble, wobbleFrames(12, 1, 7), { duration: 1450, delay: 1500 });
+    tl.play(item.wobble, wobbleFrames(12, 1, 7), { duration: 1450, delay: 1500 });
 
     // 3.0s: the top of the wrapper tears off, and light spills out.
-    tl.play(wrapTop, [
+    tl.play(item.top, [
       { transform: 'translate(0px, 0px) rotate(0deg)', opacity: 1, easing: 'ease-out' },
       { transform: 'translate(4px, -10px) rotate(-6deg)', opacity: 1, offset: 0.18, easing: ease.out },
       { transform: 'translate(-240px, -420px) rotate(-52deg)', opacity: 0 }
     ], { duration: 900, delay: 3000, fill: 'both' });
-    tl.at(3050, function () { if (!reduceMotion()) confetti.glitter(scenePoint(180, 376)); });
+    tl.at(3050, function () { if (!reduceMotion()) confetti.glitter(scenePoint(180, item.tearY)); });
     tl.play($('glow'), [
       { opacity: 0, transform: 'scale(0.6)' },
       { opacity: 1, transform: 'scale(1)', offset: 0.35 },
@@ -1476,22 +1546,22 @@
     ], { duration: 2600, delay: 3050, fill: 'both' });
     tl.play($('rays'), [{ opacity: 0, transform: 'scale(0.6)' }, { opacity: 0.8, transform: 'scale(1)' }], { duration: 1400, delay: 3200, fill: 'both', easing: ease.out });
 
-    // 3.45s: the ticket peeks out of the bar, ducks back, then pops out and comes forward.
+    // 3.45s: the ticket peeks out of the opening, ducks back, then pops out and comes forward.
     tl.play(gtPos, [
-      { transform: tk(150, 0.55), opacity: 0 },
-      { transform: tk(150, 0.55), opacity: 1, offset: 0.02, easing: ease.out },
-      { transform: tk(78, 0.55), opacity: 1, offset: 0.3, easing: 'ease-in-out' },
-      { transform: tk(88, 0.55), opacity: 1, offset: 0.43, easing: 'cubic-bezier(.3,0,.2,1)' },
-      { transform: tk(-40, 0.74), opacity: 1, offset: 0.66, easing: ease.inOut },
+      { transform: tk(e - 115, 0.5), opacity: 0 },
+      { transform: tk(e - 115, 0.5), opacity: 1, offset: 0.02, easing: ease.out },
+      { transform: tk(e - 193, 0.5), opacity: 1, offset: 0.3, easing: 'ease-in-out' },
+      { transform: tk(e - 183, 0.5), opacity: 1, offset: 0.43, easing: 'cubic-bezier(.3,0,.2,1)' },
+      { transform: tk(e - 285, 0.72), opacity: 1, offset: 0.66, easing: ease.inOut },
       { transform: tk(0, 1), opacity: 1 }
     ], { duration: 2750, delay: 3450, fill: 'both' });
     tl.at(5150, function () { gtPos.classList.add('is-front'); });
     tl.play($('sparkles'), [{ opacity: 0 }, { opacity: 1 }], { duration: 700, delay: 4300, fill: 'both' });
 
-    // 5.0s: the bar sinks away.
-    tl.play(barPos, [
-      { transform: bar(0, 0, 1, 1), opacity: 1 },
-      { transform: bar(460, 8, 1, 1), opacity: 0 }
+    // 5.0s: the pack sinks away.
+    tl.play(item.pos, [
+      { transform: drop(0, 0, 1, 1), opacity: 1 },
+      { transform: drop(460, 8, 1, 1), opacity: 0 }
     ], { duration: 1100, delay: 5000, fill: 'forwards', easing: ease.sink });
 
     // 6.2s: the ticket floats, spins once (the back just shows a question mark), then shakes.
@@ -1523,8 +1593,8 @@
     tl.at(9000, function () { confetti.celebrate(claim.prize.star); });
 
     [
-      [300, 'Here comes your chocolate bar…'],
-      [1500, 'Ready, ' + name + '? Let’s unwrap it…'],
+      [300, 'Here comes your ' + item.name + '…'],
+      [1500, 'Ready, ' + name + '? Let’s open it…'],
       [3100, 'Ooh! What’s that shining?'],
       [4700, 'Your golden ticket!'],
       [6300, 'Now… what have you won?'],
@@ -1591,25 +1661,22 @@
   var resultTicket = makeTicket($('result-ticket'));
   var lastClaim = null;
 
-  function deliveryMessage(claim) {
+  function prizeMessage(claim) {
     var p = claim.prize;
     return [
       'Hello,',
       '',
-      'We found a golden ticket and would like the prize delivered, please.',
+      'We found a golden ticket and would like to arrange getting the prize, please.',
       '',
       'Winner: ' + claim.name,
       'Ticket number: ' + p.number,
       'Reference: ' + p.reference,
       'Prize: ' + p.prize,
       '',
-      'Delivery address:',
+      'Address (if you’re delivering it):',
       '',
       '',
       'Phone number:',
-      '',
-      'Best days and times:',
-      '',
       '',
       'Thank you!'
     ].join('\r\n');
@@ -1635,12 +1702,12 @@
     $('opt-school').hidden = method === 'delivery';
     $('opt-delivery').hidden = method === 'school';
     $('collect-intro').textContent = {
-      school: 'This prize is collected from school.',
-      delivery: 'We’ll deliver this prize to you (local area only).',
-      either: 'You can choose: collect it from school, or we can bring it to you.'
+      school: 'Collect this prize at school.',
+      delivery: 'We’ll get this prize to you.',
+      either: 'Collect it at school, or we’ll get it to you.'
     }[method];
     $('school-text').textContent = SETTINGS.schoolCollection || 'Collect your prize from the school office.';
-    $('delivery-text').textContent = SETTINGS.delivery || 'Email us your address and a good time, and we’ll drop your prize round.';
+    $('delivery-text').textContent = SETTINGS.delivery || 'Email us and we’ll arrange getting your prize to you.';
 
     var email = SETTINGS.contactEmail || '';
     $('contact-email').textContent = email;
@@ -1650,8 +1717,8 @@
     var mail = $('mail-link');
     mail.hidden = !email;
     mail.href = 'mailto:' + email +
-      '?subject=' + encodeURIComponent('Golden ticket No. ' + p.number + ': delivery please') +
-      '&body=' + encodeURIComponent(deliveryMessage(claim));
+      '?subject=' + encodeURIComponent('Golden ticket No. ' + p.number + ': ' + p.prize) +
+      '&body=' + encodeURIComponent(prizeMessage(claim));
     $('copy-status').textContent = '';
     $('claim-by').textContent = SETTINGS.claimBy ? 'Please claim your prize by ' + SETTINGS.claimBy + '.' : '';
     $('claim-by').hidden = !SETTINGS.claimBy;
@@ -1698,7 +1765,20 @@
   var fRef = $('f-ref');
   var revealBtn = $('reveal-btn');
   var formError = $('form-error');
+  var foundInputs = form.querySelectorAll('input[name="found"]');
   var failures = 0;
+
+  function foundIn() {
+    var picked = form.querySelector('input[name="found"]:checked');
+    return picked && picked.value === 'bag' ? 'bag' : 'bar';
+  }
+
+  function setFound(item) {
+    Array.prototype.forEach.call(foundInputs, function (input) {
+      input.checked = input.value === item;
+      input.parentNode.classList.toggle('is-on', input.checked);
+    });
+  }
 
   function clearErrors() {
     formError.hidden = true;
@@ -1736,6 +1816,7 @@
     var name = fName.value.trim().replace(/\s+/g, ' ');
     var number = fNumber.value.trim();
     var reference = fRef.value.trim();
+    var item = foundIn();
     var missing = [];
     if (!name) missing.push([fName, 'Type your name so we know who has won.']);
     if (!number) missing.push([fNumber, 'Type the ticket number from your golden ticket.']);
@@ -1751,8 +1832,8 @@
       setBusy(false);
       if (result.status === 'ok') {
         failures = 0;
-        store.set('gt.last', { name: name, number: result.number, display: result.prize.number, ref: GT.canonRef(reference) });
-        startReveal({ name: name, prize: result.prize });
+        store.set('gt.last', { name: name, number: result.number, display: result.prize.number, ref: GT.canonRef(reference), item: item });
+        startReveal({ name: name, prize: result.prize, item: item });
         return;
       }
       failures += 1;
@@ -1774,6 +1855,9 @@
 
   [fName, fNumber, fRef].forEach(function (f) {
     f.addEventListener('input', function () { f.removeAttribute('aria-invalid'); });
+  });
+  Array.prototype.forEach.call(foundInputs, function (input) {
+    input.addEventListener('change', function () { setFound(foundIn()); });
   });
 
   // ---------------------------------------------------------------------------------------
@@ -1801,11 +1885,25 @@
 
   function init() {
     applySettings(document);
-    if (SETTINGS.schoolName) document.title = 'Golden Ticket Reveal · ' + SETTINGS.schoolName;
+    if (SETTINGS.eventName) document.title = SETTINGS.eventName + ' Golden Ticket';
 
     var example = makeTicket($('example-ticket'));
     fillFront(example, '12', 'ABC-DEF');
-    buildBar();
+    buildScene();
+
+    if (SETTINGS.raisingFor) {
+      $('raising').textContent = SETTINGS.raisingFor;
+      $('raising').hidden = false;
+    }
+    if (SETTINGS.facebookUrl && /^https:\/\//.test(SETTINGS.facebookUrl)) {
+      $('facebook-link').href = SETTINGS.facebookUrl;
+      $('foot-facebook').hidden = false;
+    }
+    if (SETTINGS.contactEmail) {
+      $('foot-email').textContent = SETTINGS.contactEmail;
+      $('foot-email').href = 'mailto:' + SETTINGS.contactEmail;
+      $('foot-contact').hidden = false;
+    }
 
     if (!DATA || !GT) {
       $('form-wrap').hidden = true;
@@ -1824,13 +1922,8 @@
     fNumber.setAttribute('inputmode', numbersOnly ? 'numeric' : 'text');
 
     if (SETTINGS.totalBars) {
-      $('stats').textContent = SETTINGS.totalBars + ' chocolate bars · ' + DATA.count + ' golden tickets';
+      $('stats').textContent = SETTINGS.totalBars + ' bars and bags · ' + DATA.count + ' golden tickets';
       $('stats').hidden = false;
-    }
-    if (SETTINGS.contactEmail) {
-      $('foot-email').textContent = SETTINGS.contactEmail;
-      $('foot-email').href = 'mailto:' + SETTINGS.contactEmail;
-      $('foot-contact').hidden = false;
     }
 
     if (DATA.demo && SETTINGS.demoTickets) {
@@ -1845,6 +1938,7 @@
           if (!fName.value.trim()) fName.value = 'Sam';
           fNumber.value = t.number;
           fRef.value = t.reference;
+          if (t.item) setFound(t.item);
           revealBtn.focus();
         });
         $('demo-picks').appendChild(b);
@@ -1859,7 +1953,7 @@
       $('welcome-btn').addEventListener('click', function () {
         GT.openTicket(DATA, last.number, last.ref).then(function (result) {
           if (result.status === 'ok') {
-            showResult({ name: last.name || 'you', prize: result.prize });
+            showResult({ name: last.name || 'you', prize: result.prize, item: last.item === 'bag' ? 'bag' : 'bar' });
           } else {
             $('welcome').hidden = true;
             store.set('gt.last', null);
@@ -1907,7 +2001,7 @@
       copyText(SETTINGS.contactEmail || '', $('copy-status'), 'Email address copied.');
     });
     $('copy-message').addEventListener('click', function () {
-      if (lastClaim) copyText(deliveryMessage(lastClaim), $('copy-status'), 'Message copied. Paste it into an email or text, and add your address.');
+      if (lastClaim) copyText(prizeMessage(lastClaim), $('copy-status'), 'Message copied. Paste it into an email or text.');
     });
   }
 

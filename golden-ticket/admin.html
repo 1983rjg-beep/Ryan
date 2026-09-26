@@ -8,7 +8,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='1' y='8' width='30' height='16' rx='3' fill='%23eab84e'/%3E%3Cpath d='M22 9v14' stroke='%235a330c' stroke-width='1.5' stroke-dasharray='2 2'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Mono:wght@400;600&family=Atkinson+Hyperlegible+Next:wght@400;600;700&family=Shrikhand&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Mono:wght@400;600&family=Chewy&family=Poppins:wght@400;600;700&display=swap">
 <style>
   :root {
     color-scheme: light;
@@ -17,15 +17,15 @@
     --line: #e6dac7;
     --paper: #fffdf8;
     --panel: #f5eddf;
-    --cocoa: #22130d;
+    --cocoa: #2a0a3d;
     --gold: #eab84e;
     --cream: #f8ecd4;
     --ok: #17705e;
     --bad: #a3261a;
     --warn: #875400;
     --foil: linear-gradient(115deg, #b9852b 0%, #eec46a 22%, #fff0c0 36%, #ebbd55 52%, #c8943a 72%, #f3d57f 100%);
-    --font-display: "Shrikhand", "Cooper Black", Georgia, serif;
-    --font-body: "Atkinson Hyperlegible Next", "Atkinson Hyperlegible", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --font-display: "Chewy", "Cooper Black", system-ui, sans-serif;
+    --font-body: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
     --font-mono: "Atkinson Hyperlegible Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
   }
   [hidden] { display: none !important; }
@@ -37,7 +37,7 @@
 
   .top { background: var(--cocoa); color: var(--cream); padding-block: 30px 28px; }
   .kicker { margin: 0; font-size: 12.5px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); }
-  h1 { margin: 6px 0 10px; font: 400 clamp(2rem, 5.5vw, 2.9rem)/1.05 var(--font-display); color: var(--gold); }
+  h1 { margin: 6px 0 10px; font: 400 clamp(2.2rem, 6vw, 3.1rem)/1.05 var(--font-display); color: var(--gold); }
   .top p { margin: 0; max-width: 62ch; color: #dcc9aa; }
   .top strong { color: var(--cream); }
 
@@ -146,11 +146,13 @@
       <label class="field"><span>School name <b class="req">*</b></span><input type="text" id="s-schoolName" placeholder="Thistlebank Primary"></label>
       <label class="field"><span>Organised by <b class="req">*</b></span><input type="text" id="s-organiser" placeholder="Thistlebank Parent Council"></label>
       <label class="field"><span>Name of the sale</span><input type="text" id="s-eventName" placeholder="Golden Ticket Chocolate Sale"></label>
-      <label class="field"><span>How many chocolate bars?</span><input type="number" id="s-totalBars" min="0" step="1" placeholder="300"><small>Optional. Shown at the foot of the page.</small></label>
+      <label class="field"><span>How many bars and bags?</span><input type="number" id="s-totalBars" min="0" step="1" placeholder="300"><small>Optional. Shown at the foot of the page.</small></label>
       <label class="field"><span>Contact email <b class="req">*</b></span><input type="email" id="s-contactEmail" placeholder="parentcouncil@yourschool.org"><small>Winners email this to arrange delivery or ask for help.</small></label>
       <label class="field"><span>Contact phone</span><input type="text" id="s-contactPhone" placeholder="Optional"></label>
       <label class="field"><span>Claim prizes by</span><input type="text" id="s-claimBy" placeholder="Friday 12 December"><small>Optional. Written exactly as you type it.</small></label>
       <label class="field"><span>Web address of the prize page</span><input type="url" id="s-pageUrl" placeholder="https://"><small>Where index.html will live. Needed for the QR codes on printed tickets.</small></label>
+      <label class="field"><span>Facebook group link</span><input type="url" id="s-facebookUrl" placeholder="https://www.facebook.com/groups/…"><small>Optional. Linked at the foot of the prize page.</small></label>
+      <label class="field"><span>Where the money goes</span><input type="text" id="s-raisingFor" placeholder="Every penny raised goes to …"><small>Optional. Shown at the foot of the prize page.</small></label>
     </div>
   </section>
 
@@ -188,7 +190,7 @@
 
     <h3>Print the golden tickets</h3>
     <p class="intro-text">Ten tickets to an A4 page, each 9 × 5 cm, with the number, reference code and a QR code that opens the prize page with the details filled in.</p>
-    <label class="check"><input type="checkbox" id="print-gold" checked> <span>Print a gold background. Untick this if you’re printing on gold card.</span></label>
+    <label class="check"><input type="checkbox" id="print-gold"> <span>Print a gold background. Leave this off when printing on gold paper or card.</span></label>
     <div class="btn-row">
       <button type="button" class="btn btn-dark" id="print-btn" disabled>Print golden tickets</button>
       <span class="intro-text" id="print-hint">Make and download codes first (or load a saved spreadsheet in step 3).</span>
@@ -293,12 +295,21 @@
 
   var GT = window.GoldenTicket;
   var $ = function (id) { return document.getElementById(id); };
-  var KEYS = ['schoolName', 'organiser', 'eventName', 'totalBars', 'contactEmail', 'contactPhone', 'claimBy', 'pageUrl', 'defaultCollection', 'schoolCollection', 'delivery'];
+  var KEYS = ['schoolName', 'organiser', 'eventName', 'totalBars', 'contactEmail', 'contactPhone', 'claimBy', 'pageUrl', 'facebookUrl', 'raisingFor', 'defaultCollection', 'schoolCollection', 'delivery'];
+  // Colgrain's Wonderlicious details, from the parents' poster and the wrapper terms.
   var DEFAULTS = {
-    eventName: 'Golden Ticket Chocolate Sale',
-    defaultCollection: 'school',
-    schoolCollection: 'Pop into the school office any weekday between 3:00 and 3:30pm.',
-    delivery: 'We deliver locally. Email us your address and a good time, and a parent council volunteer will drop your prize round.'
+    schoolName: 'Colgrain Primary',
+    organiser: 'Colgrain Parent Council',
+    eventName: 'Wonderlicious',
+    totalBars: 300,
+    contactEmail: 'secretary@colgrainparentcouncil.co.uk',
+    claimBy: 'Friday 30 October',
+    pageUrl: 'https://colgrainparentcouncil.co.uk/wonderlicious/',
+    facebookUrl: 'https://www.facebook.com/groups/203407226747873',
+    raisingFor: 'Every penny raised goes to Colgrain Primary.',
+    defaultCollection: 'either',
+    schoolCollection: 'Prize day is Thursday 1 October. Bring your ticket into school that day to collect your prize.',
+    delivery: 'Off school on prize day? Email us and we’ll make sure you get your prize.'
   };
   var COLLECTION_LABELS = { school: 'School', delivery: 'Delivery', either: 'Winner chooses' };
   var state = { generated: null, generatedSaved: false, sheet: null, printSource: null, built: null, remakeArmed: false };
@@ -437,29 +448,34 @@
   var PRINT_CSS = [
     '@page { size: A4 portrait; margin: 10mm; }',
     '* { box-sizing: border-box; }',
-    'body { margin: 0; background: #e9e4dc; color: #3b2208; font-family: "Atkinson Hyperlegible Next", Arial, sans-serif; }',
-    '.bar { position: sticky; top: 0; z-index: 2; display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; padding: 12px 18px; background: #22130d; color: #f8ecd4; font-size: 15px; }',
+    'body { margin: 0; background: #d9d2e0; color: #3a0c57; font-family: Poppins, Arial, sans-serif; }',
+    '.bar { position: sticky; top: 0; z-index: 2; display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; padding: 12px 18px; background: #2a0a3d; color: #fef7e5; font-size: 14.5px; }',
     '.bar p { margin: 0; flex: 1 1 380px; }',
-    '.bar button { padding: 10px 18px; border: 0; border-radius: 10px; background: #eab84e; color: #3a2210; font: 700 15px sans-serif; cursor: pointer; }',
+    '.bar button { padding: 10px 18px; border: 0; border-radius: 10px; background: #eab84e; color: #3a0c57; font: 700 15px Poppins, sans-serif; cursor: pointer; }',
+    '.bar button[disabled] { opacity: .6; cursor: progress; }',
     '.page { width: 210mm; min-height: 297mm; margin: 14px auto; padding: 10mm; background: #fff; box-shadow: 0 2px 10px rgba(0,0,0,.15); }',
+    '.plain .page { background: linear-gradient(135deg, #dcb453, #f6e2a0 40%, #e3bd5c 70%, #cf9f3b); }',
     '.grid { display: grid; grid-template-columns: 90mm 90mm; grid-auto-rows: 50mm; column-gap: 10mm; row-gap: 6mm; }',
-    '.t { display: flex; overflow: hidden; border: 0.3mm dashed #8f7d63; -webkit-print-color-adjust: exact; print-color-adjust: exact; }',
+    '.t { position: relative; display: flex; overflow: hidden; border: 0.3mm dashed rgba(58, 12, 87, .55); -webkit-print-color-adjust: exact; print-color-adjust: exact; }',
+    '.t::before, .t::after { content: ""; position: absolute; pointer-events: none; border-style: solid; border-color: #3a0c57; }',
+    '.t::before { inset: 1.6mm; border-width: 0.35mm; border-radius: 2.4mm; }',
+    '.t::after { inset: 2.3mm; border-width: 0.15mm; border-radius: 1.8mm; }',
     '.gold .t { background: linear-gradient(115deg, #d4a23c, #f6dc8e 30%, #e5b44f 55%, #f3d882 80%, #cc9a36); }',
-    '.t-main { flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: space-between; padding: 3.2mm 2.5mm 3mm 4mm; }',
+    '.t-main { position: relative; z-index: 1; flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: space-between; padding: 3.7mm 2mm 3.4mm 4.6mm; }',
     '.t p { margin: 0; }',
-    '.t-school { font-size: 6.5pt; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }',
-    '.t-title { font: 400 19pt/1 "Shrikhand", "Cooper Black", Georgia, serif; color: #5a330c; }',
-    '.t-msg { font-size: 7.5pt; line-height: 1.25; }',
+    '.t-presents { font-size: 5.2pt; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }',
+    '.t-event { font: 400 12pt/1 Chewy, "Cooper Black", sans-serif; }',
+    '.t-title { font: 400 21pt/.95 Chewy, "Cooper Black", sans-serif; }',
     '.t-ref { display: flex; align-items: baseline; gap: 2mm; white-space: nowrap; }',
-    '.t-label { font-size: 5.8pt; font-weight: 700; letter-spacing: .13em; text-transform: uppercase; }',
+    '.t-label { font-size: 5.6pt; font-weight: 700; letter-spacing: .13em; text-transform: uppercase; }',
     '.t-code { font: 600 13pt/1 "Atkinson Hyperlegible Mono", "Courier New", monospace; letter-spacing: .06em; }',
-    '.t-url { font-size: 6.5pt; line-height: 1.25; overflow-wrap: anywhere; }',
-    '.t-keep { font-size: 6pt; font-weight: 700; }',
-    '.t-stub { flex: none; width: 24mm; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1.2mm; padding: 2mm 1.5mm; border-left: 0.4mm dotted #6d4c1f; text-align: center; }',
-    '.t-no { font: 600 17pt/1 "Atkinson Hyperlegible Mono", "Courier New", monospace; }',
-    '.t-qr { width: 18mm; height: 18mm; }',
+    '.t-url { font-size: 6.2pt; line-height: 1.25; overflow-wrap: anywhere; }',
+    '.t-keep { font-size: 6pt; font-weight: 700; line-height: 1.25; }',
+    '.t-stub { position: relative; z-index: 1; flex: none; width: 24mm; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1mm; padding: 3mm 2.4mm 3mm 1.6mm; border-left: 0.4mm dotted #3a0c57; text-align: center; }',
+    '.t-no { font: 600 16pt/1 "Atkinson Hyperlegible Mono", "Courier New", monospace; }',
+    '.t-qr { width: 18.5mm; height: 18.5mm; }',
     '.t-qr svg { width: 100%; height: 100%; display: block; }',
-    '@media print { body { background: none; } .bar { display: none; } .page { width: auto; min-height: 0; margin: 0; padding: 0; box-shadow: none; break-after: page; } .page:last-child { break-after: auto; } }'
+    '@media print { body { background: none; } .bar { display: none; } .page, .plain .page { width: auto; min-height: 0; margin: 0; padding: 0; background: none; box-shadow: none; break-after: page; } .page:last-child { break-after: auto; } }'
   ].join('\n');
 
   function ticketSheet(tickets, s, gold) {
@@ -472,21 +488,27 @@
       return '<section class="page"><div class="grid">' + page.map(function (t) {
         var qr = withQr ? '<div class="t-qr">' + qrSvg(base + '#t=' + encodeURIComponent(t.number) + '&r=' + encodeURIComponent(GT.canonRef(t.reference))) + '</div>' : '';
         return '<article class="t"><div class="t-main">' +
-          '<p class="t-school">' + esc(s.schoolName || '') + '</p>' +
+          '<p class="t-presents">' + esc(s.organiser || s.schoolName || '') + (s.organiser ? ' presents' : '') + '</p>' +
+          (s.eventName ? '<p class="t-event">' + esc(s.eventName) + '</p>' : '') +
           '<p class="t-title">Golden Ticket</p>' +
-          '<p class="t-msg">Congratulations! You’ve found a golden ticket.</p>' +
           '<p class="t-ref"><span class="t-label">Reference</span><span class="t-code">' + esc(GT.displayRef(t.reference)) + '</span></p>' +
           '<p class="t-url">' + (shortUrl ? 'See your prize at <b>' + esc(shortUrl) + '</b>' : 'See your prize on the school website') + '</p>' +
-          '<p class="t-keep">Keep this ticket. You’ll swap it for your prize.</p>' +
+          '<p class="t-keep">Keep this ticket. Bring it in on prize day to collect your prize.</p>' +
           '</div><div class="t-stub"><span class="t-label">No.</span><span class="t-no">' + esc(t.number) + '</span>' + qr + '</div></article>';
       }).join('') + '</div></section>';
     }).join('');
+    var advice = gold
+      ? 'Print at 100% scale (“Actual size”) with “Background graphics” turned on, then cut along the dashed lines.'
+      : 'For gold paper: print at 100% scale (“Actual size”), and try one sheet first. Cut along the dashed lines.';
     return '<!doctype html><html lang="en-GB"><head><meta charset="utf-8"><title>Golden tickets to print</title>' +
-      '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Mono:wght@600&family=Atkinson+Hyperlegible+Next:wght@400;700&family=Shrikhand&display=swap">' +
+      '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Mono:wght@600&family=Chewy&family=Poppins:wght@400;600;700&display=swap">' +
       '<style>' + PRINT_CSS + '</style></head><body class="' + (gold ? 'gold' : 'plain') + '">' +
-      '<div class="bar"><p>' + tickets.length + ' golden tickets on ' + pages.length + ' A4 page' + (pages.length === 1 ? '' : 's') +
-      '. Print at 100% scale (“Actual size”), turn on “Background graphics” for the gold, then cut along the dashed lines.</p>' +
-      '<button type="button" onclick="window.print()">Print</button></div>' + html + '</body></html>';
+      '<div class="bar"><p>' + tickets.length + ' golden tickets on ' + pages.length + ' A4 page' + (pages.length === 1 ? '' : 's') + '. ' + advice + '</p>' +
+      '<button type="button" id="print-now" disabled onclick="window.print()">Loading fonts…</button></div>' + html +
+      // Keep Print disabled until the fonts arrive, so tickets never print in a fallback font.
+      '<script>(function () { var b = document.getElementById("print-now"); function ready() { b.disabled = false; b.textContent = "Print"; }' +
+      ' if (document.fonts && document.fonts.ready) { document.fonts.ready.then(ready); setTimeout(ready, 6000); } else { ready(); } })();<\/script>' +
+      '</body></html>';
   }
 
   $('print-btn').addEventListener('click', function () {
@@ -582,6 +604,7 @@
     if (!s.organiser) issues.push('Add who is organising the sale in step 1.');
     if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(s.contactEmail)) issues.push('Add a contact email in step 1. Winners use it to arrange delivery.');
     if (s.pageUrl && !/^https:\/\//i.test(s.pageUrl)) issues.push('The prize page address in step 1 should start with https://');
+    if (s.facebookUrl && !/^https:\/\//i.test(s.facebookUrl)) issues.push('The Facebook link in step 1 should start with https://');
     if (!state.sheet || !state.sheet.tickets.length) issues.push('Load your prize spreadsheet in step 3.');
     else if (state.sheet.problems.some(function (p) { return p.level === 'error'; })) issues.push('Fix the rows marked in red in step 3.');
     if (!GT.isSupported()) issues.push('This browser can’t build the file. Try an up-to-date Chrome, Edge, Firefox or Safari.');
