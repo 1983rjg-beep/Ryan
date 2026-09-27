@@ -557,7 +557,7 @@
     }).join('') + (sheet.problems.length > 60 ? '<li>…and ' + (sheet.problems.length - 60) + ' more.</li>' : '');
     var fallback = $('s-defaultCollection').value;
     $('sheet-rows').innerHTML = sheet.tickets.map(function (t) {
-      var extras = [t.emoji, t.star ? '★ Star prize' : '', t.donor ? 'Donated by ' + t.donor : ''].filter(Boolean).join(' · ');
+      var extras = [t.emoji, t.star ? '★ Star prize' : '', t.example ? 'Example ticket' : '', t.donor ? 'Donated by ' + t.donor : ''].filter(Boolean).join(' · ');
       return '<tr><td class="code">' + esc(t.number) + '</td><td class="code">' + esc(GT.displayRef(t.reference)) + '</td><td>' + esc(t.prize) + '</td>' +
         '<td' + (t.collection ? '' : ' class="muted"') + '>' + esc(COLLECTION_LABELS[t.collection || fallback]) + (t.collection ? '' : ' (default)') + '</td>' +
         '<td>' + esc(extras) + '</td></tr>';

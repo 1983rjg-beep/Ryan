@@ -137,6 +137,24 @@ test('spreadsheet problems are reported against the right rows', () => {
   assert.deepEqual(sheet.codes.map((t) => t.number), ['1', '4', '5'], 'a ticket with no prize yet can still be printed');
 });
 
+test('example tickets play the reveal but are not counted or reprinted', async () => {
+  const text = GT.toCsv([
+    GT.TEMPLATE_HEADERS.concat('Example ticket'),
+    ['0', 'WONDER', 'An example prize', 'Nothing to collect', '', '🎁', '', 'yes', '', 'yes'],
+    ['1', 'K7RX4P', 'Kite', '', '', '', '', '', '', '']
+  ]);
+  const sheet = GT.readPrizeSheet(text);
+  assert.deepEqual(sheet.problems, []);
+  assert.equal(sheet.tickets[0].example, true);
+  assert.equal(sheet.tickets[1].example, false);
+  assert.deepEqual(sheet.codes.map((t) => t.number), ['1'], 'the example is not printed with the real tickets');
+  const data = await GT.buildPrizeFile({ tickets: sheet.tickets, iterations: FAST });
+  assert.equal(data.count, 1, 'only real golden tickets are counted');
+  const opened = await GT.openTicket(data, '0', 'won-der');
+  assert.equal(opened.prize.example, true);
+  assert.equal((await GT.openTicket(data, '1', 'K7RX4P')).prize.example, false);
+});
+
 test('a sheet without the key columns explains what is missing', () => {
   const sheet = GT.readPrizeSheet('Name,Colour\nKite,Red');
   assert.equal(sheet.tickets.length, 0);

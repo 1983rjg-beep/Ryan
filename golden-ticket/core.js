@@ -162,7 +162,8 @@
         collection: COLLECTION_METHODS.indexOf(t.collection) > -1 ? t.collection : fallback,
         emoji: String(t.emoji || '').trim(),
         donor: String(t.donor || '').trim(),
-        star: !!t.star
+        star: !!t.star,
+        example: !!t.example
       };
       sealed[number] = await seal(record, number, canonRef(t.reference), kdf);
       if (options.onProgress) options.onProgress(i + 1, options.tickets.length);
@@ -173,7 +174,7 @@
       built: new Date().toISOString(),
       kdf: kdf,
       settings: settings,
-      count: options.tickets.length,
+      count: options.tickets.filter(function (t) { return !t.example; }).length,
       tickets: sealed
     };
   }
@@ -213,7 +214,8 @@
     collection: ['collection', 'collectionmethod', 'howtocollect', 'collect'],
     emoji: ['emoji', 'icon'],
     donor: ['donatedby', 'donor', 'kindlydonatedby', 'sponsor', 'sponsoredby'],
-    star: ['starprize', 'star', 'topprize', 'grandprize']
+    star: ['starprize', 'star', 'topprize', 'grandprize'],
+    example: ['exampleticket', 'example', 'sampleticket', 'sample']
   };
 
   // Matches a header such as "Collection (school / delivery / either)" to a field name.
@@ -366,7 +368,8 @@
       } else {
         refsSeen[ref] = number;
       }
-      codes.push({ number: number, reference: reference });
+      var example = readYes(cell('example'));
+      if (!example) codes.push({ number: number, reference: reference });
       if (!prize) { addProblem('error', line, label + ' has no prize yet.'); continue; }
       if (prize.length > 60) {
         addProblem('warning', line, label + ': long prize names are hard to read on a phone. Move the extra words into "Details".');
@@ -387,7 +390,8 @@
         collection: collection,
         emoji: cell('emoji').slice(0, 16),
         donor: cell('donor'),
-        star: readYes(cell('star'))
+        star: readYes(cell('star')),
+        example: example
       });
     }
     if (!tickets.length && !problems.some(function (p) { return p.level === 'error'; })) {

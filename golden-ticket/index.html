@@ -830,7 +830,7 @@
     <section class="result" id="view-result" hidden aria-labelledby="result-title">
       <div class="result-hero">
         <div id="result-ticket"></div>
-        <p class="result-eyebrow">Golden ticket No. <span id="r-number"></span></p>
+        <p class="result-eyebrow" id="r-eyebrow"></p>
         <h2 class="result-title" id="result-title" tabindex="-1">Congratulations, <span id="r-name"></span>!</h2>
         <p class="won-label">You’ve won</p>
         <p class="result-prize" id="r-prize"></p>
@@ -842,7 +842,7 @@
         </p>
       </div>
 
-      <div class="collect" aria-labelledby="collect-title">
+      <div class="collect" id="collect" aria-labelledby="collect-title">
         <h3 id="collect-title">How to get your prize</h3>
         <p class="collect-intro" id="collect-intro"></p>
         <div class="options">
@@ -880,7 +880,7 @@
         <p class="claim-by" id="claim-by" hidden></p>
       </div>
 
-      <div class="stub">
+      <div class="stub" id="stub">
         <dl>
           <div><dt>Winner</dt><dd id="s-name"></dd></div>
           <div><dt>Ticket No.</dt><dd class="code" id="s-number"></dd></div>
@@ -891,7 +891,7 @@
       </div>
 
       <div class="result-actions">
-        <p class="hint">Take a screenshot to keep these details handy.</p>
+        <p class="hint" id="result-hint">Take a screenshot to keep these details handy.</p>
         <div class="btn-row">
           <button type="button" class="btn btn-gold" id="replay-btn">Watch the reveal again</button>
           <button type="button" class="btn btn-ghost-light" id="another-btn">Check another ticket</button>
@@ -1689,7 +1689,11 @@
     fillBack(resultTicket, p);
     resultTicket.classList.add('is-flipped');
 
-    $('r-number').textContent = p.number;
+    $('r-eyebrow').textContent = p.example ? 'Example ticket' : 'Golden ticket No. ' + p.number;
+    // An example ticket shows the reveal but has nothing to collect.
+    $('collect').hidden = !!p.example;
+    $('stub').hidden = !!p.example;
+    $('result-hint').hidden = !!p.example;
     $('r-name').textContent = claim.name;
     $('r-prize').textContent = p.prize;
     $('r-details').textContent = p.details || '';
