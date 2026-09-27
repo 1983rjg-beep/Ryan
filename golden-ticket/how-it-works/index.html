@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script>
+  if (location.protocol === 'http:' && window.isSecureContext === false) location.replace('https:' + location.href.slice(5));
+</script>
+<title>How Wonderlicious works</title>
+<meta name="description" content="Wonderlicious chocolate bars and Magic Mix sweets are £2.50 each, with 79 golden tickets hidden inside and a free lucky bag with every one. Watch how it works.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Wonderlicious: how it works">
+<meta property="og:description" content="£2.50 a bar or bag, 79 golden tickets hidden inside, and a free lucky bag with every one. Watch the short film.">
+<meta property="og:url" content="https://colgrainparentcouncil.co.uk/wonderlicious/how-it-works/">
+<meta property="og:image" content="https://colgrainparentcouncil.co.uk/wonderlicious/how-it-works/preview.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#2a0a3d">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='1' y='8' width='30' height='16' rx='3' fill='%23eab84e'/%3E%3Cpath d='M22 9v14' stroke='%233a0c57' stroke-width='1.5' stroke-dasharray='2 2'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="film.css">
+<style>
+  @font-face { font-family: "Chewy"; font-weight: 400; font-display: swap; src: url("../assets/fonts/chewy-400.woff2") format("woff2"); }
+  @font-face { font-family: "Poppins"; font-weight: 400; font-display: swap; src: url("../assets/fonts/poppins-400.woff2") format("woff2"); }
+  @font-face { font-family: "Poppins"; font-weight: 600; font-display: swap; src: url("../assets/fonts/poppins-600.woff2") format("woff2"); }
+  @font-face { font-family: "Poppins"; font-weight: 700; font-display: swap; src: url("../assets/fonts/poppins-700.woff2") format("woff2"); }
+  @font-face { font-family: "Atkinson Hyperlegible Mono"; font-weight: 400 600; font-display: swap; src: url("../assets/fonts/atkinson-hyperlegible-mono.woff2") format("woff2"); }
+
+  :root {
+    color-scheme: dark;
+    --grape: #2a0a3d;
+    --purple: #54127c;
+    --cream: #fef7e5;
+    --cream-2: #e2d0ec;
+    --ink: #3a0c57;
+    --gold: #eab84e;
+    --gold-hi: #ffe7a3;
+    --line: rgba(254, 247, 229, 0.16);
+    --ribbon: linear-gradient(180deg, #fff0bd 0%, #f0c55c 42%, #d49b37 100%);
+    --font-display: "Chewy", "Cooper Black", "Arial Rounded MT Bold", system-ui, sans-serif;
+    --font-body: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --font-mono: "Atkinson Hyperlegible Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    --player: min(100%, 520px);
+  }
+  @supports (height: 100svh) { :root { --player: min(100%, 520px, calc((100svh - 230px) * 0.8)); } }
+  [hidden] { display: none !important; }
+  html { background: var(--grape); }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    padding-inline: 16px;
+    color: var(--cream);
+    font: 400 16px/1.6 var(--font-body);
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-size-adjust: 100%;
+    background:
+      linear-gradient(180deg, rgba(42, 10, 61, 0) 0, rgba(42, 10, 61, 0.5) 380px, #2a0a3d 760px),
+      url("../assets/haze.jpg") 50% 0 / 100% 760px no-repeat,
+      #2a0a3d;
+  }
+  .page { max-width: 1080px; margin: 0 auto; padding-block: 18px 40px; }
+  button { font: inherit; }
+  a { color: var(--gold-hi); }
+  :focus-visible { outline: 3px solid var(--gold-hi); outline-offset: 3px; }
+
+  .masthead { display: flex; align-items: center; justify-content: center; gap: 12px; }
+  .mast-logo { flex: none; display: grid; place-items: center; width: 50px; height: 50px; border-radius: 13px; background: #fff; box-shadow: 0 4px 0 rgba(0, 0, 0, 0.35); transform: rotate(-3deg); }
+  .mast-logo img { width: 42px; height: 42px; }
+  .presents { margin: 0; font: 600 11px/1.35 var(--font-body); letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); }
+  .wordmark { margin: 0; font: 400 clamp(30px, 8vw, 42px)/1 var(--font-display); color: var(--cream); text-shadow: 0 3px 0 #b27f27, 0 6px 12px rgba(0, 0, 0, 0.35); }
+  h1 { margin: 16px 0 0; text-align: center; font: 400 clamp(22px, 5.6vw, 30px)/1.15 var(--font-display); color: var(--gold-hi); text-wrap: balance; }
+
+  /* The player */
+  .player { width: var(--player); margin: 14px auto 0; }
+  .film-box {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    border-radius: 18px;
+    background: #16041f;
+    box-shadow: 0 24px 40px rgba(10, 0, 20, 0.55), 0 0 0 1px rgba(254, 247, 229, 0.12);
+  }
+  @supports not (aspect-ratio: 1) { .film-box { height: 0; padding-bottom: 125%; } }
+  .big-play, .end-card {
+    position: absolute;
+    inset: 0;
+    z-index: 40;
+    display: grid;
+    place-content: center;
+    justify-items: center;
+    gap: 10px;
+    padding: 20px;
+    border: 0;
+    color: var(--cream);
+    text-align: center;
+  }
+  .big-play { cursor: pointer; background: radial-gradient(closest-side, rgba(22, 4, 31, 0.6), rgba(22, 4, 31, 0.15)); }
+  .disc { width: 86px; height: 86px; display: grid; place-items: center; border-radius: 50%; background: var(--ribbon); box-shadow: 0 5px 0 #8a5d18, 0 0 0 8px rgba(254, 247, 229, 0.16), 0 16px 30px rgba(0, 0, 0, 0.45); }
+  .disc svg { width: 36px; height: 36px; margin-left: 6px; fill: var(--ink); }
+  .big-play strong { margin-top: 6px; font: 400 29px/1 var(--font-display); text-shadow: 0 3px 0 rgba(0, 0, 0, 0.45); }
+  .big-play small { font-size: 14px; font-weight: 600; text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8); }
+  .big-play:hover .disc { transform: scale(1.05); }
+  .end-card { background: rgba(22, 4, 31, 0.78); }
+  .end-card p { margin: 0; font: 400 26px/1.15 var(--font-display); color: var(--gold-hi); }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 46px;
+    padding: 10px 20px;
+    border: 0;
+    border-radius: 12px;
+    font: 700 15.5px/1.2 var(--font-body);
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .btn-gold { background: var(--ribbon); color: var(--ink); box-shadow: 0 3px 0 #8a5d18; }
+  .btn-purple { background: linear-gradient(180deg, #6d22a0, #4a0f70); color: var(--gold-hi); box-shadow: 0 3px 0 #26063a; }
+  .btn-ghost { background: transparent; color: var(--cream); border: 1.5px solid rgba(254, 247, 229, 0.45); }
+  .controls { display: flex; align-items: center; gap: 10px; margin-top: 10px; }
+  .ctl { flex: none; width: 44px; height: 44px; display: grid; place-items: center; padding: 0; border-radius: 50%; border: 1px solid rgba(254, 247, 229, 0.3); background: rgba(254, 247, 229, 0.1); color: var(--cream); cursor: pointer; }
+  .ctl svg { width: 20px; height: 20px; }
+  .ctl[aria-pressed="false"] .on, .ctl[aria-pressed="true"] .off, .ctl.is-playing .play, .ctl:not(.is-playing) .pause { display: none; }
+  .scrub { position: relative; flex: 1; height: 44px; cursor: pointer; touch-action: none; }
+  .scrub::before { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 6px; margin-top: -3px; border-radius: 3px; background: rgba(254, 247, 229, 0.2); }
+  .scrub-fill { position: absolute; left: 0; top: 50%; width: 0; height: 6px; margin-top: -3px; border-radius: 3px; background: var(--gold); }
+  .scrub-tick { position: absolute; top: 50%; width: 2px; height: 12px; margin: -6px 0 0 -1px; border-radius: 1px; background: rgba(254, 247, 229, 0.45); }
+  .time { flex: none; min-width: 5.6em; text-align: right; font: 600 13px/1 var(--font-mono); font-variant-numeric: tabular-nums; color: var(--cream-2); }
+  .chapters { list-style: none; margin: 12px 0 0; padding: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+  .chapters button { padding: 6px 12px; border-radius: 999px; border: 1px solid rgba(234, 184, 78, 0.5); background: rgba(234, 184, 78, 0.1); color: var(--cream); font: 600 13px/1.25 var(--font-body); cursor: pointer; }
+  .chapters button[aria-current="true"] { border-color: var(--gold); background: var(--gold); color: var(--ink); }
+
+  /* The quick version, for anyone who'd rather read */
+  .quick { max-width: 640px; margin: 44px auto 0; }
+  .quick h2, .cta h2 { margin: 0 0 14px; text-align: center; font: 400 1.9rem/1.1 var(--font-display); color: var(--gold-hi); }
+  .facts { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+  .facts li { display: flex; gap: 14px; align-items: flex-start; padding: 14px 16px; border-radius: 14px; background: #fef7e5; color: var(--ink); }
+  .facts .ico { flex: none; width: 40px; font-size: 28px; line-height: 1.2; text-align: center; }
+  .facts strong { display: block; font-size: 16.5px; }
+  .facts p { margin: 2px 0 0; }
+  .facts a { color: var(--purple); font-weight: 700; overflow-wrap: anywhere; }
+  .cta { max-width: 640px; margin: 40px auto 0; display: grid; justify-items: center; gap: 12px; text-align: center; }
+  .cta p { margin: 0; color: var(--cream-2); }
+  .btn-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+  .share-status { min-height: 1.4em; font-size: 14px; font-weight: 600; color: var(--gold-hi); }
+  .foot { max-width: 640px; margin: 56px auto 0; padding-top: 20px; display: grid; gap: 6px; border-top: 1px solid var(--line); font-size: 14px; color: var(--cream-2); text-align: center; }
+  .foot p { margin: 0; }
+  .foot a { color: var(--cream); }
+  .fine { font-size: 12.5px; opacity: 0.8; }
+
+  /* Recording the video: just the film, at a fixed size. */
+  .is-export body, body.is-export { padding: 0; background: #16041f; }
+  body.is-export .page > :not(.player), body.is-export .controls, body.is-export .chapters, body.is-export .big-play { display: none !important; }
+  body.is-export .page { padding: 0; }
+  body.is-export .player { width: 540px; margin: 0; }
+  body.is-export .film-box { border-radius: 0; box-shadow: none; }
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="masthead">
+    <span class="mast-logo"><img src="../assets/colgrain-logo.png" alt="Colgrain Parent Council" width="42" height="42"></span>
+    <div>
+      <p class="presents">Colgrain Parent Council presents</p>
+      <p class="wordmark">Wonderlicious</p>
+    </div>
+  </header>
+  <h1>How the golden ticket event works</h1>
+
+  <section class="player" aria-label="Film: how Wonderlicious works">
+    <div class="film-box" id="film-box">
+      <div class="film" id="film" aria-hidden="true">
+        <canvas class="fx" id="fx"></canvas>
+        <div class="cap-band" id="cap-band"></div>
+      </div>
+      <button type="button" class="big-play" id="big-play">
+        <span class="disc"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3.5v17a1 1 0 0 0 1.5.86l14-8.5a1 1 0 0 0 0-1.72l-14-8.5A1 1 0 0 0 6 3.5z"/></svg></span>
+        <strong>Watch how it works</strong>
+        <small id="big-play-note">Just over a minute, with sound</small>
+      </button>
+      <div class="end-card" id="end-card" hidden>
+        <p>Want to see what winners see?</p>
+        <a class="btn btn-gold" href="../#t=0&amp;r=WONDER">Try the example ticket</a>
+        <button type="button" class="btn btn-ghost" id="again-btn">Watch again</button>
+      </div>
+    </div>
+    <div class="controls">
+      <button type="button" class="ctl" id="play-btn" aria-label="Play">
+        <svg class="play" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15a1 1 0 0 0 1.5.86l12-7.5a1 1 0 0 0 0-1.72l-12-7.5A1 1 0 0 0 7 4.5z"/></svg>
+        <svg class="pause" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="5" y="4" width="5" height="16" rx="1.5"/><rect x="14" y="4" width="5" height="16" rx="1.5"/></svg>
+      </button>
+      <div class="scrub" id="scrub" role="slider" tabindex="0" aria-label="Film position" aria-valuemin="0" aria-valuemax="76" aria-valuenow="0" aria-valuetext="0:00">
+        <div class="scrub-fill" id="scrub-fill"></div>
+      </div>
+      <span class="time" id="time">0:00 / 1:16</span>
+      <button type="button" class="ctl" id="sound-btn" aria-pressed="true" aria-label="Sound">
+        <svg class="on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg>
+        <svg class="off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="m22 9-6 6"/><path d="m16 9 6 6"/></svg>
+      </button>
+    </div>
+    <ol class="chapters" id="chapters" aria-label="Jump to a part of the film"></ol>
+  </section>
+
+  <section class="quick" aria-labelledby="quick-title">
+    <h2 id="quick-title">The quick version</h2>
+    <ul class="facts">
+      <li><span class="ico" aria-hidden="true">🍫</span><div><strong>Chocolate bars and Magic Mix sweets, £2.50 each</strong><p>On sale in school on Tuesday 29 and Wednesday 30 September.</p></div></li>
+      <li><span class="ico" aria-hidden="true">✉️</span><div><strong>Send cash in a named envelope or purse</strong><p>£2.50 for each bar or bag, with your child’s name on the envelope or purse.</p></div></li>
+      <li><span class="ico" aria-hidden="true">🎁</span><div><strong>A free lucky bag with every one</strong><p>Every bar and bag comes with a lucky bag, so there’s a prize every time.</p></div></li>
+      <li><span class="ico" aria-hidden="true">🎟️</span><div><strong>79 golden tickets</strong><p>They’re hidden in 79 of the 300 bars and bags. That’s more than 1 in 4.</p></div></li>
+      <li><span class="ico" aria-hidden="true">📱</span><div><strong>Found one? See what you’ve won</strong><p>Scan the QR code on the ticket, or go to <a href="../">colgrainparentcouncil.co.uk/wonderlicious</a> and type in the ticket number and reference.</p></div></li>
+      <li><span class="ico" aria-hidden="true">🏫</span><div><strong>Prize day is Thursday 1 October</strong><p>Bring the golden ticket into school to collect your prize. Off school that day? Email <a href="mailto:secretary@colgrainparentcouncil.co.uk">secretary@colgrainparentcouncil.co.uk</a>. Prizes must be claimed by Friday 30 October.</p></div></li>
+      <li><span class="ico" aria-hidden="true">💜</span><div><strong>Every penny raised goes to Colgrain Primary</strong><p>Thank you for your support!</p></div></li>
+    </ul>
+  </section>
+
+  <section class="cta" aria-labelledby="cta-title">
+    <h2 id="cta-title">Try it for yourself</h2>
+    <p>Our example ticket shows exactly what a winner sees. It isn’t a real prize.</p>
+    <div class="btn-row">
+      <a class="btn btn-gold" href="../#t=0&amp;r=WONDER">Try the example ticket</a>
+      <a class="btn btn-purple" href="../">Found a golden ticket? Check it here</a>
+      <button type="button" class="btn btn-ghost" id="share-btn">Share this film</button>
+    </div>
+    <p class="share-status" id="share-status" role="status"></p>
+  </section>
+
+  <footer class="foot">
+    <p>Updates and winners on our <a href="https://www.facebook.com/groups/203407226747873" target="_blank" rel="noopener">Facebook group</a>. Questions? <a href="mailto:secretary@colgrainparentcouncil.co.uk">secretary@colgrainparentcouncil.co.uk</a></p>
+    <p class="fine">Run by Colgrain Parent Council. The children in the film are cartoons. Not affiliated with, sponsored or endorsed by any confectionery brand.</p>
+  </footer>
+</div>
+
+<noscript><p style="margin:24px 16px;color:#fef7e5">Please turn on JavaScript to watch the film. Everything it shows is in “The quick version” above.</p></noscript>
+
+<script src="engine.js"></script>
+<script src="sound.js"></script>
+<script src="scenes.js"></script>
+<script src="player.js"></script>
+</body>
+</html>

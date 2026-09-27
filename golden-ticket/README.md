@@ -8,6 +8,10 @@ seconds, and then they see their prize and how to collect it.
 
 It is a handful of plain files: no server, no database, and nothing to pay for.
 
+There is also a short film for parents, **How it works** (`how-it-works/`). It runs for about 75
+seconds and covers the whole event: the £2.50 bars and bags, the 79 golden tickets, children buying
+in school, the free lucky bag, finding a ticket, scanning it, prize day and where the money goes.
+
 ## What's in this folder
 
 | File | What it is |
@@ -16,6 +20,7 @@ It is a handful of plain files: no server, no database, and nothing to pay for.
 | `core.js` | Code the prize page and the builder share. |
 | `prizes.js` | The prize list, scrambled. **The one here is a demo** with four made-up prizes. |
 | `assets/` | The bar and bag artwork, the Parent Council logo and the fonts. |
+| `how-it-works/` | The film for parents, at `/wonderlicious/how-it-works/`. It uses the same `assets` folder. |
 | `admin.html` | The prize builder. Use it on your own computer. You don't need to upload it. |
 | `vendor/qrcode.js` | Draws the QR codes on printed tickets ([MIT licence](https://github.com/kazuhikoarase/qrcode-generator)). |
 | `tests/` | Automated checks, for whoever maintains this. |
@@ -67,10 +72,26 @@ who types `http://` over to `https://` by itself.
    `wonderlicious`.
 3. Upload into it: `index.html`, `core.js`, your built `prizes.js` and the whole `assets`
    folder. Don't upload `admin.html` or the spreadsheet.
-4. Visit `https://colgrainparentcouncil.co.uk/wonderlicious/` and check three real tickets.
+4. Upload the `how-it-works` folder into `wonderlicious` too (it needs the `assets` folder next
+   to it).
+5. Visit `https://colgrainparentcouncil.co.uk/wonderlicious/` and check three real tickets.
+   Then open `https://colgrainparentcouncil.co.uk/wonderlicious/how-it-works/` on a phone and
+   play the film with the sound on.
 
 **Keep that address working until the last prize is claimed.** Every printed ticket points at
 it. If the website is rebuilt, keep the `wonderlicious` folder exactly as it is.
+
+## Sharing the film
+
+- **Link:** `https://colgrainparentcouncil.co.uk/wonderlicious/how-it-works/`. When it's pasted
+  into Facebook or WhatsApp, the preview picture comes from `how-it-works/preview.jpg`.
+- **QR code:** point it at the same link. It works printed, and in a PDF it can be a clickable link.
+- **Video:** a recording of the film (MP4, with sound) can be posted straight into a Facebook
+  group or WhatsApp chat. Videos posted directly play in people's feeds, while links often get
+  scrolled past, so post the video and put the link in the text.
+
+The film keeps no record of who watched it. The only thing it saves is whether you turned the
+sound off, and that stays in your own browser.
 
 ## Rules that save arguments later
 
@@ -112,3 +133,15 @@ ticket protects the prize.
 - Printed QR codes open `index.html#t=<number>&r=<code>`, which fills in the form and then
   clears the address bar.
 - Fonts are served from `assets/fonts` (licences in `assets/fonts/LICENSE.md`).
+- The film (`how-it-works/`) is on one timeline:
+  - Every moving part is a single Web Animation spanning the whole film, built from keyframes in
+    `scenes.js` (`engine.js` has the engine).
+  - This means it can pause, jump to a chapter and play back identically every time.
+  - Confetti is worked out from the film time, and sound effects and music are scheduled from the
+    same clock (`sound.js`).
+- Adding `?export` to the film's address shows only the film and exposes `window.EXPORT`:
+  - `seek(seconds)` shows any frame.
+  - `wav()` returns the soundtrack as a WAV.
+  - This is how the MP4 is recorded, frame by frame, with Playwright and ffmpeg.
+- Adding `?loop` plays the film on repeat, for a screen at a school event. Browsers may keep the
+  sound off until someone taps the screen.
